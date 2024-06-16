@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wget2.exe
-          path: "${{ github.workspace }}/wget2/src/wget2.exe"
+          path: "$HOME/usr/local/$PREFIX/wget2/src/wget2.exe"
       - name: Get version number
         run: |
           VERSION="$(retry wget -qO- --compression=auto https://api.github.com/repos/rockdaboot/wget2/releases | jq -r '.[0].tag_name | sub("^v"; "")')" 
