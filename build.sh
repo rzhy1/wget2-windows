@@ -117,5 +117,5 @@ cd wget2
 ./bootstrap --skip-po
 LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --without-gpgme --enable-threads=windows
 make -j$(nproc)
-strip src/wget2.exe
+strip $INSTALLDIR/src/wget2.exe
 echo "wget2 executable path: $(realpath src/wget2.exe)"
