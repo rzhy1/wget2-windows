@@ -84,4 +84,5 @@ jobs:
           tag: wget2-${{ env.wget2_VERSION }}
           allowUpdates: true
           artifacts: "/home/runner/usr/local/x86_64-w64-mingw32/wget2/src/wget2.exe"
+          bodyFile: "RELEASE.md"
           token: ${{ secrets.GITHUB_TOKEN }}
