@@ -82,5 +82,5 @@ jobs:
         with:
           tag: wget2-${{ env.wget2_VERSION }}
           allowUpdates: true
-          artifacts: "${{ github.workspace }}/wget2/src/wget2.exe"
+          artifacts: "$HOME/usr/local/$PREFIX/wget2/src/wget2.exe"
           token: ${{ secrets.GITHUB_TOKEN }}
