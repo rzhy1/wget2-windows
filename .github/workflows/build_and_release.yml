@@ -1,0 +1,85 @@
+name: "Build and Release"
+
+on:
+  workflow_dispatch:
+  #push:
+  #  branches:
+  #    - "*"
+  #pull_request:
+  #  branches:
+  #    - "*"
+  #release:
+  #  types:
+  #    - released
+  #schedule:
+  #  - cron: "0 0 * * *"
+
+jobs:
+  static-build_wget2:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: downloads/
+          key: build-cache-x86_64-w64-mingw32-${{ github.sha }}
+          restore-keys: |
+            build-cache-x86_64-w64-mingw32-
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update
+          DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
+          sudo apt-get install -y --no-install-recommends \
+            git \
+           autoconf \
+           autoconf-archive \
+           autopoint \
+           automake \
+           autogen \
+           libtool \
+           make \
+           wine \
+           flex \
+           bison \
+           gettext \
+           gperf \
+           mingw-w64 \
+           pkg-config-mingw-w64-x86-64 \
+           ca-certificates \
+           wget \
+           patch \
+           texinfo \
+           gengetopt \
+           curl \
+           lzip \
+           pandoc \
+           rsync \
+           python3 \
+           binfmt-support \
+           bc \
+           cmake \
+           binutils
+      - name: Compile
+        env:
+          CROSS_HOST: "x86_64-w64-mingw32"
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/build.sh"
+          "${GITHUB_WORKSPACE}/build.sh"
+      - name: Archive wget2.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: wget2.exe
+          path: "${{ github.workspace }}/wget2/src/wget2.exe"
+      - name: Get version number
+        run: |
+          VERSION="$(retry wget -qO- --compression=auto https://api.github.com/repos/rockdaboot/wget2/releases \| jq -r "'.[0].tag_name'")"
+          echo "wget2_VERSION=${VERSION}" >> $GITHUB_ENV
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: wget2-${{ env.wget2_VERSION }}
+          allowUpdates: true
+          artifacts: "${{ github.workspace }}/wget2/src/wget2.exe"
+          token: ${{ secrets.GITHUB_TOKEN }}
