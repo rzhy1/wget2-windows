@@ -16,7 +16,7 @@ export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
-git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
+git clone --recursive https://git.savannah.gnu.org/git/gnulib.git gnulib
 export GNULIB_REFDIR=/usr/local/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
