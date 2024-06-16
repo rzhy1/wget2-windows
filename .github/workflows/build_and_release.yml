@@ -87,8 +87,6 @@ jobs:
           bodyFile: "RELEASE.md"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: update README.md
-        uses: actions/checkout@v4
-      - name: 生成 README 文件
         run: |
           cat RELEASE.md >> README.md
           git add README.md
