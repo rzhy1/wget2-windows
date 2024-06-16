@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wget2.exe
-          path: "$HOME/usr/local/x86_64-w64-mingw32/wget2/src/wget2.exe"
+          path: "/home/runner/usr/local/x86_64-w64-mingw32/wget2/src/wget2.exe"
       - name: Get version number
         run: |
           VERSION="$(retry wget -qO- --compression=auto https://api.github.com/repos/rockdaboot/wget2/releases | jq -r '.[0].tag_name | sub("^v"; "")')" 
@@ -83,5 +83,5 @@ jobs:
         with:
           tag: wget2-${{ env.wget2_VERSION }}
           allowUpdates: true
-          artifacts: "$HOME/usr/local/x86_64-w64-mingw32/wget2/src/wget2.exe"
+          artifacts: "/home/runner/usr/local/x86_64-w64-mingw32/wget2/src/wget2.exe"
           token: ${{ secrets.GITHUB_TOKEN }}
