@@ -2,7 +2,7 @@
 
 | library       | Version  | Source              |
 |---------------| ---------------------|-----------------------|
-| gnulib-mirror | 3.8.5  | [https://git.savannah.gnu.org/git/gnulib.git](https://git.savannah.gnu.org/git/gnulib.git)                   |
+| gnulib-mirror | Git  | [https://git.savannah.gnu.org/git/gnulib.git](https://git.savannah.gnu.org/git/gnulib.git)                   |
 | openssl       | n/a                  | 1.1.1w                |
 | gmp           | 6.3.0                | n/a                   |
 | nettle        | 3.9.1                | n/a                   |
