@@ -57,6 +57,7 @@ jobs:
             lzip \
             pandoc \
             rsync \
+            retry \
             python3 \
             binfmt-support \
             bc \
