@@ -1,6 +1,6 @@
-**GNU Wget 1.21.4 for Windows**
+** Wget2 2.1.0 for Windows**
 
-| library       | GnuTLS based version | OpenSSL based version |
+| library       | Version  | Source              |
 |---------------| ---------------------|-----------------------|
 | gnutls        | 3.8.5                | n/a                   |
 | openssl       | n/a                  | 1.1.1w                |
