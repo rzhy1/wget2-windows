@@ -76,7 +76,7 @@ jobs:
           path: "${{ github.workspace }}/wget2/src/wget2.exe"
       - name: Get version number
         run: |
-          VERSION="$(retry wget -qO- --compression=auto https://api.github.com/repos/rockdaboot/wget2/releases \| jq -r '.[0].tag_name | sub("^v"; "")')"                        
+          VERSION="$(retry wget -qO- --compression=auto https://api.github.com/repos/rockdaboot/wget2/releases | jq -r '.[0].tag_name | sub("^v"; "")')" 
           echo "wget2_VERSION=${VERSION}" >> $GITHUB_ENV
       - name: Create Release
         uses: ncipollo/release-action@v1
