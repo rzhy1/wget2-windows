@@ -25,7 +25,7 @@ export GNULIB_REFDIR=$INSTALLDIR/gnulib
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/google/brotli
 cd brotli
-CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF
+CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=/home/tim/src/wget2/x86_64-w64-mingw32 -DBUILD_SHARED_LIBS=OFF
 make install
 cd .. && rm -rf brotli
 
@@ -115,7 +115,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po
-LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -L$INSTALLDIR/lib -lbrotlidec -lbrotlienc" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --without-gpgme --enable-threads=windows 
+LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --without-gpgme --enable-threads=windows 
 make -j$(nproc)
 strip $INSTALLDIR/src/wget2.exe
 echo "wget2 executable path: $(realpath src/wget2.exe)"
