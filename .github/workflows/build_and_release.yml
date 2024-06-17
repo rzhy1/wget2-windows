@@ -38,6 +38,7 @@ jobs:
             autopoint \
             automake \
             autogen \
+            brotli \
             jq \
             libtool \
             liblzma-dev \
