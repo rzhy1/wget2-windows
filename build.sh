@@ -39,8 +39,8 @@ cd brotli
 CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF
 make install
 cd .. && rm -rf brotli
-apt-cache show libbrotlienc | grep Version
-apt-cache show libbrotlidec | grep Version
+apt-cache show brotli | grep Version
+apt-cache show libbrotli | grep Version
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz
