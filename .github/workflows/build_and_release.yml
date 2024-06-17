@@ -91,7 +91,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: update README.md
         run: |
-          cat RELEASE.md >> README.md
+          cat RELEASE.md > README.md
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add README.md
