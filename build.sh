@@ -22,10 +22,7 @@ export LZIP_CFLAGS="-I/usr/include"
 export LZIP_LIBS="-L/usr/lib/x86_64-linux-gnu -llz"
 export BZ2_CFLAGS="-I/usr/include"
 export BZ2_LIBS="-L/usr/lib/x86_64-linux-gnu -lbz2"
-sudo find / -name "*lzma*"
-sudo find / -name "*zstd*"
-sudo find / -name "*lzip*"
-sudo find / -name "*bzip2*"
+sudo find / -name "*brotli*"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
