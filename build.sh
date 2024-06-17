@@ -14,7 +14,18 @@ export CPPFLAGS="-I$INSTALLDIR/include"
 export LDFLAGS="-L$INSTALLDIR/lib"
 export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
+export LZMA_CFLAGS="-I/usr/include"
+export LZMA_LIBS="-L/usr/lib/x86_64-linux-gnu -llzma"
+export ZSTD_CFLAGS="-I/usr/include"
+export ZSTD_LIBS="-L/usr/lib/x86_64-linux-gnu -lzstd"
+export LZIP_CFLAGS="-II/usr/include"
+export LZIP_LIBS="-L/usr/lib/x86_64-linux-gnu -llz"
+export BZ2_CFLAGS="-II/usr/include"
+export BZ2_LIBS="-L/usr/lib/x86_64-linux-gnu -lbz2"
 sudo find / -name "*lzma*"
+sudo find / -name "*zstd*"
+sudo find / -name "*lzip*"
+sudo find / -name "*bzip2*"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
