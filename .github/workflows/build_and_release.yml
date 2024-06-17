@@ -43,7 +43,7 @@ jobs:
             liblzma-dev \
             libzstd-dev \
             libbz2-dev \
-            libbrotli-dev \
+            #libbrotli-dev \
             lzip \
             make \
             wine \
