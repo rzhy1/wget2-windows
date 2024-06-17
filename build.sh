@@ -7,7 +7,7 @@
 # 设置环境变量
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
-export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/pkgconfig"
+export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/include"
 export PKG_CONFIG_LIBDIR="$INSTALLDIR/lib/pkgconfig"
 export PKG_CONFIG="/usr/bin/${PREFIX}-pkg-config"
 export CPPFLAGS="-I$INSTALLDIR/include"
