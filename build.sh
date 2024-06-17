@@ -22,20 +22,20 @@ export LZIP_CFLAGS="-I/usr/include"
 export LZIP_LIBS="-L/usr/lib/x86_64-linux-gnu -llz"
 export BZ2_CFLAGS="-I/usr/include"
 export BZ2_LIBS="-L/usr/lib/x86_64-linux-gnu -lbz2"
-sudo find / -name "*brotli*"
+#sudo find / -name "*brotli*"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
-git clone --recursive https://git.savannah.gnu.org/git/gnulib.git gnulib
+git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-#git clone --recursive https://github.com/google/brotli.git
-#cd brotli
-#CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF
-#make install
-#cd .. && rm -rf brotli
+git clone --recursive https://github.com/google/brotli.git
+cd brotli
+CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF
+make install
+cd .. && rm -rf brotli
 apt-cache show brotli | grep Version
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
