@@ -14,8 +14,8 @@ export CPPFLAGS="-I$INSTALLDIR/include"
 export LDFLAGS="-L$INSTALLDIR/lib"
 export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
-export LZMA_CFLAGS="-I/usr/include"
-export LZMA_LIBS="-L/usr/lib/x86_64-linux-gnu -llzma"
+#export LZMA_CFLAGS="-I/usr/include"
+#export LZMA_LIBS="-L/usr/lib/x86_64-linux-gnu -llzma"
 export ZSTD_CFLAGS="-I/usr/include"
 export ZSTD_LIBS="-L/usr/lib/x86_64-linux-gnu -lzstd"
 export LZIP_CFLAGS="-I/usr/include"
@@ -31,25 +31,6 @@ cd xz-*
 ./configure --host=$PREFIX --prefix=$INSTALLDIR --enable-silent-rules --enable-static --disable-shared
 make -j$(nproc) && make install
 cd .. && rm -rf xz-*
-
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
-wget -O- https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz | tar xz
-cd zstd-*
-make -j$(nproc) && make install
-cd .. && rm -rf zstd-*
-
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build bzip2⭐⭐⭐⭐⭐⭐" 
-wget -O- https://sourceware.org/pub/bzip2/bzip2-latest.tar.gz | tar xz
-cd bzip2-*
-make -j$(nproc) && make install
-cd .. && rm -rf bzip2-*
-
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build lzip⭐⭐⭐⭐⭐⭐" 
-wget -O- https://download.savannah.gnu.org/releases/lzip/lzip-1.24.tar.gz | tar xz
-cd lzip-*
-./configure --host=$PREFIX --prefix=$INSTALLDIR
-make -j$(nproc) && make install
-cd .. && rm -rf lzip-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
