@@ -40,10 +40,10 @@ jobs:
             autogen \
             jq \
             libtool \
-            liblzma-dev \
-            libzstd-dev \
-            libbz2-dev \
-            lzip \
+            #liblzma-dev \
+            #libzstd-dev \
+            #libbz2-dev \
+            #lzip \
             make \
             wine \
             flex \
