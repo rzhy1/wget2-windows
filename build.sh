@@ -25,6 +25,32 @@ export BZ2_LIBS="-L/usr/lib/x86_64-linux-gnu -lbz2"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
+wget -O- https://github.com/tukaani-project/xz/releases/download/v5.6.2/xz-5.6.2.tar.gz | tar xz
+cd xz-*
+./configure --host=$PREFIX --prefix=$INSTALLDIR --enable-silent-rules --enable-static --disable-shared
+make -j$(nproc) && make install
+cd .. && rm -rf xz-*
+
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
+wget -O- https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz | tar xz
+cd zstd-*
+make -j$(nproc) && make install
+cd .. && rm -rf zstd-*
+
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build bzip2⭐⭐⭐⭐⭐⭐" 
+wget -O- https://sourceware.org/pub/bzip2/bzip2-latest.tar.gz | tar xz
+cd bzip2-*
+make -j$(nproc) && make install
+cd .. && rm -rf bzip2-*
+
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build lzip⭐⭐⭐⭐⭐⭐" 
+wget -O- https://download.savannah.gnu.org/releases/lzip/lzip-1.24.tar.gz | tar xz
+cd lzip-*
+./configure --host=$PREFIX --prefix=$INSTALLDIR
+make -j$(nproc) && make install
+cd .. && rm -rf lzip-*
+
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
@@ -46,10 +72,10 @@ cd .. && rm -rf libiconv-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz
-cd libunistring-1.2
+cd libunistring-*
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR
 make -j$(nproc) && make install
-cd .. && rm -rf libunistring-1.2
+cd .. && rm -rf libunistring-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libidn2⭐⭐⭐⭐⭐⭐" 
 wget -O- https://mirrors.ustc.edu.cn/gnu/libidn/libidn2-2.3.7.tar.gz | tar xz
@@ -124,6 +150,6 @@ git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po
 LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --without-lzma --without-zstd --without-bzip2 --without-lzip --without-gpgme  --enable-threads=windows
-make -d -j$(nproc)
+make -j$(nproc)
 strip $INSTALLDIR/wget2/src/wget2.exe
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}"
