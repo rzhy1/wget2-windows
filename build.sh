@@ -14,7 +14,7 @@ export CPPFLAGS="-I$INSTALLDIR/include"
 export LDFLAGS="-L$INSTALLDIR/lib"
 export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
-find / -name "*lzma*"
+sudo find / -name "*lzma*"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
