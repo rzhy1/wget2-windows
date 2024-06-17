@@ -38,12 +38,12 @@ jobs:
             autopoint \
             automake \
             autogen \
-            brotli \
             jq \
             libtool \
             liblzma-dev \
             libzstd-dev \
             libbz2-dev \
+            libbrotli-dev \
             lzip \
             make \
             wine \
