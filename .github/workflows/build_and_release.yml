@@ -43,7 +43,7 @@ jobs:
             liblzma-dev \
             libzstd-dev \
             libbz2-dev \
-            liblzip2-dev \
+            liblzip2 \
             make \
             wine \
             flex \
