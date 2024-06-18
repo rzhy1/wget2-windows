@@ -53,14 +53,14 @@ jobs:
             mingw-w64 \
             pkg-config-mingw-w64-x86-64 \
             ca-certificates \
+            retry \
+            patch
             # wget \
-            patch \
             # texinfo \
             # gengetopt \
             # curl \
             # pandoc \
             # rsync \
-            retry \
             # python3 \
             # binfmt-support \
             # bc \
