@@ -40,6 +40,7 @@ jobs:
             autogen \
             jq \
             libtool \
+            lzip \
             make \
             wine \
             flex \
