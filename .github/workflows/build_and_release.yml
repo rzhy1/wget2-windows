@@ -40,6 +40,10 @@ jobs:
             autogen \
             jq \
             libtool \
+            liblzma-dev \
+            libzstd-dev \
+            libbz2-dev \
+            libbrotli-dev \
             lzip \
             make \
             wine \
@@ -50,19 +54,19 @@ jobs:
             mingw-w64 \
             pkg-config-mingw-w64-x86-64 \
             ca-certificates \
+            wget \
+            patch \
+            texinfo \
+            gengetopt \
+            curl \
+            pandoc \
+            rsync \
             retry \
-            patch
-            # wget \
-            # texinfo \
-            # gengetopt \
-            # curl \
-            # pandoc \
-            # rsync \
-            # python3 \
-            # binfmt-support \
-            # bc \
-            # cmake \
-            # binutils
+            python3 \
+            binfmt-support \
+            bc \
+            cmake \
+            binutils
       - name: Compile
         env:
           CROSS_HOST: "x86_64-w64-mingw32"
