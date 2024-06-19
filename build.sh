@@ -45,6 +45,8 @@ CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMP
 make install
 cd .. && rm -rf brotli
 pkg-config --libs libbrotli
+find / -name "libbrotli.pc" 2>/dev/null
+find / -name "libbrotli*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz
