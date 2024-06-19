@@ -87,9 +87,27 @@ cd .. && rm -rf nettle
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
 wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz
 cd gnutls-*
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-shared --enable-static --with-included-libtasn1 --with-included-unistring --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-hardware-acceleration --disable-guile
-make -j$(nproc) && make install
+PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig" \
+CFLAGS="-I$INSTALLDIR/include" \
+LDFLAGS="-L$INSTALLDIR/lib" \
+./configure \
+  --host=$WGET_MINGW_HOST \
+  --prefix="$INSTALLDIR" \
+  --with-included-unistring \
+  --disable-openssl-compatibility \
+  --without-p11-kit \
+  --disable-tests \
+  --disable-doc \
+  --disable-shared \
+  --enable-static \
+  || exit 1
+make -j$(nproc) || exit 1
+make install || exit 1
 cd .. && rm -rf gnutls-*
+
+#./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-shared --enable-static --with-included-libtasn1 --with-included-unistring --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-hardware-acceleration --disable-guile
+#make -j$(nproc) && make install
+#cd .. && rm -rf gnutls-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/zlib-ng/zlib-ng
@@ -133,7 +151,12 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po
-LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive" CFLAGS="-O2 -DNGHTTP2_STATICLIB" LIBS="-lbrotlidec -lbrotlienc -lbrotlicommon"  ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --with-brotlidec --without-gpgme  --enable-threads=windows 
-make -j$(nproc)
+LDFLAGS="-L$INSTALLDIR/lib -static -static-libgcc -lwinpthread"
+LIBS="-lbrotlidec -lbrotlienc -lbrotlicommon ..." 
+./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --with-brotlidec --without-gpgme  --enable-threads=windows || exit 1
+make -j$(nproc) || exit 1
+
+#LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive" CFLAGS="-O2 -DNGHTTP2_STATICLIB" LIBS="-lbrotlidec -lbrotlienc -lbrotlicommon"  ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --with-brotlidec --without-gpgme  --enable-threads=windows 
+#make -j$(nproc)
 strip $INSTALLDIR/wget2/src/wget2.exe
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}"
