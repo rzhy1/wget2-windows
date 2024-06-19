@@ -24,6 +24,8 @@ export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/l
 # export BZ2_LIBS="-L/usr/lib/x86_64-linux-gnu -lbz2"
 # export BROTLIDEC_CFLAGS="-I$INSTALLDIR/include"
 # export BROTLIDEC_LIBS="-L$INSTALLDIR/lib -lbrotlidec"
+  export BROTLI_CFLAGS="-I/home/runner/usr/local/x86_64-w64-mingw32/include"
+  export BROTLI_LIBS="-L/home/runner/usr/local/x86_64-w64-mingw32/lib -lbrotlidec"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
@@ -134,7 +136,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po
-LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --with-brotli --without-gpgme  --enable-threads=windows 
+LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --with-brotlidec --without-gpgme  --enable-threads=windows 
 make -j$(nproc)
 strip $INSTALLDIR/wget2/src/wget2.exe
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}"
