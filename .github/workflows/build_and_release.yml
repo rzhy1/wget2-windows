@@ -40,10 +40,6 @@ jobs:
             autogen \
             jq \
             libtool \
-            liblzma-dev \
-            libzstd-dev \
-            libbz2-dev \
-            libbrotli-dev \
             lzip \
             make \
             wine \
@@ -95,6 +91,6 @@ jobs:
           cat RELEASE.md > README.md
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add README.md
+          git add .
           git commit -m "更新 README 文件"
           git push
