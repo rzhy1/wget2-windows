@@ -6,7 +6,7 @@
 # 设置环境变量
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
-export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PKG_CONFIG_LIBDIR="$INSTALLDIR/lib/pkgconfig"
 export PKG_CONFIG="/usr/bin/${PREFIX}-pkg-config"
 export CPPFLAGS="-I$INSTALLDIR/include"
@@ -44,6 +44,7 @@ CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMP
 make install
 cd .. && rm -rf brotli
 echo $PKG_CONFIG_PATH
+dpkg -l | grep libbrotli
 pkg-config --libs libbrotli
 pkg-config --cflags --libs libbrotlidec
 pkg-config --variable pc_path pkg-config
@@ -136,7 +137,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po
-LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --with-brotlidec --with-included-libtasn1 --without-gpgme  --enable-threads=windows 
+LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --with-brotlidec LIBS="-lbrotlienc -lbrotlidec -lbrotlicommon" --without-gpgme  --enable-threads=windows 
 make -j$(nproc)
 strip $INSTALLDIR/wget2/src/wget2.exe
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}"
