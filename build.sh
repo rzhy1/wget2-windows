@@ -87,26 +87,9 @@ cd .. && rm -rf nettle
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
 wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz
 cd gnutls-*
-PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig" \
-CFLAGS="-I$INSTALLDIR/include" \
-LDFLAGS="-L$INSTALLDIR/lib" \
-./configure \
-  --host=$PREFIX \
-  --prefix="$INSTALLDIR" \
-  --with-included-unistring \
-  --disable-openssl-compatibility \
-  --without-p11-kit \
-  --disable-tests \
-  --disable-doc \
-  --disable-shared \
-  --enable-static \
-  || exit 1
-make -j$(nproc) || exit 1
-make install || exit 1
+./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-shared --enable-static --with-included-libtasn1 --with-included-unistring --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-hardware-acceleration --disable-guile
+make -j$(nproc) && make install
 cd .. && rm -rf gnutls-*
-#./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-shared --enable-static --with-included-libtasn1 --with-included-unistring --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-hardware-acceleration --disable-guile
-#make -j$(nproc) && make install
-#cd .. && rm -rf gnutls-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/zlib-ng/zlib-ng
