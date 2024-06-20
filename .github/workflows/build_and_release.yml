@@ -40,6 +40,7 @@ jobs:
             autogen \
             jq \
             libtool \
+            libbrotli-dev \
             lzip \
             make \
             wine \
