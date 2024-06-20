@@ -44,6 +44,7 @@ CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMP
 make install
 cd .. && rm -rf brotli
 pkg-config --libs libbrotli
+pkg-config --variable pc_path pkg-config
 find / -name "libbrotli.pc" 2>/dev/null
 find / -name "libbrotli*" 2>/dev/null
 
