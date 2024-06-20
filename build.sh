@@ -50,6 +50,8 @@ pkg-config --cflags --libs libbrotlidec
 pkg-config --variable pc_path pkg-config
 find / -name "libbrotli.pc" 2>/dev/null
 find / -name "libbrotli*" 2>/dev/null
+find / -name "lzma.h" 2>/dev/null
+
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz  || exit 1
