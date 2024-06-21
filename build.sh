@@ -137,8 +137,8 @@ cd .. && rm -rf libmicrohttpd-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
 export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="$CPPFLAGS -I/usr/include -I/usr/share/miniconda/include"
-export LDFLAGS="$LDFLAGS -L/usr/lib -L/usr/share/miniconda/lib"
+export CPPFLAGS="$CPPFLAGS -I$INSTALLDIR/include -I/usr/include -I/usr/share/miniconda/include"
+export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -L/usr/lib -L/usr/share/miniconda/lib"
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
