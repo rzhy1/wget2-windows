@@ -15,8 +15,8 @@ export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 # export LZMA_CFLAGS="-I/usr/include"
 # export LZMA_LIBS="-L/usr/lib/x86_64-linux-gnu -llzma"
-# export ZSTD_CFLAGS="-I/usr/include"
-# export ZSTD_LIBS="-L/usr/lib/x86_64-linux-gnu -lzstd"
+export ZSTD_CFLAGS="-I/usr/include"
+export ZSTD_LIBS="-L/usr/lib/x86_64-linux-gnu -lzstd"
 # export LZIP_CFLAGS="-I/usr/include"
 # export LZIP_LIBS="-L/usr/lib/x86_64-linux-gnu -llz"
 # export BZ2_CFLAGS="-I/usr/include"
@@ -136,9 +136,6 @@ make -j$(nproc) && make install || exit 1
 cd .. && rm -rf libmicrohttpd-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
-export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="$CPPFLAGS -I$INSTALLDIR/include -I/usr/include"
-export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -L/usr/lib"
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
