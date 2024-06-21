@@ -34,10 +34,16 @@ make -j$(nproc) && make install
 cd .. && rm -rf xz-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
+export CMAKE_SYSTEM_NAME=Windows
+export CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
+export CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++
 git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd || exit 1
-make zstd-release || exit 1
-make install PREFIX=$INSTALLDIR || exit 1
+mkdir -p cmakebuild install || exit 1
+cd cmakebuild || exit 1
+cmake -Wdev -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DCMAKE_SYSTEM_NAME=$CMAKE_SYSTEM_NAME -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER ../build/cmake || exit 1
+make -j$(nproc)
+make install
 cd .. && rm -rf zstd
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
