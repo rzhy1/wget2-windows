@@ -36,7 +36,7 @@ cd .. && rm -rf xz-*
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd || exit 1
-make lib-release || exit 1
+make zstd-release || exit 1
 make install PREFIX=$INSTALLDIR || exit 1
 cd .. && rm -rf zstd
 
