@@ -40,7 +40,6 @@ jobs:
             autogen \
             jq \
             libtool \
-            libzstd-dev \
             libbz2-dev \
             lzip \
             make \
