@@ -52,6 +52,7 @@ meson setup \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
   -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
+  -Db_lto=true --optimization=2 \
   build/meson builddir-st || exit 1
 sudo rm -f /usr/local/bin/zstd*
 sudo rm -f /usr/local/bin/*zstd
