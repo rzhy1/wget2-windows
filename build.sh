@@ -51,7 +51,7 @@ source /tmp/venv/bin/activate
 
 # 安装 meson
 pip3 install meson
-sudo rm /usr/local/bin/zstdcat  # 删除
+
 # 克隆 zstd 仓库
 mkdir -p /tmp/zstd && \
 git clone --branch $ZTSD_VERSION $ZTSD_SOURCE_URL /tmp/zstd || exit 1
@@ -67,6 +67,7 @@ meson setup \
   build/meson builddir-st || exit 1
 
 ninja -C builddir-st || exit 1
+sudo rm -f /usr/local/bin/zstdcat
 sudo ninja -C builddir-st install || exit 1
 cd .. && rm -rf zstd
 
