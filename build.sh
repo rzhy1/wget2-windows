@@ -44,8 +44,10 @@ git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
 LDFLAGS=-static \
 meson setup \
-  -Dprefix=$INSTALLDIR \
-  -Dpkgconfig=$INSTALLDIR/lib/pkgconfig \
+  --prefix=$INSTALLDIR \
+  --libdir=$INSTALLDIR/lib \
+  --bindir=$INSTALLDIR/bin \
+  --pkg-config-path="$INSTALLDIR/lib/pkgconfig" \
   -Dbin_programs=true \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
