@@ -54,7 +54,8 @@ meson setup \
   -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
   -Db_lto=true \  # 启用 LTO
   --strip \        # 剥离调试符号
-  --optimization=2 # 设置优化级别为 -O2
+  --optimization=2 \ # 设置优化级别为 -O2
+  build/meson builddir-st
   || exit 1
 sudo rm -f /usr/local/bin/zstd*
 sudo rm -f /usr/local/bin/*zstd
