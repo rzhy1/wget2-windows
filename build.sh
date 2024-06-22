@@ -34,13 +34,37 @@ make -j$(nproc) && make install
 cd .. && rm -rf xz-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
-#export CMAKE_SYSTEM_NAME=Windows
-#export CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
-#export CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++
-git clone https://github.com/facebook/zstd.git || exit 1
-cd zstd || exit 1
-make -j$(nproc) || exit 1
-make install || exit 1
+# 设置变量
+ZTSD_SOURCE_URL="https://github.com/facebook/zstd.git"
+
+# 更新并安装必要的软件包
+sudo apt-get update && \
+sudo apt-get install --no-install-recommends --assume-yes python3 ninja-build curl && \
+sudo apt-get clean
+
+# 安装 pip
+curl -o /tmp/get-pip.py -L 'https://bootstrap.pypa.io/get-pip.py' && \
+sudo python3 /tmp/get-pip.py
+
+# 安装 meson
+pip3 install meson
+
+# 克隆 zstd 仓库
+mkdir -p /tmp/zstd && \
+cd /tmp/zstd && \
+git clone --branch $ZTSD_VERSION $ZTSD_SOURCE_URL . || exit 1
+
+# 设置编译环境并编译 zstd
+LDFLAGS=-static \
+meson setup \
+  -Dbin_programs=true \
+  -Dstatic_runtime=true \
+  -Ddefault_library=static \
+  -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
+  build/meson builddir-st || exit 1
+
+ninja -C builddir-st || exit 1
+sudo ninja -C builddir-st install || exit 1
 cd .. && rm -rf zstd
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
@@ -54,12 +78,11 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐�
 #make install
 #cd .. && rm -rf brotli
 echo $PKG_CONFIG_PATH
-dpkg -l | grep libbrotli
-pkg-config --libs libbrotli
-pkg-config --cflags --libs libbrotlidec
-pkg-config --variable pc_path pkg-config
-find / -name "libbrotli.pc" 2>/dev/null
-find / -name "libbrotli*" 2>/dev/null
+#dpkg -l | grep libbrotli
+#pkg-config --libs libbrotli
+#pkg-config --cflags --libs libbrotlidec
+#pkg-config --variable pc_path pkg-config
+#find / -name "libbrotli*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz
