@@ -42,6 +42,13 @@ sudo apt-get update && \
 sudo apt-get install --no-install-recommends --assume-yes python3 ninja-build curl && \
 sudo apt-get clean
 
+# 创建 Python 虚拟环境
+python3 -m venv /tmp/venv
+
+# 激活虚拟环境
+source /tmp/venv/bin/activate
+
+
 # 安装 pip
 curl -o /tmp/get-pip.py -L 'https://bootstrap.pypa.io/get-pip.py' && \
 sudo python3 /tmp/get-pip.py
