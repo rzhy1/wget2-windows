@@ -87,9 +87,8 @@ make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf zlib
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
-pkg-config --cflags --libs libzlib
 pkg-config --cflags --libs zlib
-find / -name "*zlib*" 2>/dev/null
+find / -name "zlib.pc" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
@@ -114,6 +113,10 @@ cd libiconv-*
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR
 make -j$(nproc) && make install
 cd .. && rm -rf libiconv-*
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
+pkg-config --cflags --libs libiconv
+pkg-config --cflags --libs iconv
+find / -name "*iconv*.pc" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz
