@@ -44,6 +44,7 @@ git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
 LDFLAGS=-static \
 meson setup \
+  /zstd /zstd/builddir-st \  # 指定源代码目录和构建目录
   --prefix=$INSTALLDIR \
   --libdir=$INSTALLDIR/lib \
   --bindir=$INSTALLDIR/bin \
@@ -54,8 +55,7 @@ meson setup \
   -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
   -Db_lto=true \  # 启用 LTO
   --strip \        # 剥离调试符号
-  --optimization=2 \ # 设置优化级别为 -O2
-  build/meson builddir-st
+  --optimization=2 # 设置优化级别为 -O2
   || exit 1
 sudo rm -f /usr/local/bin/zstd*
 sudo rm -f /usr/local/bin/*zstd
