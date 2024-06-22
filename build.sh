@@ -80,12 +80,12 @@ meson install -C builddir-st || exit 1
 cd .. && rm -rf zstd
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib⭐⭐⭐⭐⭐⭐" 
-wget -O- https://zlib.net/zlib-1.3.1.tar.gz | tar xz || exit 1
-cd zlib-* || exit 1
-CC=x86_64-w64-mingw32-gcc ./configure --64 --static --prefix="$INSTALLDIR"
-make -j$(nproc) || exit 1
-make install || exit 1
-cd .. && rm -rf zlib
+#wget -O- https://zlib.net/zlib-1.3.1.tar.gz | tar xz || exit 1
+#cd zlib-* || exit 1
+#CC=x86_64-w64-mingw32-gcc ./configure --64 --static --prefix="$INSTALLDIR"
+#make -j$(nproc) || exit 1
+#make install || exit 1
+#cd .. && rm -rf zlib
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
 pkg-config --cflags --libs zlib
 find / -name "zlib.pc" 2>/dev/null
@@ -116,7 +116,7 @@ cd .. && rm -rf libiconv-*
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
 pkg-config --cflags --libs libiconv
 pkg-config --cflags --libs iconv
-find / -name "*iconv*.pc" 2>/dev/null
+find / -name "*iconv*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz
