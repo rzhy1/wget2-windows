@@ -68,6 +68,9 @@ meson setup \
 
 ninja -C builddir-st || exit 1
 sudo rm -f /usr/local/bin/zstdcat
+sudo rm -f /usr/local/bin/unzstd
+sudo rm -f /usr/local/bin/zstd*
+sudo rm -f /usr/local/bin/*zstd
 sudo ninja -C builddir-st install || exit 1
 cd .. && rm -rf zstd
 
