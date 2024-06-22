@@ -45,12 +45,11 @@ cd zstd
 LDFLAGS=-static \
 meson setup \
   --prefix=$INSTALLDIR \
-  -Dlibdir=$INSTALLDIR/lib \  # 强制指定库文件路径
   -Dbin_programs=true \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
   -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
-  build/meson builddir-st || exit 1
+  build/meson builddir-st DESTDIR=$INSTALLDIR || exit 1
 ninja -C builddir-st || exit 1
 sudo rm -f /usr/local/bin/zstd*
 sudo rm -f /usr/local/bin/*zstd
