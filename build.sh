@@ -34,32 +34,17 @@ make -j$(nproc) && make install
 cd .. && rm -rf xz-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
-# 设置变量
-ZTSD_SOURCE_URL="https://github.com/facebook/zstd.git"
-export ZTSD_VERSION="v1.5.6"
-
-# 更新并安装必要的软件包
-sudo apt-get update && \
-sudo apt-get install --no-install-recommends --assume-yes ninja-build && \
-sudo apt-get clean
-
-# 创建 Python 虚拟环境
+# 创建 Python 虚拟环境并安装meson
 python3 -m venv /tmp/venv
-
-# 激活虚拟环境
 source /tmp/venv/bin/activate
-
-# 安装 meson
 pip3 install meson
 
-# 克隆 zstd 仓库
-#mkdir -p /zstd && \
+# 编译 zstd
 git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
-
-# 设置编译环境并编译 zstd
 LDFLAGS=-static \
 meson setup \
+  --prefix=$INSTALLDIR \
   -Dbin_programs=true \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
