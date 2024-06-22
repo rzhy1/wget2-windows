@@ -49,6 +49,7 @@ git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
 LDFLAGS=-static \
 meson setup \
+  --backend=ninja \
   --prefix=$INSTALLDIR \
   --libdir=$INSTALLDIR/lib \
   --bindir=$INSTALLDIR/bin \
