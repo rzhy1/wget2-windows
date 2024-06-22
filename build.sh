@@ -39,6 +39,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐
 python3 -m venv /tmp/venv
 source /tmp/venv/bin/activate
 pip3 install meson
+pip3 install pytest
 
 # 创建交叉编译文件
 cat <<EOF > cross_file.txt
