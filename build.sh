@@ -25,7 +25,7 @@ export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/l
 # export BROTLIDEC_LIBS="-L$INSTALLDIR/lib -lbrotlidec"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
-
+pkg-config --version
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
 wget -O- https://github.com/tukaani-project/xz/releases/download/v5.6.2/xz-5.6.2.tar.gz | tar xz
 cd xz-*
