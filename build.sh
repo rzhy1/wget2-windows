@@ -45,6 +45,7 @@ cd zstd
 LDFLAGS=-static \
 meson setup \
   -Dprefix=$INSTALLDIR \
+  -Dpkgconfig=$INSTALLDIR/lib/pkgconfig \
   -Dbin_programs=true \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
