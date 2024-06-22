@@ -40,7 +40,7 @@ export ZTSD_VERSION="v1.5.6"
 
 # 更新并安装必要的软件包
 sudo apt-get update && \
-sudo apt-get install --no-install-recommends --assume-yes python3 ninja-build curl && \
+sudo apt-get install --no-install-recommends --assume-yes python3 ninja-build && \
 sudo apt-get clean
 
 # 创建 Python 虚拟环境
@@ -53,9 +53,9 @@ source /tmp/venv/bin/activate
 pip3 install meson
 
 # 克隆 zstd 仓库
-mkdir -p /tmp/zstd && \
-git clone --branch $ZTSD_VERSION $ZTSD_SOURCE_URL /tmp/zstd || exit 1
-cd /tmp/zstd
+#mkdir -p /zstd && \
+git clone -https://github.com/facebook/zstd.git || exit 1
+cd zstd
 
 # 设置编译环境并编译 zstd
 LDFLAGS=-static \
@@ -178,6 +178,8 @@ git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po
 LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --without-brotlidec --without-gpgme  --enable-threads=windows 
+LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --without-brotlidec --without-gpgme  --enable-threads=windows 
+
 make -j$(nproc)
 find / -name "wget2*" 2>/dev/null
 strip $INSTALLDIR/wget2/src/wget2.exe
