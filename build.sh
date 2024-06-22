@@ -44,16 +44,16 @@ git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
 LDFLAGS=-static \
 meson setup \
-  --prefix=$INSTALLDIR \
+  -Dprefix=$INSTALLDIR \
   -Dbin_programs=true \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
   -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
-  build/meson builddir-st DESTDIR=$INSTALLDIR || exit 1
-ninja -C builddir-st || exit 1
+  build/meson builddir-st || exit 1
 sudo rm -f /usr/local/bin/zstd*
 sudo rm -f /usr/local/bin/*zstd
-sudo ninja -C builddir-st install || exit 1
+ninja -C builddir-st || exit 1
+ninja -C builddir-st install || exit 1
 cd .. && rm -rf zstd
 
 echo "⭐⭐⭐⭐⭐⭐ 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
