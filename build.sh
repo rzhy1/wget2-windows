@@ -40,7 +40,7 @@ export ZTSD_VERSION="v1.5.6"
 
 # 更新并安装必要的软件包
 sudo apt-get update && \
-sudo apt-get install --no-install-recommends --assume-yes python3 ninja-build && \
+sudo apt-get install --no-install-recommends --assume-yes ninja-build && \
 sudo apt-get clean
 
 # 创建 Python 虚拟环境
@@ -54,7 +54,7 @@ pip3 install meson
 
 # 克隆 zstd 仓库
 #mkdir -p /zstd && \
-git clone -https://github.com/facebook/zstd.git || exit 1
+git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
 
 # 设置编译环境并编译 zstd
@@ -65,12 +65,11 @@ meson setup \
   -Ddefault_library=static \
   -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
   build/meson builddir-st || exit 1
-
 ninja -C builddir-st || exit 1
 sudo rm -f /usr/local/bin/zstdcat
 sudo rm -f /usr/local/bin/unzstd
-sudo rm -f /usr/local/bin/zstd*
-sudo rm -f /usr/local/bin/*zstd
+#sudo rm -f /usr/local/bin/zstd*
+#sudo rm -f /usr/local/bin/*zstd
 sudo ninja -C builddir-st install || exit 1
 cd .. && rm -rf zstd
 
