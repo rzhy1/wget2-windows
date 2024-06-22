@@ -47,6 +47,7 @@ pip3 install meson
 # 编译 zstd
 git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
+wine sanitycheckc.exe
 LDFLAGS=-static \
 meson setup \
   --backend=ninja \
