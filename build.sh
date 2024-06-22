@@ -45,6 +45,7 @@ cd zstd
 LDFLAGS=-static \
 meson setup \
   --prefix=$INSTALLDIR \
+  -Dlibdir=$INSTALLDIR/lib \  # 强制指定库文件路径
   -Dbin_programs=true \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
