@@ -34,12 +34,11 @@ make -j$(nproc) && make install
 cd .. && rm -rf xz-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
-export CMAKE_SYSTEM_NAME=Windows
-export CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
-export CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++
+#export CMAKE_SYSTEM_NAME=Windows
+#export CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
+#export CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++
 git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd || exit 1
-cmake . || exit 1
 make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf zstd
