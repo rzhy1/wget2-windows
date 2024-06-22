@@ -25,7 +25,7 @@ export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/l
 # export BROTLIDEC_LIBS="-L$INSTALLDIR/lib -lbrotlidec"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
-pkg-config --version
+
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
 wget -O- https://github.com/tukaani-project/xz/releases/download/v5.6.2/xz-5.6.2.tar.gz | tar xz
 cd xz-*
@@ -61,8 +61,8 @@ meson install -C builddir-st || exit 1
 cd .. && rm -rf zstd
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
-pkg-config --cflags --libs libzstd
-find / -name "libzstd*" 2>/dev/null
+#pkg-config --cflags --libs libzstd
+#find / -name "libzstd*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
@@ -167,7 +167,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po || exit 1
-LDFLAGS="-Wl,--as-needed -Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --without-brotlidec --without-gpgme --disable-libtool-lock --enable-threads=windows || exit 1
+LDFLAGS="-Wl,--as-needed -llzma -lzstd -lgnutls -Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --without-brotlidec --without-gpgme --disable-libtool-lock --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}"
