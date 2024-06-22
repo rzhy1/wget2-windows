@@ -56,6 +56,9 @@ sudo rm -f /usr/local/bin/*zstd
 sudo ninja -C builddir-st install || exit 1
 cd .. && rm -rf zstd
 
+echo "⭐⭐⭐⭐⭐⭐ 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
+pkg-config --cflags --libs libzstd
+
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
@@ -160,9 +163,6 @@ git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po
 LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --without-brotlidec --without-gpgme  --enable-threads=windows 
-LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --with-bzip2 --with-lzip --without-brotlidec --without-gpgme  --enable-threads=windows 
-
 make -j$(nproc)
-find / -name "wget2*" 2>/dev/null
 strip $INSTALLDIR/wget2/src/wget2.exe
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}"
