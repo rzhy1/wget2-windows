@@ -56,7 +56,6 @@ endian = 'little'
 EOF
 
 # 编译 zstd
-
 git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
 LDFLAGS=-static \
@@ -80,8 +79,16 @@ meson install -C builddir-st || exit 1
 cd .. && rm -rf zstd
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
-pkg-config --cflags --libs libzstd
-find / -name "libzstd*" 2>/dev/null
+#pkg-config --cflags --libs libzstd
+#find / -name "libzstd*" 2>/dev/null
+
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build bzip2⭐⭐⭐⭐⭐⭐" 
+git clone https://sourceware.org/git/bzip2.git
+cd bzip2
+meson --prefix $INSTALLDIR builddir/
+ninja -C builddir
+meson test -C builddir --print-errorlogs
+ninja -C builddir install
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
