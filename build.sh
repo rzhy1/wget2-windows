@@ -13,10 +13,6 @@ export CPPFLAGS="-I$INSTALLDIR/include"
 export LDFLAGS="-L$INSTALLDIR/lib"
 export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
-#export CC=x86_64-w64-mingw32-gcc
-#export CXX=x86_64-w64-mingw32-g++
-#export AR=x86_64-w64-mingw32-ar
-export LD=x86_64-w64-mingw32-ld
 
 # export LZMA_CFLAGS="-I/usr/include"
 # export LZMA_LIBS="-L/usr/lib/x86_64-linux-gnu -llzma"
@@ -44,11 +40,28 @@ python3 -m venv /tmp/venv
 source /tmp/venv/bin/activate
 pip3 install meson
 
+# 创建交叉编译文件
+cat <<EOF > cross_file.txt
+[binaries]
+c = 'x86_64-w64-mingw32-gcc'
+cpp = 'x86_64-w64-mingw32-g++'
+ar = 'x86_64-w64-mingw32-ar'
+strip = 'x86_64-w64-mingw32-strip'
+exe_wrapper = 'wine64'
+[host_machine]
+system = 'windows'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'
+EOF
+
 # 编译 zstd
+
 git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
 LDFLAGS=-static \
 meson setup \
+  --cross-file=../cross_file.txt \
   --backend=ninja \
   --prefix=$INSTALLDIR \
   --libdir=$INSTALLDIR/lib \
