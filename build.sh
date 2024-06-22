@@ -36,6 +36,7 @@ cd .. && rm -rf xz-*
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
 # 设置变量
 ZTSD_SOURCE_URL="https://github.com/facebook/zstd.git"
+export ZTSD_VERSION="v1.5.6"
 
 # 更新并安装必要的软件包
 sudo apt-get update && \
@@ -48,18 +49,13 @@ python3 -m venv /tmp/venv
 # 激活虚拟环境
 source /tmp/venv/bin/activate
 
-
-# 安装 pip
-curl -o /tmp/get-pip.py -L 'https://bootstrap.pypa.io/get-pip.py' && \
-sudo python3 /tmp/get-pip.py
-
 # 安装 meson
 pip3 install meson
 
 # 克隆 zstd 仓库
 mkdir -p /tmp/zstd && \
-cd /tmp/zstd && \
-git clone --branch $ZTSD_VERSION $ZTSD_SOURCE_URL . || exit 1
+git clone --branch $ZTSD_VERSION $ZTSD_SOURCE_URL /tmp/zstd || exit 1
+cd /tmp/zstd
 
 # 设置编译环境并编译 zstd
 LDFLAGS=-static \
