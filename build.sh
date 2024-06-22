@@ -89,6 +89,7 @@ meson --prefix $INSTALLDIR builddir/
 ninja -C builddir
 meson test -C builddir --print-errorlogs
 ninja -C builddir install
+cd .. && rm -rf bzip2
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
