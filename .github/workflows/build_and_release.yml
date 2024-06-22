@@ -41,7 +41,7 @@ jobs:
             bison \
             cmake \
             ca-certificates \
-            flex \ 
+            flex \
             gettext \
             gperf \
             jq \
