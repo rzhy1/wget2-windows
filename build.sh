@@ -85,11 +85,13 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build bzip2⭐⭐⭐⭐⭐⭐" 
 git clone https://sourceware.org/git/bzip2.git || exit 1
 cd bzip2 || exit 1
-BUILD_DIR="build-bzip2"
-meson setup --prefix="$INSTALLDIR" $PWD "$BUILD_DIR" || exit 1
-meson compile -C "$BUILD_DIR" || exit 1
-meson test -C "$BUILD_DIR" --print-errorlogs || exit 1
-meson install -C "$BUILD_DIR" || exit 1
+make -j$(nproc) || exit 1
+make PREFIX="$INSTALLDIR" install || exit 1
+#BUILD_DIR="build-bzip2"
+#meson setup --prefix="$INSTALLDIR" $PWD "$BUILD_DIR" || exit 1
+#meson compile -C "$BUILD_DIR" || exit 1
+#meson test -C "$BUILD_DIR" --print-errorlogs || exit 1
+#meson install -C "$BUILD_DIR" || exit 1
 cd .. && rm -rf bzip2
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
