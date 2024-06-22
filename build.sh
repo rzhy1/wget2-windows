@@ -58,6 +58,7 @@ cd .. && rm -rf zstd
 
 echo "⭐⭐⭐⭐⭐⭐ 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
 pkg-config --cflags --libs libzstd
+find / -name "libzstd*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
