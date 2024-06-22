@@ -85,10 +85,16 @@ cd bzip2 || exit 1
 #make -j$(nproc) || exit 1
 #make PREFIX="$INSTALLDIR" install || exit 1
 BUILD_DIR="build-bzip2"
-meson setup -Dpkg_config=true --prefix="$INSTALLDIR" $PWD "$BUILD_DIR" || exit 1
+meson setup  --prefix="$INSTALLDIR" $PWD "$BUILD_DIR" || exit 1
 meson compile -C "$BUILD_DIR" || exit 1
 #meson test -C "$BUILD_DIR" --print-errorlogs || exit 1
 meson install -C "$BUILD_DIR" || exit 1
+# Generate pkg-config automatically from built library information
+pkg = import('pkgconfig')
+pkg.generate(
+  'libbzip2.pc',  # 指定 .pc 文件名称
+  description : 'Lossless, block-sorting data compression',
+)
 cd .. && rm -rf bzip2
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
 pkg-config --cflags --libs libbzip2
