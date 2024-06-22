@@ -50,7 +50,7 @@ meson setup \
   --pkg-config-path="$INSTALLDIR/lib/pkgconfig" \
   -Db_lto=true \  # 启用 LTO
   --strip \        # 剥离调试符号
-  --optimization=2 # 设置优化级别为 -O2
+  --optimization=2 \# 设置优化级别为 -O2
   -Dbin_programs=true \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
