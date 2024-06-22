@@ -15,7 +15,7 @@ export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 export CC=x86_64-w64-mingw32-gcc
 #export CXX=x86_64-w64-mingw32-g++
-export AR=x86_64-w64-mingw32-ar
+#export AR=x86_64-w64-mingw32-ar
 export LD=x86_64-w64-mingw32-ld
 
 # export LZMA_CFLAGS="-I/usr/include"
@@ -47,7 +47,6 @@ pip3 install meson
 # 编译 zstd
 git clone https://github.com/facebook/zstd.git || exit 1
 cd zstd
-wine sanitycheckc.exe
 LDFLAGS=-static \
 meson setup \
   --backend=ninja \
