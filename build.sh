@@ -88,11 +88,11 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib⭐⭐⭐
 #cd .. && rm -rf zlib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
-git clone --recursive -j$(nproc) –multiple "https://gitlab.com/gnuwget/gnulib-mirror.git,https://gitlab.com/gnuwget/gnulib-mirror.git" gnulib
+git clone --recursive -j$(nproc) –multiple https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-git clone -j$(nproc) https://github.com/google/brotli.git
+git clone https://github.com/google/brotli.git
 cd brotli
 CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
 make install
@@ -127,7 +127,7 @@ make -j$(nproc) && make install
 cd .. && rm -rf libidn2-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libpsl⭐⭐⭐⭐⭐⭐" 
-git clone --recursive -j$(nproc) https://github.com/rockdaboot/libpsl.git
+git clone --recursive https://github.com/rockdaboot/libpsl.git
 cd libpsl
 ./autogen.sh
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR
@@ -135,7 +135,7 @@ make -j$(nproc) && make install
 cd .. && rm -rf libpsl
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
-git clone -j$(nproc) https://git.lysator.liu.se/nettle/nettle.git
+git clone https://git.lysator.liu.se/nettle/nettle.git
 cd nettle
 bash .bootstrap
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --enable-mini-gmp --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR
@@ -150,14 +150,14 @@ make -j$(nproc) && make install
 cd .. && rm -rf gnutls-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
-git clone -j$(nproc) https://github.com/zlib-ng/zlib-ng
+git clone https://github.com/zlib-ng/zlib-ng
 cd zlib-ng
 CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat
 make -j$(nproc) && make install
 cd .. && rm -rf zlib-ng
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
-git clone -j$(nproc) https://github.com/PCRE2Project/pcre2
+git clone https://github.com/PCRE2Project/pcre2
 cd pcre2
 ./autogen.sh
 ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static
@@ -172,7 +172,7 @@ make -j$(nproc) && make install
 cd .. && rm -rf nghttp2-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build dlfcn-win32⭐⭐⭐⭐⭐⭐" 
-git clone --depth=1 -j$(nproc) https://github.com/dlfcn-win32/dlfcn-win32.git
+git clone --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git
 cd dlfcn-win32
 ./configure --prefix=$PREFIX --cc=$PREFIX-gcc
 make -j$(nproc)
@@ -188,7 +188,7 @@ make -j$(nproc) && make install
 cd .. && rm -rf libmicrohttpd-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
-git clone -j$(nproc) https://github.com/rockdaboot/wget2.git
+git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po || exit 1
 BROTLI_LIBS=$(pkg-config --libs libbrotlienc libbrotlidec libbrotlicommon)
