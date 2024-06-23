@@ -104,9 +104,9 @@ pkg-config --libs libbrotlidec
 pkg-config --cflags --libs libbrotlidec
 pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
 pkg-config --variable pc_path pkg-config
-ar -t $INSTALLDIR/lib/libbrotlienc.a
-nm -D $INSTALLDIR/lib/libbrotlienc.a
-find / -name "*brotli*" 2>/dev/null
+#ar -t $INSTALLDIR/lib/libbrotlienc.a
+#nm -D $INSTALLDIR/lib/libbrotlienc.a
+#find / -name "*brotli*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
@@ -205,10 +205,9 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
-export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
-export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
-make -n
+BROTLI_LIBS=$(pkg-config --libs libbrotlienc libbrotlidec libbrotlicommon | sed 's/libbrotlienc/libbrotlienc-static/g; s/libbrotlidec/libbrotlidec-static/g; s/libbrotlicommon/libbrotlicommon-static/g')
+LDFLAGS="$LDFLAGS $BROTLI_LIBS"
+LDFLAGS="$LDFLAGS -Wl,--as-needed -Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
