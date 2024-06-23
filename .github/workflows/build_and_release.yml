@@ -57,6 +57,7 @@ jobs:
             curl \
             retry \
             python3 \
+            python3-distutils \
             binutils
       - name: Compile
         env:
