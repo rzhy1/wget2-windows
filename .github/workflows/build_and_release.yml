@@ -61,7 +61,9 @@ jobs:
             binutils
           python3 -m venv myenv
           source myenv/bin/activate
+          pip install distutils
           pip install setuptools
+          pip install --upgrade distutils
           pip install --upgrade setuptools
       - name: Compile
         env:
