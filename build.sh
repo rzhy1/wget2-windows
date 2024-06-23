@@ -203,7 +203,7 @@ git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 BROTLI_LIBS=$(pkg-config --libs libbrotlienc libbrotlidec libbrotlicommon)
-LDFLAGS="-Wl,--as-needed -L$INSTALLDIR/lib -lzstd -lgnutls -llzma -Wl,-Bstatic $BROTLI_LIBS -Wl,-Bdynamic  -Wl,--no-whole-archive -lwinpthread" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-gpgme --with-libiconv-prefix="$INSTALLDIR" --enable-threads=windows || exit 1
+LDFLAGS="-Wl,--as-needed -L$INSTALLDIR/lib -lzstd -llzma -Wl,--start-group $BROTLI_LIBS -lgnutls -Wl,--end-group -Wl,--no-whole-archive -lwinpthread" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-gpgme --with-libiconv-prefix="$INSTALLDIR" --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
