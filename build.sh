@@ -92,17 +92,17 @@ git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-#git clone https://github.com/google/brotli.git
-#cd brotli
-#CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF
-#make install
-#cd .. && rm -rf brotli
+git clone https://github.com/google/brotli.git
+cd brotli
+CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF
+make install
+cd .. && rm -rf brotli
 echo $PKG_CONFIG_PATH
-#dpkg -l | grep libbrotli
-#pkg-config --libs libbrotli
-#pkg-config --cflags --libs libbrotlidec
-#pkg-config --variable pc_path pkg-config
-#find / -name "libbrotli*" 2>/dev/null
+dpkg -l | grep libbrotlidec
+pkg-config --libs libbrotlidec
+pkg-config --cflags --libs libbrotlidec
+pkg-config --variable pc_path pkg-config
+find / -name "libbrotli*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz
@@ -191,7 +191,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po || exit 1
-LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --with-libiconv-prefix="$INSTALLDIR" --enable-threads=windows || exit 1
+LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --with-brotlidec --without-gpgme --with-libiconv-prefix="$INSTALLDIR" --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}"
