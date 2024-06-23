@@ -104,6 +104,8 @@ echo $PKG_CONFIG_PATH
 #pkg-config --cflags --libs libbrotlidec
 #pkg-config --variable pc_path pkg-config
 #find / -name "libbrotli*" 2>/dev/null
+file $INSTALLDIR/lib/libbrotlienc.a
+ar -t $INSTALLDIR/lib/libbrotlienc.a
 nm -D $INSTALLDIR/lib/libbrotlienc.a | grep BrotliEncoderCompress
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
