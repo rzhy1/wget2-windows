@@ -2,7 +2,7 @@
 # wget2 build script for Windows environment
 # Author: rzhy1
 # 2024/6/16
-$pwd
+echo "当前目录的绝对路径是: $pwd"  
 # 设置环境变量
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
@@ -106,7 +106,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gpgme⭐⭐�
 wget -O- https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.23.2.tar.bz2 | tar xj
 cd gpgme-* || exit
 find / -name "python3*" 2>/dev/null
-env PYTHON=/usr/bin/python3.12 ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR" --enable-static --with-libgpg-error-prefix="$INSTALLDIR" --disable-gpg-test --disable-g13-test --disable-gpgsm-test --disable-gpgconf-test --disable-glibtest --with-libassuan-prefix="$INSTALLDIR" || exit 1
+env PYTHON=$pwd/myenv/bin/python3.12 ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR" --enable-static --with-libgpg-error-prefix="$INSTALLDIR" --disable-gpg-test --disable-g13-test --disable-gpgsm-test --disable-gpgconf-test --disable-glibtest --with-libassuan-prefix="$INSTALLDIR" || exit 1
 make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf gpgme-*
