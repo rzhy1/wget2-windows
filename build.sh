@@ -106,7 +106,7 @@ pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
 pkg-config --variable pc_path pkg-config
 ar -t $INSTALLDIR/lib/libbrotlienc.a
 nm -D $INSTALLDIR/lib/libbrotlienc.a
-#find / -name "libbrotli*" 2>/dev/null
+find / -name "*brotli*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
