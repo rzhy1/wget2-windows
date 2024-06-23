@@ -62,8 +62,7 @@ jobs:
           python3 -m venv myenv
           source myenv/bin/activate
           pip install setuptools
-          python -m ensurepip --upgrade
-          pip install --upgrade pip setuptools
+          pip install --upgrade setuptools
       - name: Compile
         env:
           CROSS_HOST: "x86_64-w64-mingw32"
