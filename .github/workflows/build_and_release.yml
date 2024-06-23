@@ -32,33 +32,22 @@ jobs:
           sudo apt-get update
           #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
           sudo apt-get install -y --no-install-recommends \
-            git \
-            autoconf \
-            autoconf-archive \
             autopoint \
             automake \
-            autogen \
-            bison \
             cmake \
             ca-certificates \
-            flex \
             gettext \
             gperf \
             jq \
             libtool \
-            libbz2-dev \
             lzip \
             make \
             mingw-w64 \
             ninja-build \
-            pkg-config-mingw-w64-x86-64 \
-            wget \
-            patch \
-            curl \
+            pkg-config \
             retry \
             python3 \
-            python3-venv \
-            binutils
+            python3-venv
           #sudo apt-get install -y autopoint mingw-w64 mingw-w64-tools gcc jq ninja-build retry lzip
           #sudo apt-get install -y make cmake m4 pkg-config automake gettext gperf python3-venv
           #python3 -m venv myenv
