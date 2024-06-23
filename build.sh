@@ -86,9 +86,29 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib⭐⭐⭐
 #make -j$(nproc) || exit 1
 #make install || exit 1
 #cd .. && rm -rf zlib
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') 验证 pkg-config 配置⭐⭐⭐⭐⭐⭐" 
-pkg-config --cflags --libs zlib
-find / -name "zlib.pc" 2>/dev/null
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gpg-error⭐⭐⭐⭐⭐⭐"
+wget -O- https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.49.tar.gz | tar xz || exit 1
+cd libgpg-error-* || exit 1
+./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR" --enable-static --disable-doc || exit 1
+make -j$(nproc) || exit 1
+make install || exit 1
+cd .. && rm -rf libgpg-error-*
+
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libassuan⭐⭐⭐⭐⭐⭐"
+wget -O- https://gnupg.org/ftp/gcrypt/libassuan/libassuan-3.0.0.tar.bz2 | tar xj || exit 1
+cd libassuan-* || exit 1
+./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR" --enable-static --disable-doc --with-libgpg-error-prefix="$INSTALLDIR" || exit 1
+make -j$(nproc) || exit 1
+make install || exit 1
+cd .. && rm -rf libassuan-*
+
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gpgme⭐⭐⭐⭐⭐⭐" 
+wget -O- https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.23.2.tar.bz2 | tar xj
+cd gpgme-* || exit
+env PYTHON=/usr/bin/python3.11 ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR" --enable-static --with-libgpg-error-prefix="$INSTALLDIR" --disable-gpg-test --disable-g13-test --disable-gpgsm-test --disable-gpgconf-test --disable-glibtest --with-libassuan-prefix="$INSTALLDIR" || exit 1
+make -j$(nproc) || exit 1
+make install || exit 1
+cd .. && rm -rf gpgme-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive https://gitlab.com/gnuwget/gnulib-mirror.git gnulib
@@ -197,7 +217,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git
 cd wget2
 ./bootstrap --skip-po || exit 1
-LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static  --without-brotlidec --without-gpgme --with-libiconv-prefix="$INSTALLDIR" --enable-threads=windows || exit 1
+LDFLAGS="-Wl,-Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread" CFLAGS="-O2 -DNGHTTP2_STATICLIB" ./configure $CONFIGURE_BASE_FLAGS --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static  --without-brotlidec --with-gpgme --with-libiconv-prefix="$INSTALLDIR" --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}"
