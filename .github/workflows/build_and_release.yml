@@ -61,10 +61,9 @@ jobs:
             binutils
           python3 -m venv myenv
           source myenv/bin/activate
-          pip install distutils
           pip install setuptools
-          pip install --upgrade distutils
-          pip install --upgrade setuptools
+          python -m ensurepip --upgrade
+          pip install --upgrade pip setuptools
       - name: Compile
         env:
           CROSS_HOST: "x86_64-w64-mingw32"
