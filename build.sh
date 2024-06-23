@@ -93,20 +93,18 @@ git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gn
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-git clone https://github.com/google/brotli.git || exit 1
+git clone --branch v1.0.9 --depth 1 https://github.com/google/brotli.git || exit 1
 cd brotli || exit 1
 CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
 make install || exit 1
 cd .. && rm -rf brotli
 echo $PKG_CONFIG_PATH
-#dpkg -l | grep libbrotlidec
-#pkg-config --libs libbrotlidec
-#pkg-config --cflags --libs libbrotlidec
-#pkg-config --variable pc_path pkg-config
+dpkg -l | grep libbrotlidec
+pkg-config --libs libbrotlidec
+pkg-config --cflags --libs libbrotlidec
+pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+pkg-config --variable pc_path pkg-config
 #find / -name "libbrotli*" 2>/dev/null
-file $INSTALLDIR/lib/libbrotlienc.a
-ar -t $INSTALLDIR/lib/libbrotlienc.a
-nm -D $INSTALLDIR/lib/libbrotlienc.a | grep BrotliEncoderCompress
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
@@ -205,7 +203,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
-export LDFLAGS="-Wl,-verbose -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
 make -n
