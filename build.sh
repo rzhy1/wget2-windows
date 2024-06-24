@@ -97,6 +97,7 @@ cd vcpkg || exit 1
 ./bootstrap-vcpkg.sh || exit 1
 ./vcpkg upgrade || exit 1
 ./vcpkg integrate install || exit 1
+./vcpkg help triplets
 # 创建 triplet 文件 
 echo "set(VCPKG_TARGET_ARCHITECTURE x64)" > vcpkg/triplets/x64-linux-gnu.cmake
 echo "set(VCPKG_CMAKE_SYSTEM_NAME Linux)" >> vcpkg/triplets/x64-linux-gnu.cmake
