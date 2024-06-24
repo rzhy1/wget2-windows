@@ -99,12 +99,12 @@ cd vcpkg || exit 1
 ./vcpkg integrate install || exit 1
 ./vcpkg help triplets
 # 创建 triplet 文件 
-echo "set(VCPKG_TARGET_ARCHITECTURE x64)" > vcpkg/triplets/x64-linux-gnu.cmake
-echo "set(VCPKG_CMAKE_SYSTEM_NAME Linux)" >> vcpkg/triplets/x64-linux-gnu.cmake
-echo "set(VCPKG_CMAKE_SYSTEM_PROCESSOR x86_64)" >> vcpkg/triplets/x64-linux-gnu.cmake
-echo "set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE /usr/local/lib/android/sdk/ndk/26.3.11579264/build/cmake/android.toolchain.cmake)" >> vcpkg/triplets/x64-linux-gnu.cmake
+echo "set(VCPKG_TARGET_ARCHITECTURE x64)" > vcpkg/triplets/x64-linux.cmake
+echo "set(VCPKG_CMAKE_SYSTEM_NAME Linux)" >> vcpkg/triplets/x64-linux.cmake
+echo "set(VCPKG_CMAKE_SYSTEM_PROCESSOR x86_64)" >> vcpkg/triplets/x64-linux.cmake
+echo "set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE /usr/local/lib/android/sdk/ndk/26.3.11579264/build/cmake/android.toolchain.cmake)" >> vcpkg/triplets/x64-linux.cmake
 # 安装 Brotli 库，指定平台
-./vcpkg install brotli:x64-windows --triplet x64-linux-gnu || exit 1
+./vcpkg install brotli:x64-windows --triplet x64-linux || exit 1
 cd .. && rm -rf vcpkg
 echo $PKG_CONFIG_PATH
 #git clone --depth 1 https://github.com/google/brotli.git || exit 1
