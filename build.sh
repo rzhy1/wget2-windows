@@ -2,7 +2,7 @@
 # wget2 build script for Windows environment
 # Author: rzhy1
 # 2024/6/16
-find / -name "*toolchain.cmake*" 2>/dev/null
+
 # 设置环境变量
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
@@ -97,7 +97,13 @@ cd vcpkg || exit 1
 ./bootstrap-vcpkg.sh || exit 1
 ./vcpkg upgrade || exit 1
 ./vcpkg integrate install || exit 1
-./vcpkg install brotli:x64-windows || exit 1
+# 创建 triplet 文件 
+echo "set(VCPKG_TARGET_ARCHITECTURE x64)" > vcpkg/triplets/x64-linux-gnu.cmake
+echo "set(VCPKG_CMAKE_SYSTEM_NAME Linux)" >> vcpkg/triplets/x64-linux-gnu.cmake
+echo "set(VCPKG_CMAKE_SYSTEM_PROCESSOR x86_64)" >> vcpkg/triplets/x64-linux-gnu.cmake
+echo "set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE /usr/local/lib/android/sdk/ndk/26.3.11579264/build/cmake/android.toolchain.cmake)" >> vcpkg/triplets/x64-linux-gnu.cmake
+# 安装 Brotli 库，指定平台
+./vcpkg install brotli:x64-windows --triplet x64-linux-gnu || exit 1
 cd .. && rm -rf vcpkg
 echo $PKG_CONFIG_PATH
 #git clone --depth 1 https://github.com/google/brotli.git || exit 1
