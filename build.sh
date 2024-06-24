@@ -22,8 +22,8 @@ export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/l
 # export LZIP_LIBS="-L/usr/lib/x86_64-linux-gnu -llz"
 #export BZ2_CFLAGS="-I/usr/include"
 #export BZ2_LIBS="-L/usr/lib/x86_64-linux-gnu -lbz2"
-# export BROTLIDEC_CFLAGS="-I$INSTALLDIR/include"
-# export BROTLIDEC_LIBS="-L$INSTALLDIR/lib -lbrotlidec"
+export BROTLIDEC_CFLAGS="-I/usr/lib/x86_64-linux-gnu/pkgconfig"
+export BROTLIDEC_LIBS="-L/usr/lib/x86_64-linux-gnu -lbrotlidec"
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
