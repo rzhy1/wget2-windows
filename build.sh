@@ -2,7 +2,7 @@
 # wget2 build script for Windows environment
 # Author: rzhy1
 # 2024/6/16
-
+find / -name "*toolchain.cmake*" 2>/dev/null
 # 设置环境变量
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
