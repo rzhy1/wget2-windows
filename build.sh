@@ -92,25 +92,11 @@ git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gn
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-git clone https://github.com/Microsoft/vcpkg.git || exit 1
-cd vcpkg || exit 1
-./bootstrap-vcpkg.sh || exit 1
-./vcpkg upgrade || exit 1
-mkdir -p triplets
-# 创建 triplet 文件 
-echo "set(VCPKG_TARGET_ARCHITECTURE x64)" > vcpkg/triplets/x64-linux.cmake
-echo "set(VCPKG_CMAKE_SYSTEM_NAME Linux)" >> vcpkg/triplets/x64-linux.cmake
-echo "set(VCPKG_CMAKE_SYSTEM_PROCESSOR x86_64)" >> vcpkg/triplets/x64-linux.cmake
-echo "set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE /usr/local/lib/android/sdk/ndk/26.3.11579264/build/cmake/android.toolchain.cmake)" >> vcpkg/triplets/x64-linux.cmake
-# 安装 Brotli 库，指定平台
-./vcpkg install brotli:x64-windows --triplet x64-linux || exit 1
-cd .. && rm -rf vcpkg
-echo $PKG_CONFIG_PATH
-#git clone --depth 1 https://github.com/google/brotli.git || exit 1
-#cd brotli || exit 1
-#CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
-#make install || exit 1
-#cd .. && rm -rf brotli
+git clone  https://github.com/google/brotli.git || exit 1
+cd brotli || exit 1
+CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
+make install || exit 1
+cd .. && rm -rf brotli
 dpkg -l | grep libbrotlidec
 pkg-config --libs libbrotlidec
 pkg-config --cflags --libs libbrotlidec
