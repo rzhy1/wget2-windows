@@ -94,9 +94,10 @@ export GNULIB_REFDIR=$INSTALLDIR/gnulib
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/Microsoft/vcpkg.git || exit 1
 cd vcpkg || exit 1
+./vcpkg upgrade || exit 1
 ./bootstrap-vcpkg.sh || exit 1
 ./vcpkg integrate install || exit 1
-./vcpkg install brotli || exit 1
+./vcpkg install brotli:x64-windows || exit 1
 cd .. && rm -rf vcpkg
 echo $PKG_CONFIG_PATH
 #git clone --depth 1 https://github.com/google/brotli.git || exit 1
