@@ -102,15 +102,14 @@ cd vcpkg
 #CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
 #make install || exit 1
 #cd .. && rm -rf brotli
-#echo $PKG_CONFIG_PATH
-#dpkg -l | grep libbrotlidec
-#pkg-config --libs libbrotlidec
-#pkg-config --cflags --libs libbrotlidec
-#pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
-#pkg-config --variable pc_path pkg-config
-#ar -t $INSTALLDIR/lib/libbrotlienc.a
-#nm -D $INSTALLDIR/lib/libbrotlienc.a
-#find / -name "*brotli*" 2>/dev/null
+dpkg -l | grep libbrotlidec
+pkg-config --libs libbrotlidec
+pkg-config --cflags --libs libbrotlidec
+pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+pkg-config --variable pc_path pkg-config
+ar -t $INSTALLDIR/lib/libbrotlienc.a
+nm -D $INSTALLDIR/lib/libbrotlienc.a
+find / -name "*brotli*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
@@ -156,7 +155,7 @@ make install || exit 1
 cd .. && rm -rf nettle
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
-wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.5.tar.xz | tar x --xz || exit 1
+wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
 cd gnutls-* || exit 1
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-shared --enable-static --with-included-libtasn1 --with-included-unistring --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-hardware-acceleration --disable-guile || exit 1
 make -j$(nproc) || exit 1
