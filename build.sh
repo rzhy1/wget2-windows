@@ -39,8 +39,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐
 # 创建 Python 虚拟环境并安装meson
 python3 -m venv /tmp/venv
 source /tmp/venv/bin/activate
-pip3 install meson
-pip3 install pytest
+pip3 install meson pytest
 
 # 创建交叉编译文件
 cat <<EOF > cross_file.txt
@@ -93,17 +92,17 @@ git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gn
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-git clone --depth 1 https://github.com/google/brotli.git || exit 1
-cd brotli || exit 1
-CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
-make install || exit 1
-cd .. && rm -rf brotli
-echo $PKG_CONFIG_PATH
-dpkg -l | grep libbrotlidec
-pkg-config --libs libbrotlidec
-pkg-config --cflags --libs libbrotlidec
-pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
-pkg-config --variable pc_path pkg-config
+#git clone --depth 1 https://github.com/google/brotli.git || exit 1
+#cd brotli || exit 1
+#CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
+#make install || exit 1
+#cd .. && rm -rf brotli
+#echo $PKG_CONFIG_PATH
+#dpkg -l | grep libbrotlidec
+#pkg-config --libs libbrotlidec
+#pkg-config --cflags --libs libbrotlidec
+#pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+#pkg-config --variable pc_path pkg-config
 #ar -t $INSTALLDIR/lib/libbrotlienc.a
 #nm -D $INSTALLDIR/lib/libbrotlienc.a
 #find / -name "*brotli*" 2>/dev/null
@@ -205,9 +204,6 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
-ln -s libbrotlidec-static.a libbrotlidec.a
-ln -s libbrotlienc-static.a libbrotlienc.a
-ln -s libbrotlicommon-static.a libbrotlicommon.a
 export LDFLAGS="-Wl,--as-needed -Bstatic,--whole-archive -Wl,--no-whole-archive -lwinpthread"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
