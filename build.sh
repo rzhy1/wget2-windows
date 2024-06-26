@@ -204,9 +204,9 @@ git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - $LD_LIBRARY_PATH⭐⭐⭐⭐⭐⭐" 
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - LD_LIBRARY_PATH⭐⭐⭐⭐⭐⭐" 
 echo $LD_LIBRARY_PATH
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - $PKG_CONFIG_PATH⭐⭐⭐⭐⭐⭐" 
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - PKG_CONFIG_PATH⭐⭐⭐⭐⭐⭐" 
 echo $PKG_CONFIG_PATH
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - dpkg -l | grep libbrotlidec结果如下：⭐⭐⭐⭐⭐⭐" 
 dpkg -l | grep libbrotlidec
