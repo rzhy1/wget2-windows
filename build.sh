@@ -224,10 +224,8 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64
 cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlienc.pc
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc结果如下：⭐⭐⭐⭐⭐⭐" 
 cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - ls -l /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlidec.pc结果如下：⭐⭐⭐⭐⭐⭐" 
-ls -l /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlidec.pc
-ls -l /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlienc.pc
-ls -l /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖：⭐⭐⭐⭐⭐⭐" 
+ldd /usr/lib/x86_64-linux-gnu/libbrotlidec.so
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
 find / -name "*brotli*" 2>/dev/null
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
