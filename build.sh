@@ -98,11 +98,11 @@ git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gn
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-#git clone  https://github.com/google/brotli.git || exit 1
-#cd brotli || exit 1
-#CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
-#make install || exit 1
-#cd .. && rm -rf brotli
+git clone  https://github.com/google/brotli.git || exit 1
+cd brotli || exit 1
+CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
+make install || exit 1
+cd .. && rm -rf brotli
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
@@ -220,14 +220,14 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags
 pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --variable pc_path pkg-config结果如下：⭐⭐⭐⭐⭐⭐" 
 pkg-config --variable pc_path pkg-config
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlidec.pc结果如下：⭐⭐⭐⭐⭐⭐" 
-cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlidec.pc
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlienc.pc结果如下：⭐⭐⭐⭐⭐⭐" 
-cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlienc.pc
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc结果如下：⭐⭐⭐⭐⭐⭐" 
-cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - libbrotlidec.pc文件内容如下：⭐⭐⭐⭐⭐⭐" 
+cat $INSTALLDIR/lib/pkgconfig/libbrotlidec.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - libbrotlienc.pc文件内容如下：⭐⭐⭐⭐⭐⭐" 
+cat $INSTALLDIR/lib/pkgconfig/libbrotlienc.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - libbrotlicommon.pc文件内容如下：⭐⭐⭐⭐⭐⭐" 
+cat $INSTALLDIR/lib/pkgconfig/libbrotlicommon.pc
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖：⭐⭐⭐⭐⭐⭐" 
-ldd /usr/lib/x86_64-linux-gnu/libbrotlidec.so
+ldd $INSTALLDIR/lib/libbrotlidec.so
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖apt-cache depends libbrotli-dev：⭐⭐⭐⭐⭐⭐" 
 apt-cache depends libbrotli-dev
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
