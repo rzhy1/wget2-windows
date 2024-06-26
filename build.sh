@@ -1,7 +1,7 @@
 #
 # wget2 build script for Windows environment
 # Author: rzhy1
-# 2024/6/16
+# 2024/6/26
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找decode.h⭐⭐⭐⭐⭐⭐" 
 find / -name "decode.h" 2>/dev/null
 # 设置环境变量
@@ -14,7 +14,7 @@ export CPPFLAGS="-I$INSTALLDIR/include"
 export LDFLAGS="-L$INSTALLDIR/lib"
 export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找CFLAGS⭐⭐⭐⭐⭐⭐" 
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询CFLAGS⭐⭐⭐⭐⭐⭐" 
 echo $CFLAGS
 # export LZMA_CFLAGS="-I/usr/include"
 # export LZMA_LIBS="-L/usr/lib/x86_64-linux-gnu -llzma"
