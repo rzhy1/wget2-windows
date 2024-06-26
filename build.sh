@@ -202,8 +202,6 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐�
 sudo ldconfig
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 清理 pkg-config 缓存⭐⭐⭐⭐⭐⭐"
 sudo rm -rf /var/cache/pkg-config/*
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找 .pc 文件的详细过程⭐⭐⭐⭐⭐⭐" 
-strace pkg-config --modversion libbrotlidec 2>&1 | grep libbrotlidec.pc
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
@@ -238,6 +236,8 @@ export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 BROTLI_CFLAGS=$(pkg-config --cflags libbrotlienc libbrotlidec libbrotlicommon)
 export CFLAGS="$CFLAGS $BROTLI_CFLAGS"
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找 .pc 文件的详细过程⭐⭐⭐⭐⭐⭐" 
+strace pkg-config --modversion libbrotlidec 2>&1 | grep libbrotlidec.pc
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --with-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
