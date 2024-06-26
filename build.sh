@@ -96,7 +96,6 @@ git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gn
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-pkg-config --version
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH
 echo $LD_LIBRARY_PATH
 echo $PKG_CONFIG_PATH
