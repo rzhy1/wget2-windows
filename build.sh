@@ -198,6 +198,8 @@ cd .. && rm -rf libmicrohttpd-*
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
 #更新包管理器缓存和库索引
 sudo ldconfig
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 清理 pkg-config 缓存⭐⭐⭐⭐⭐⭐"
+sudo rm -rf /var/cache/pkg-config/*
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找 .pc 文件的详细过程⭐⭐⭐⭐⭐⭐" 
 strace pkg-config --modversion libbrotlidec 2>&1 | grep libbrotlidec.pc
 git clone https://github.com/rockdaboot/wget2.git || exit 1
@@ -226,6 +228,8 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64
 cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖：⭐⭐⭐⭐⭐⭐" 
 ldd /usr/lib/x86_64-linux-gnu/libbrotlidec.so
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖apt-cache depends libbrotli-dev：⭐⭐⭐⭐⭐⭐" 
+apt-cache depends libbrotli-dev
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
 find / -name "*brotli*" 2>/dev/null
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
