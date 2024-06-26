@@ -96,6 +96,8 @@ git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gn
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
+export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH
+sudo apt-get update && sudo apt-get install --reinstall pkg-config
 #git clone  https://github.com/google/brotli.git || exit 1
 #cd brotli || exit 1
 #CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
@@ -111,9 +113,17 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags
 pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --variable pc_path pkg-config结果如下：⭐⭐⭐⭐⭐⭐" 
 pkg-config --variable pc_path pkg-config
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - ar -t $INSTALLDIR/lib/libbrotlienc.a结果如下：⭐⭐⭐⭐⭐⭐" 
-ar -t $INSTALLDIR/lib/libbrotlienc.a
-nm -D $INSTALLDIR/lib/libbrotlienc.a
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlidec.pc结果如下：⭐⭐⭐⭐⭐⭐" 
+cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlidec.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlienc.pc结果如下：⭐⭐⭐⭐⭐⭐" 
+cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlienc.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc结果如下：⭐⭐⭐⭐⭐⭐" 
+cat /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - ls -l /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlidec.pc结果如下：⭐⭐⭐⭐⭐⭐" 
+ls -l /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlidec.pc
+ls -l /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlienc.pc
+ls -l /usr/lib/x86_64-linux-gnu/pkgconfig/libbrotlicommon.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
 find / -name "*brotli*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
