@@ -98,7 +98,8 @@ export GNULIB_REFDIR=$INSTALLDIR/gnulib
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
 pkg-config --version
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH
-sudo apt-get update && sudo apt-get install --reinstall pkg-config
+echo $LD_LIBRARY_PATH
+echo $PKG_CONFIG_PATH
 #git clone  https://github.com/google/brotli.git || exit 1
 #cd brotli || exit 1
 #CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
