@@ -109,8 +109,6 @@ cd brotli || exit 1
 CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
 make install || exit 1
 cd .. && rm -rf brotli
-export BROTLI_LIBS=$(pkg-config --libs libbrotlienc libbrotlidec libbrotlicommon | sed 's/-lbrotlienc/-lbrotlienc-static/g; s/-lbrotlidec/-lbrotlidec-static/g; s/-lbrotlicommon/-lbrotlicommon-static/g')
-
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
