@@ -32,12 +32,9 @@ jobs:
           sudo apt-get update
           #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
           sudo apt-get install -y  \
-            autoconf-archive \
-            autogen \
             autopoint \
-            binfmt-support \
+            automake \
             cmake \
-            gengetopt \
             gettext \
             gperf \
             lzip \
@@ -45,9 +42,7 @@ jobs:
             ninja-build \
             pandoc \
             pkg-config-mingw-w64-x86-64 \
-            retry \
-            wget \
-            wine 
+            retry 
           #python3 -m venv myenv
           #source myenv/bin/activate
           #pip install setuptools
