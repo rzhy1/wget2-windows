@@ -37,6 +37,8 @@ jobs:
             gettext \
             gperf \
             lzip \
+            libcmocka-dev \
+            libc6-dev \
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
