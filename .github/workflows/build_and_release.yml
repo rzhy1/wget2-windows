@@ -32,36 +32,20 @@ jobs:
           sudo apt-get update
           #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
           sudo apt-get install -y  \
-            autoconf \
             autoconf-archive \
             autogen \
-            automake \
             autopoint \
-            bc \
             binfmt-support \
-            bison \
-            ca-certificates \
             cmake \
-            curl \
-            flex \
             gengetopt \
             gettext \
-            git \
             gperf \
-            jq \
-            libtool \
             lzip \
-            make \
             mingw-w64 \
             ninja-build \
             pandoc \
-            patch \
             pkg-config-mingw-w64-x86-64 \
-            python3 \
-            python3-venv \
             retry \
-            rsync \
-            texinfo \
             wget \
             wine 
           #python3 -m venv myenv
