@@ -39,7 +39,6 @@ jobs:
             lzip \
             mingw-w64 \
             ninja-build \
-            pandoc \
             pkg-config-mingw-w64-x86-64 \
             retry 
           #python3 -m venv myenv
