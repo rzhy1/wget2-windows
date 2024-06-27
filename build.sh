@@ -204,7 +204,7 @@ sudo rm -rf /var/cache/pkg-config/*
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
-
+export LD_LIBRARY_PATH=$INSTALLDIR/lib:$LD_LIBRARY_PATH
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - LD_LIBRARY_PATH⭐⭐⭐⭐⭐⭐" 
 echo $LD_LIBRARY_PATH
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - PKG_CONFIG_PATH⭐⭐⭐⭐⭐⭐" 
@@ -227,10 +227,8 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - libbrotlicommon.pc�
 cat $INSTALLDIR/lib/pkgconfig/libbrotlicommon.pc
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖：⭐⭐⭐⭐⭐⭐" 
 ldd $INSTALLDIR/lib/libbrotlidec.so
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖apt-cache depends libbrotli：⭐⭐⭐⭐⭐⭐" 
-apt-cache depends libbrotli
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖apt-cache depends libbrotlidec：⭐⭐⭐⭐⭐⭐" 
-apt-cache depends libbrotlidec
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖apt-cache depends brotli：⭐⭐⭐⭐⭐⭐" 
+apt-cache depends brotli
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
 find / -name "*brotli*" 2>/dev/null
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
