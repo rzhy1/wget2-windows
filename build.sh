@@ -203,7 +203,6 @@ sudo rm -rf /var/cache/pkg-config/*
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
-export LD_LIBRARY_PATH=$INSTALLDIR/lib:$LD_LIBRARY_PATH
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - LD_LIBRARY_PATH⭐⭐⭐⭐⭐⭐" 
 echo $LD_LIBRARY_PATH
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - PKG_CONFIG_PATH⭐⭐⭐⭐⭐⭐" 
@@ -230,11 +229,11 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖a
 apt-cache depends brotli
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
 find / -name "*brotli*" 2>/dev/null
-export LDFLAGS="-Wl,--as-needed -lbrotlienc -lbrotlidec -lbrotlicommon -lgnutls -Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+export LDFLAGS="-L$INSTALLDIR/lib -Wl,--as-needed -lbrotlienc -lbrotlidec -lbrotlicommon -lgnutls -Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
-BROTLI_CFLAGS=$(pkg-config --cflags lbrotlienc lbrotlidec lbrotlicommon)
+BROTLI_CFLAGS=$(pkg-config --cflags libbrotlienc libbrotlidec libbrotlicommon)
 export CFLAGS="$CFLAGS $BROTLI_CFLAGS"
-BROTLI_LDFLAGS="$(pkg-config --libs lbrotlienc lbrotlidec lbrotlicommon)"
+BROTLI_LDFLAGS="$(pkg-config --libs libbrotlienc libbrotlidec libbrotlicommon)"
 export LDFLAGS="$LDFLAGS $BROTLI_LDFLAGS"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找 .pc 文件的详细过程⭐⭐⭐⭐⭐⭐" 
 strace pkg-config --modversion libbrotlidec 2>&1 | grep libbrotlidec.pc
