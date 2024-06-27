@@ -13,8 +13,7 @@ export CPPFLAGS="-I$INSTALLDIR/include"
 export LDFLAGS="-L$INSTALLDIR/lib"
 export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询CFLAGS⭐⭐⭐⭐⭐⭐" 
-echo $CFLAGS
+
 # export LZMA_CFLAGS="-I/usr/include"
 # export LZMA_LIBS="-L/usr/lib/x86_64-linux-gnu -llzma"
 #export ZSTD_CFLAGS="-I/usr/include"
@@ -242,8 +241,8 @@ strace pkg-config --modversion libbrotlidec 2>&1 | grep libbrotlidec.pc
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 正确版本号，说明 pkg-config 配置正确⭐⭐⭐⭐⭐⭐" 
 pkg-config --modversion libbrotlidec
 pkg-config --modversion libbrotlienc
-pkg-config --modversion libbrotli1
-pkg-config --modversion libc6
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询CFLAGS⭐⭐⭐⭐⭐⭐" 
+echo $CFLAGS
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --with-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
