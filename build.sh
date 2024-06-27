@@ -231,11 +231,11 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖a
 apt-cache depends brotli
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
 find / -name "*brotli*" 2>/dev/null
-export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+export LDFLAGS="-Wl,--as-needed -lbrotlienc -lbrotlidec -lbrotlicommon -lgnutls -Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
-BROTLI_CFLAGS=$(pkg-config --cflags libbrotlidec)
+BROTLI_CFLAGS=$(pkg-config --cflags lbrotlienc lbrotlidec lbrotlicommon)
 export CFLAGS="$CFLAGS $BROTLI_CFLAGS"
-BROTLI_LDFLAGS="$(pkg-config --libs libbrotlidec)"
+BROTLI_LDFLAGS="$(pkg-config --libs lbrotlienc lbrotlidec lbrotlicommon)"
 export LDFLAGS="$LDFLAGS $BROTLI_LDFLAGS"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找 .pc 文件的详细过程⭐⭐⭐⭐⭐⭐" 
 strace pkg-config --modversion libbrotlidec 2>&1 | grep libbrotlidec.pc
