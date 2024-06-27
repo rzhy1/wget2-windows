@@ -196,58 +196,11 @@ make install || exit 1
 cd .. && rm -rf libmicrohttpd-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
-#更新包管理器缓存和库索引
-sudo ldconfig
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 清理 pkg-config 缓存⭐⭐⭐⭐⭐⭐"
-sudo rm -rf /var/cache/pkg-config/*
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - LD_LIBRARY_PATH⭐⭐⭐⭐⭐⭐" 
-echo $LD_LIBRARY_PATH
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - PKG_CONFIG_PATH⭐⭐⭐⭐⭐⭐" 
-echo $PKG_CONFIG_PATH
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - dpkg -l | grep libbrotlidec结果如下：⭐⭐⭐⭐⭐⭐" 
-dpkg -l | grep libbrotlidec
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --libs libbrotlidec结果如下：⭐⭐⭐⭐⭐⭐" 
-pkg-config --libs libbrotlidec
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlidec结果如下：⭐⭐⭐⭐⭐⭐" 
-pkg-config --cflags --libs libbrotlidec
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon结果如下：⭐⭐⭐⭐⭐⭐" 
-pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --variable pc_path pkg-config结果如下：⭐⭐⭐⭐⭐⭐" 
-pkg-config --variable pc_path pkg-config
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - libbrotlidec.pc文件内容如下：⭐⭐⭐⭐⭐⭐" 
-cat $INSTALLDIR/lib/pkgconfig/libbrotlidec.pc
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - libbrotlienc.pc文件内容如下：⭐⭐⭐⭐⭐⭐" 
-cat $INSTALLDIR/lib/pkgconfig/libbrotlienc.pc
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - libbrotlicommon.pc文件内容如下：⭐⭐⭐⭐⭐⭐" 
-cat $INSTALLDIR/lib/pkgconfig/libbrotlicommon.pc
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖：⭐⭐⭐⭐⭐⭐" 
-ldd $INSTALLDIR/lib/libbrotlidec.so
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖apt-cache depends brotli：⭐⭐⭐⭐⭐⭐" 
-apt-cache depends brotli
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
-find / -name "*brotli*" 2>/dev/null
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
-BROTLI_CFLAGS=$(pkg-config --cflags libbrotlienc libbrotlidec libbrotlicommon)
-export CFLAGS="$CFLAGS $BROTLI_CFLAGS"
-BROTLI_LDFLAGS="$(pkg-config --libs libbrotlienc libbrotlidec libbrotlicommon)"
-export LDFLAGS="$LDFLAGS $BROTLI_LDFLAGS"
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找 .pc 文件的详细过程⭐⭐⭐⭐⭐⭐" 
-strace pkg-config --modversion libbrotlidec 2>&1 | grep libbrotlidec.pc
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 正确版本号，说明 pkg-config 配置正确⭐⭐⭐⭐⭐⭐" 
-pkg-config --modversion libbrotlidec
-pkg-config --modversion libbrotlienc
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询CFLAGS⭐⭐⭐⭐⭐⭐" 
-echo $CFLAGS
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询BROTLI_CFLAGS⭐⭐⭐⭐⭐⭐" 
-echo $BROTLI_CFLAGS
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询LDFLAGS⭐⭐⭐⭐⭐⭐" 
-echo $LDFLAGS
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询BROTLI_LDFLAGS⭐⭐⭐⭐⭐⭐" 
-echo $BROTLI_LDFLAGS
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --with-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
