@@ -33,7 +33,6 @@ jobs:
           #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
           sudo apt-get install -y  \
             autopoint \
-            automake \
             cmake \
             gettext \
             gperf \
