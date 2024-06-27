@@ -176,7 +176,7 @@ cd .. && rm -rf gnutls-*
 #make -j$(nproc) || exit 1
 #make install || exit 1
 #cd .. && rm -rf gnutls-*
-
+export LDFLAGS="$LDFLAGS"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/zlib-ng/zlib-ng || exit 1
 cd zlib-ng || exit 1
