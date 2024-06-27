@@ -229,7 +229,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询库的依赖a
 apt-cache depends brotli
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找*brotli*结果如下：⭐⭐⭐⭐⭐⭐" 
 find / -name "*brotli*" 2>/dev/null
-export LDFLAGS="-L$INSTALLDIR/lib -Wl,--as-needed -lbrotlienc -lbrotlidec -lbrotlicommon -lgnutls -Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 BROTLI_CFLAGS=$(pkg-config --cflags libbrotlienc libbrotlidec libbrotlicommon)
 export CFLAGS="$CFLAGS $BROTLI_CFLAGS"
