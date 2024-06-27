@@ -243,6 +243,12 @@ pkg-config --modversion libbrotlidec
 pkg-config --modversion libbrotlienc
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询CFLAGS⭐⭐⭐⭐⭐⭐" 
 echo $CFLAGS
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询BROTLI_CFLAGS⭐⭐⭐⭐⭐⭐" 
+echo $BROTLI_CFLAGS
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询LDFLAGS⭐⭐⭐⭐⭐⭐" 
+echo $LDFLAGS
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询BROTLI_LDFLAGS⭐⭐⭐⭐⭐⭐" 
+echo $BROTLI_LDFLAGS
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --with-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
