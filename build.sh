@@ -241,6 +241,9 @@ BROTLI_LDFLAGS="$(pkg-config --libs libbrotlidec)"
 export LDFLAGS="$LDFLAGS $BROTLI_LDFLAGS"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找 .pc 文件的详细过程⭐⭐⭐⭐⭐⭐" 
 strace pkg-config --modversion libbrotlidec 2>&1 | grep libbrotlidec.pc
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 正确版本号，说明 pkg-config 配置正确⭐⭐⭐⭐⭐⭐" 
+pkg-config --modversion libbrotlidec
+pkg-config --modversion libbrotlienc
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --with-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
