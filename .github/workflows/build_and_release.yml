@@ -40,6 +40,8 @@ jobs:
             gperf \
             jq \
             libtool \
+            libbrotli1 \
+            libc6 \
             lzip \
             make \
             mingw-w64 \
