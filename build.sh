@@ -155,6 +155,14 @@ make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf nettle
 
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libtasn1⭐⭐⭐⭐⭐⭐"
+wget -O- https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.19.0.tar.gz | tar xz || exit 1
+cd libtasn1-* || exit 1
+./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
+make -j$(nproc) || exit 1
+make install || exit 1
+cd .. && rm -rf libtasn1-*
+
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
 #wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
 #cd gnutls-* || exit 1
