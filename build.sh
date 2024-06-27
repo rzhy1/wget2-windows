@@ -174,7 +174,7 @@ wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.5.tar.xz | tar 
 cd gnutls-* || exit 1
   GMP_LIBS="-L$INSTALLDIR/lib -lgmp" \
   NETTLE_LIBS="-L$INSTALLDIR/lib -lnettle -lgmp" \
-  HOGWEED_LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp" \
+  HOGWEED_LIBS="-L$INSTALLDIR/lib -lhogweed -lgmp" \
   LIBTASN1_LIBS="-L$INSTALLDIR/lib -ltasn1" \
   LIBIDN2_LIBS="-L$INSTALLDIR/lib -lidn2" \
   GMP_CFLAGS=$CFLAGS \
