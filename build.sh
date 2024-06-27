@@ -170,7 +170,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐�
 #make -j$(nproc) || exit 1
 #make install || exit 1
 #cd .. && rm -rf gnutls-*
-wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.5.tar.xz | tar x --xz || exit 1
+wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
 cd gnutls-* || exit 1
 ./configure --host=$PREFIX --prefix="$INSTALLDIR" --with-included-unistring --disable-openssl-compatibility --without-p11-kit --disable-tests --disable-doc --disable-shared --enable-static
 make -j$(nproc) || exit 1
