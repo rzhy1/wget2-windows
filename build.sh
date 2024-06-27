@@ -96,11 +96,13 @@ git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gn
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-#git clone  https://github.com/google/brotli.git || exit 1
-#cd brotli || exit 1
-#CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
-#make install || exit 1
-#cd .. && rm -rf brotli
+git clone  https://github.com/google/brotli.git || exit 1
+cd brotli || exit 1
+CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
+make install || exit 1
+cd .. && rm -rf brotli
+export BROTLI_LIBS=$(pkg-config --libs libbrotlienc libbrotlidec libbrotlicommon | sed 's/-lbrotlienc/-lbrotlienc-static/g; s/-lbrotlidec/-lbrotlidec-static/g; s/-lbrotlicommon/-lbrotlicommon-static/g')
+
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
@@ -201,7 +203,7 @@ cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
+./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --with-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
