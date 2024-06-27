@@ -91,6 +91,14 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib⭐⭐⭐
 #make install || exit 1
 #cd .. && rm -rf zlib
 
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gmp⭐⭐⭐⭐⭐⭐" 
+wget -nv -O- https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz | tar x --xz || exit 1
+cd gmp-*  || exit 1
+./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR" || exit 1
+make -j$(nproc) || exit 1
+make install || exit 1
+cd .. && rm -rf gmp-*
+
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
 export GNULIB_REFDIR=$INSTALLDIR/gnulib
