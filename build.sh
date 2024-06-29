@@ -232,8 +232,7 @@ cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export OPENSSL_CFLAGS=$CFLAGS
 export OPENSSL_LIBS="-L$INSTALLDIR/lib -lcrypto -lssl -lbcrypt"
-export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
-export LIBS="-L$INSTALLDIR/lib -lidn2 -lpsl -lunistring -liconv -lpcre2-8 -lassuan -lcrypto -lssl -lcrypt32"
+export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ss=openssl --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
