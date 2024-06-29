@@ -231,9 +231,10 @@ git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+export LDFLAGS="$LDFLAGS -lcrypto -lssl -lcrypt32"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 export OPENSSL_CFLAGS=$CFLAGS
-export OPENSSL_LIBS="-L$INSTALL_PATH/lib -lcrypto -lssl -lbcrypt32"
+export OPENSSL_LIBS="-L$INSTALL_PATH/lib -lcrypto -lssl -lbcrypt"
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ss=openssl --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
