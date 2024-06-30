@@ -209,9 +209,10 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build openssl⭐⭐
 wget -O- https://www.openssl.org/source/openssl-3.2.1.tar.gz | tar xz || exit 1
 cd openssl-* || exit 1
 ./Configure --static -static --prefix="$INSTALLDIR" --cross-compile-prefix=x86_64-w64-mingw32- mingw64 no-shared enable-asm no-tests --with-zlib-include="$INSTALLDIR" --with-zlib-lib="$INSTALLDIR"/lib/libz.a  -lcrypt32 || exit 1
- make -j$(nproc) || exit 1
- make install_sw || exit 1
- find / -name "*libcrypto*" 2>/dev/null
+make -j$(nproc) || exit 1
+make install_sw || exit 1
+cd .. && rm -rf openssl-*
+find / -name "*libcrypto*" 2>/dev/null
 
 export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:$INSTALLDIR/lib64/pkgconfig"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
