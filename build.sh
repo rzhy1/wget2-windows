@@ -220,7 +220,7 @@ make install || exit 1
 cd .. && rm -rf libmicrohttpd-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build openssl⭐⭐⭐⭐⭐⭐" 
-wget -O- https://www.openssl.org/source/openssl-1.1.1w.tar.gz | tar xz || exit 1
+wget -O- https://www.openssl.org/source/openssl-3.3.1.tar.gz | tar xz || exit 1
 cd openssl-* || exit 1
 ./Configure --static -static --prefix="$INSTALLDIR" --cross-compile-prefix=x86_64-w64-mingw32- mingw64 no-shared enable-asm no-tests --with-zlib-include="$INSTALLDIR" --with-zlib-lib="$INSTALLDIR"/lib/libz.a || exit 1
  make -j$(nproc) || exit 1
