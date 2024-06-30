@@ -1,8 +1,8 @@
 #
 # wget2 build script for Windows environment
 # Author: rzhy1
-# 2024/6/26
-#find / -name "*libcrypto*" 2>/dev/null|| exit 1
+# 2024/6/30
+
 # 设置环境变量
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
@@ -70,20 +70,12 @@ meson install -C builddir-st || exit 1
 cd .. && rm -rf zstd
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib⭐⭐⭐⭐⭐⭐" 
-wget -O- https://zlib.net/zlib-1.3.1.tar.gz | tar xz || exit 1
-cd zlib-* || exit 1
-CC=x86_64-w64-mingw32-gcc ./configure --64 --static --prefix="$INSTALLDIR"
-make -j$(nproc) || exit 1
-make install || exit 1
-cd .. && rm -rf zlib
-
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gmp⭐⭐⭐⭐⭐⭐" 
-wget -nv -O- https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz | tar x --xz || exit 1
-cd gmp-*  || exit 1
-./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR" || exit 1
-make -j$(nproc) || exit 1
-make install || exit 1
-cd .. && rm -rf gmp-*
+#wget -O- https://zlib.net/zlib-1.3.1.tar.gz | tar xz || exit 1
+#cd zlib-* || exit 1
+#CC=x86_64-w64-mingw32-gcc ./configure --64 --static --prefix="$INSTALLDIR"
+#make -j$(nproc) || exit 1
+#make install || exit 1
+#cd .. && rm -rf zlib
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
 git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
@@ -147,22 +139,14 @@ make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf libtasn1-*
 
-#export LDFLAGS="-L$INSTALLDIR/lib -Wl,--as-needed $LDFLAGS -lbrotlienc -lbrotlidec -lbrotlicommon"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
-#wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
-#cd gnutls-* || exit 1
-#./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-shared --enable-static --with-included-libtasn1 --with-included-unistring --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-hardware-acceleration --disable-guile || exit 1
-#make -j$(nproc) || exit 1
-#make install || exit 1
-#cd .. && rm -rf gnutls-*
+wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
+cd gnutls-* || exit 1
+./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-shared --enable-static --with-included-libtasn1 --with-included-unistring --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-hardware-acceleration --disable-guile || exit 1
+make -j$(nproc) || exit 1
+make install || exit 1
+cd .. && rm -rf gnutls-*
 
-#wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
-#cd gnutls-* || exit 1
-#./configure --host=$PREFIX --prefix="$INSTALLDIR" --with-included-unistring --disable-openssl-compatibility --without-p11-kit --disable-tests --disable-doc --disable-shared --enable-static
-#make -j$(nproc) || exit 1
-#make install || exit 1
-#cd .. && rm -rf gnutls-*
-export LDFLAGS="$LDFLAGS"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/zlib-ng/zlib-ng || exit 1
 cd zlib-ng || exit 1
@@ -205,38 +189,13 @@ make -j$(nproc)  || exit 1
 make install || exit 1
 cd .. && rm -rf libmicrohttpd-*
 
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build openssl⭐⭐⭐⭐⭐⭐" 
-wget -O- https://www.openssl.org/source/openssl-1.1.1w.tar.gz | tar xz || exit 1
-cd openssl-* || exit 1
-./Configure --static -static --prefix="$INSTALLDIR" --cross-compile-prefix=x86_64-w64-mingw32- mingw64 no-shared enable-asm no-tests --with-zlib-include="$INSTALLDIR" --with-zlib-lib="$INSTALLDIR"/lib/libz.a  -lcrypt32 || exit 1
-make -j$(nproc) || exit 1
-make install_sw || exit 1
-cd .. && rm -rf openssl-*
-find / -name "*libcrypto*" 2>/dev/null
-
-export PKG_CONFIG_PATH="/home/runner/usr/local/x86_64-w64-mingw32/lib64/pkgconfig:$PKG_CONFIG_PATH"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
-./configure \
-  OPENSSL_CFLAGS="-I/$INSTALLDIR/include" \
-  OPENSSL_LIBS="-L$INSTALLDIR/lib64 -lcrypto -lssl -lbcrypt -lcrypt32" \
-  LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib64 -L/usr/x86_64-w64-mingw32/lib" \
-  CFLAGS="-O2 -DNGHTTP2_STATICLIB" \
-  --build=x86_64-pc-linux-gnu \
-  --host=$PREFIX \
-  --with-libiconv-prefix="$INSTALLDIR" \
-  --with-ss=openssl \
-  --disable-shared \
-  --enable-static \
-  --with-lzma \
-  --with-zstd \
-  --without-bzip2 \
-  --without-lzip \
-  --without-brotlidec \
-  --without-gpgme \
-  --enable-threads=windows || exit 1
+export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
+./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
