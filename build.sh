@@ -14,20 +14,6 @@ export LDFLAGS="-L$INSTALLDIR/lib"
 export CFLAGS="-O2 -g"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 
-# export LZMA_CFLAGS="-I/usr/include"
-# export LZMA_LIBS="-L/usr/lib/x86_64-linux-gnu -llzma"
-#export ZSTD_CFLAGS="-I/usr/include"
-#export ZSTD_LIBS="-L/usr/lib/x86_64-linux-gnu -lzstd"
-# export LZIP_CFLAGS="-I/usr/include"
-# export LZIP_LIBS="-L/usr/lib/x86_64-linux-gnu -llz"
-#export BZ2_CFLAGS="-I/usr/include"
-#export BZ2_LIBS="-L/usr/lib/x86_64-linux-gnu -lbz2"
-#export BROTLIDEC_CFLAGS="-I/usr/lib/x86_64-linux-gnu/pkgconfig"
-#export BROTLIDEC_LIBS="-L/usr/lib/x86_64-linux-gnu -lbrotlidec"
-#export BROTLIDEC_CFLAGS=$(pkg-config --cflags libbrotlidec)
-#export BROTLIDEC_LIBS=$(pkg-config --libs libbrotlidec)
-
-
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
@@ -227,14 +213,15 @@ cd openssl-* || exit 1
  make install_sw || exit 1
  find / -name "*libcrypto*" 2>/dev/null
 
+export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:$INSTALLDIR/lib64/pkgconfig"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export OPENSSL_CFLAGS=$CFLAGS
-export OPENSSL_LIBS="-L$INSTALLDIR/openssl-3.2.1/lib -lcrypto -lssl -lbcrypt -lcrypt32"
+export OPENSSL_LIBS="-L$INSTALLDIR/lib64 -lcrypto -lssl -lbcrypt -lcrypt32"
 #export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
-export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib -L/usr/x86_64-w64-mingw32/lib"
+export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib64 -L/usr/x86_64-w64-mingw32/lib"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 ./configure \
   OPENSSL_CFLAGS="$CFLAGS" \
