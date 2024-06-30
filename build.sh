@@ -220,19 +220,19 @@ make install || exit 1
 cd .. && rm -rf libmicrohttpd-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build openssl⭐⭐⭐⭐⭐⭐" 
-wget -O- https://www.openssl.org/source/openssl-3.3.1.tar.gz | tar xz || exit 1
+wget -O- https://www.openssl.org/source/openssl-3.2.1.tar.gz | tar xz || exit 1
 cd openssl-* || exit 1
 ./Configure --static -static --prefix="$INSTALLDIR" --cross-compile-prefix=x86_64-w64-mingw32- mingw64 no-shared enable-asm no-tests --with-zlib-include="$INSTALLDIR" --with-zlib-lib="$INSTALLDIR"/lib/libz.a  -lcrypt32 || exit 1
  make -j$(nproc) || exit 1
  make install_sw || exit 1
- #find / -name "*libcrypto*" 2>/dev/null
+ find / -name "*libcrypto*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export OPENSSL_CFLAGS=$CFLAGS
-export OPENSSL_LIBS="-L$INSTALLDIR/lib -lcrypto -lssl -lbcrypt -lcrypt32"
+export OPENSSL_LIBS="-L$INSTALLDIR/openssl-3.2.1/lib -lcrypto -lssl -lbcrypt -lcrypt32"
 #export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib -L/usr/x86_64-w64-mingw32/lib"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
