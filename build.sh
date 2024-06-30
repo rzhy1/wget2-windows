@@ -225,7 +225,7 @@ cd openssl-* || exit 1
 ./Configure --static -static --prefix="$INSTALLDIR" --cross-compile-prefix=x86_64-w64-mingw32- mingw64 no-shared enable-asm no-tests --with-zlib-include="$INSTALLDIR" --with-zlib-lib="$INSTALLDIR"/lib/libz.a || exit 1
  make -j$(nproc) || exit 1
  make install_sw || exit 1
- find / -name "*libcrypto*" 2>/dev/null|| exit 1
+ find / -name "*libcrypto*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/rockdaboot/wget2.git || exit 1
