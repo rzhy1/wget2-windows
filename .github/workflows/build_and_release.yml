@@ -37,10 +37,7 @@ jobs:
             gettext \
             gperf \
             lzip \
-            libcmocka-dev \
-            libc6-dev \
             mingw-w64 \
-            mingw-w64-tools \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
             retry 
