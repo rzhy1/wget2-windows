@@ -75,4 +75,4 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add README.md
           git commit -m "更新 README 文件"
-          git push
+          git push origin HEAD:main
