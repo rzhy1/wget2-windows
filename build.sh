@@ -225,7 +225,7 @@ cd openssl-* || exit 1
 ./Configure --static -static --prefix="$INSTALLDIR" --cross-compile-prefix=x86_64-w64-mingw32- mingw64 no-shared enable-asm no-tests --with-zlib-include="$INSTALLDIR" --with-zlib-lib="$INSTALLDIR"/lib/libz.a  -lcrypt32 || exit 1
  make -j$(nproc) || exit 1
  make install_sw || exit 1
- find / -name "*libcrypto*" 2>/dev/null
+ #find / -name "*libcrypto*" 2>/dev/null
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/rockdaboot/wget2.git || exit 1
@@ -239,7 +239,7 @@ export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 ./configure \
   OPENSSL_CFLAGS="$CFLAGS" \
   OPENSSL_LIBS="-L$INSTALLDIR/lib -lcrypto -lssl -lbcrypt -lcrypt32" \
-  LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib -L/usr/x86_64-w64-mingw32/lib" \
+  LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib -L/usr/x86_64-w64-mingw32/lib -Wl,--verbose" \
   CFLAGS="-O2 -DNGHTTP2_STATICLIB" \
   --build=x86_64-pc-linux-gnu \
   --host=$PREFIX \
