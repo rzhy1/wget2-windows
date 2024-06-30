@@ -214,20 +214,15 @@ make install_sw || exit 1
 cd .. && rm -rf openssl-*
 find / -name "*libcrypto*" 2>/dev/null
 
-export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:$INSTALLDIR/lib64/pkgconfig"
+export PKG_CONFIG_PATH="/home/runner/usr/local/x86_64-w64-mingw32/lib64/pkgconfig:$PKG_CONFIG_PATH"
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/rockdaboot/wget2.git || exit 1
 cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
-export OPENSSL_CFLAGS=$CFLAGS
-export OPENSSL_LIBS="-L$INSTALLDIR/lib64 -lcrypto -lssl -lbcrypt -lcrypt32"
-#export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
-export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib64 -L/usr/x86_64-w64-mingw32/lib"
-export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
 ./configure \
-  OPENSSL_CFLAGS="$CFLAGS" \
-  OPENSSL_LIBS="-L$INSTALLDIR/lib -lcrypto -lssl -lbcrypt -lcrypt32" \
-  LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib -L/usr/x86_64-w64-mingw32/lib -Wl,--verbose" \
+  OPENSSL_CFLAGS="-I/home/runner/usr/local/x86_64-w64-mingw32/openssl-3.2.1/include" \
+  OPENSSL_LIBS="-L/home/runner/usr/local/x86_64-w64-mingw32/openssl-3.2.1/lib64 -lcrypto -lssl -lbcrypt -lcrypt32" \
+  LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,/home/runner/usr/local/x86_64-w64-mingw32/lib64 -L/usr/x86_64-w64-mingw32/lib -Wl,--verbose" \
   CFLAGS="-O2 -DNGHTTP2_STATICLIB" \
   --build=x86_64-pc-linux-gnu \
   --host=$PREFIX \
