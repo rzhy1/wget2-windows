@@ -206,7 +206,7 @@ make install || exit 1
 cd .. && rm -rf libmicrohttpd-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build openssl⭐⭐⭐⭐⭐⭐" 
-wget -O- https://www.openssl.org/source/openssl-3.2.1.tar.gz | tar xz || exit 1
+wget -O- https://www.openssl.org/source/openssl-1.1.1w.tar.gz | tar xz || exit 1
 cd openssl-* || exit 1
 ./Configure --static -static --prefix="$INSTALLDIR" --cross-compile-prefix=x86_64-w64-mingw32- mingw64 no-shared enable-asm no-tests --with-zlib-include="$INSTALLDIR" --with-zlib-lib="$INSTALLDIR"/lib/libz.a  -lcrypt32 || exit 1
 make -j$(nproc) || exit 1
@@ -222,7 +222,7 @@ cd wget2 || exit 1
 ./configure \
   OPENSSL_CFLAGS="-I/$INSTALLDIR/include" \
   OPENSSL_LIBS="-L$INSTALLDIR/lib64 -lcrypto -lssl -lbcrypt -lcrypt32" \
-  LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib64 -L/usr/x86_64-w64-mingw32/lib -Wl,--verbose" \
+  LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-rpath,$INSTALLDIR/lib64 -L/usr/x86_64-w64-mingw32/lib" \
   CFLAGS="-O2 -DNGHTTP2_STATICLIB" \
   --build=x86_64-pc-linux-gnu \
   --host=$PREFIX \
