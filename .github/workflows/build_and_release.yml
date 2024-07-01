@@ -73,6 +73,6 @@ jobs:
           cat RELEASE.md > README.md
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add README.md
-          git commit -m "更新 README 文件"
+          git add README.md -f  # 使用 -f 强制添加文件
+          git commit -m "更新 README 文件" --allow-empty
           git push origin HEAD:main
