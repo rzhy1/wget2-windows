@@ -1,4 +1,3 @@
-#
 # wget2 build script for Windows environment
 # Author: rzhy1
 # 2024/6/30
@@ -162,8 +161,8 @@ LIBTASN1_CFLAGS=$CFLAGS \
 NETTLE_CFLAGS=$CFLAGS \
 HOGWEED_CFLAGS=$CFLAGS \
 LIBIDN2_CFLAGS=$CFLAGS \
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-guile || exit 1
-#--disable-hardware-acceleration
+./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane --disable-guile || exit 1
+#--disable-hardware-acceleration --with-nettle-mini
 make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf gnutls-* 
