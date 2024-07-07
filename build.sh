@@ -104,12 +104,12 @@ make install || exit 1
 cd .. && rm -rf libiconv-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
-#wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz || exit 1
-#cd libunistring-* || exit 1
-#./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
-#make -j$(nproc)  || exit 1
-#make install || exit 1
-#cd .. && rm -rf libunistring-*
+wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz || exit 1
+cd libunistring-* || exit 1
+./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
+make -j$(nproc)  || exit 1
+make install || exit 1
+cd .. && rm -rf libunistring-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libidn2⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.7.tar.gz | tar xz || exit 1
