@@ -104,12 +104,12 @@ make install || exit 1
 cd .. && rm -rf libiconv-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
-wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz || exit 1
-cd libunistring-* || exit 1
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
-make -j$(nproc)  || exit 1
-make install || exit 1
-cd .. && rm -rf libunistring-*
+#wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz || exit 1
+#cd libunistring-* || exit 1
+#./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
+#make -j$(nproc)  || exit 1
+#make install || exit 1
+#cd .. && rm -rf libunistring-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libidn2⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.7.tar.gz | tar xz || exit 1
@@ -138,12 +138,12 @@ make install || exit 1
 cd .. && rm -rf nettle
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libtasn1⭐⭐⭐⭐⭐⭐"
-wget -O- https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.19.0.tar.gz | tar xz || exit 1
-cd libtasn1-* || exit 1
-./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
-make -j$(nproc) || exit 1
-make install || exit 1
-cd .. && rm -rf libtasn1-*
+#wget -O- https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.19.0.tar.gz | tar xz || exit 1
+#cd libtasn1-* || exit 1
+#./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
+#make -j$(nproc) || exit 1
+#make install || exit 1
+#cd .. && rm -rf libtasn1-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
 wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
@@ -158,8 +158,8 @@ LIBTASN1_CFLAGS=$CFLAGS \
 NETTLE_CFLAGS=$CFLAGS \
 HOGWEED_CFLAGS=$CFLAGS \
 LIBIDN2_CFLAGS=$CFLAGS \
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
-#--disable-hardware-acceleration --with-nettle-mini
+./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-included-libtasn1 --with-included-unistring --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+# --with-nettle-mini
 make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf gnutls-* 
