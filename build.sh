@@ -212,7 +212,7 @@ cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
-LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp -ltasn1 -lidn2 -lpsl -liphlpapi -lunistring -liconv -lpcre2-8  -lz -lcrypt32 -lpthread" \
+LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp -ltasn1 -lidn2 -lpsl -liphlpapi -lunistring -liconv -lpcre2-8 -lz -lcrypt32 -lpthread"
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
