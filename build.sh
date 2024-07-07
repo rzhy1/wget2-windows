@@ -146,7 +146,7 @@ make install || exit 1
 cd .. && rm -rf libtasn1-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
-wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
+wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.6.tar.xz | tar x --xz || exit 1
 cd gnutls-* || exit 1
 PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig" \
 CFLAGS="-I$INSTALLDIR/include" \
