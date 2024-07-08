@@ -143,12 +143,12 @@ make install || exit 1
 cd .. && rm -rf nettle
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libtasn1⭐⭐⭐⭐⭐⭐"
-#wget -O- https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.19.0.tar.gz | tar xz || exit 1
-#cd libtasn1-* || exit 1
-#./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
-#make -j$(nproc) || exit 1
-#make install || exit 1
-#cd .. && rm -rf libtasn1-*
+wget -O- https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.19.0.tar.gz | tar xz || exit 1
+cd libtasn1-* || exit 1
+./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
+make -j$(nproc) || exit 1
+make install || exit 1
+cd .. && rm -rf libtasn1-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
 wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
@@ -163,8 +163,8 @@ LIBTASN1_CFLAGS=$CFLAGS \
 NETTLE_CFLAGS=$CFLAGS \
 HOGWEED_CFLAGS=$CFLAGS \
 LIBIDN2_CFLAGS=$CFLAGS \
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --with-included-libtasn1 --with-included-unistring --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
-# --with-nettle-mini
+./configure  --host=$PREFIX --prefix=$INSTALLDIR --with-included-unistring --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+# --build=x86_64-pc-linux-gnu --with-nettle-mini --with-included-libtasn1 
 make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf gnutls-* 
@@ -217,7 +217,15 @@ cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
+GNUTLS_CFLAGS=$CFLAGS \
+GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
+LIBPSL_CFLAGS=$CFLAGS \
+LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
+PCRE2_CFLAGS=$CFLAGS \
+PCRE2_LIBS="-L$INSTALLDI/lib -lpcre2-8"  \
+LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp -ltasn1 -lidn2 -lpsl -liphlpapi -lunistring -liconv -lpcre2-8  -lassuan -lgpg-error -lz -lcrypt32 -lpthread" \
+./configure  --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
+# --build=x86_64-pc-linux-gnu
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
