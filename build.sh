@@ -59,9 +59,9 @@ meson setup \
   -Dbin_programs=true \
   -Dstatic_runtime=true \
   -Ddefault_library=static \
-  -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
   -Db_lto=true --optimization=2 \
   build/meson builddir-st || exit 1
+  #  -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
 sudo rm -f /usr/local/bin/zstd*
 sudo rm -f /usr/local/bin/*zstd
 meson compile -C builddir-st || exit 1
@@ -75,6 +75,14 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib⭐⭐⭐
 #make -j$(nproc) || exit 1
 #make install || exit 1
 #cd .. && rm -rf zlib
+
+echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
+git clone https://github.com/zlib-ng/zlib-ng || exit 1
+cd zlib-ng || exit 1
+CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
+make -j$(nproc)  || exit 1
+make install || exit 1
+cd .. && rm -rf zlib-ng
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gmp⭐⭐⭐⭐⭐⭐" 
 wget -nv -O- https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz | tar x --xz
@@ -168,14 +176,6 @@ LIBIDN2_CFLAGS=$CFLAGS \
 make -j$(nproc) || exit 1
 make install || exit 1
 cd .. && rm -rf gnutls-* 
-
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
-git clone https://github.com/zlib-ng/zlib-ng || exit 1
-cd zlib-ng || exit 1
-CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
-make -j$(nproc)  || exit 1
-make install || exit 1
-cd .. && rm -rf zlib-ng
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/PCRE2Project/pcre2 || exit 1
