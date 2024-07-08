@@ -223,7 +223,7 @@ LIBPSL_CFLAGS=$CFLAGS \
 LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
 PCRE2_CFLAGS=$CFLAGS \
 PCRE2_LIBS="-L$INSTALLDI/lib -lpcre2-8"  \
-LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp -ltasn1 -lidn2 -lpsl -liphlpapi -lunistring -liconv -lpcre2-8  -lassuan -lgpg-error -lz -lcrypt32 -lpthread" \
+#LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp -ltasn1 -lidn2 -lpsl -liphlpapi -lunistring -liconv -lpcre2-8  -lassuan -lgpg-error -lz -lcrypt32 -lpthread" \
 ./configure  --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
 # --build=x86_64-pc-linux-gnu
 make -j$(nproc) || exit 1
