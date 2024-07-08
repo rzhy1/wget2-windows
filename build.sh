@@ -1,9 +1,7 @@
 # wget2 build script for Windows environment
 # Author: rzhy1
 # 2024/6/30
-echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查询x86_64-w64-mingw32-gcc⭐⭐⭐⭐⭐⭐" 
-which x86_64-w64-mingw32-gcc
-find / -name "x86_64-w64-mingw32-gcc" 2>/dev/null
+
 # 设置环境变量
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
@@ -153,7 +151,7 @@ make install || exit 1
 cd .. && rm -rf libtasn1-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
-wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz | tar x --xz || exit 1
+wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.6.tar.xz | tar x --xz || exit 1
 cd gnutls-* || exit 1
 GMP_LIBS="-L$INSTALLDIR/lib -lgmp" \
 NETTLE_LIBS="-L$INSTALLDIR/lib -lnettle -lgmp" \
@@ -225,8 +223,6 @@ LIBPSL_CFLAGS=$CFLAGS \
 LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
 PCRE2_CFLAGS=$CFLAGS \
 PCRE2_LIBS="-L$INSTALLDI/lib -lpcre2-8"  \
-export LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp -ltasn1 -lidn2 -lpsl -liphlpapi -lunistring -liconv -lpcre2-8  -lassuan -lgpg-error -lz -lcrypt32 -lpthread"
-export CC=/usr/bin/x86_64-w64-mingw32-gcc
 ./configure  --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
 # --build=x86_64-pc-linux-gnu
 make -j$(nproc) || exit 1
