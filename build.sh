@@ -91,10 +91,9 @@ export GNULIB_REFDIR=$INSTALLDIR/gnulib
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
 git clone https://github.com/google/brotli.git || exit 1
 cd brotli || exit 1
-mkdir build && cd build || exit 1
 CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
 make install || exit 1
-cd .. && cd .. && rm -rf brotli
+cd .. && rm -rf brotli
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommo结果如下⭐⭐⭐⭐⭐⭐" 
 pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找brotli文件结果如下⭐⭐⭐⭐⭐⭐" 
