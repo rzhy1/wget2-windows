@@ -24,7 +24,7 @@ cd wget2 || exit 1
 ./bootstrap --skip-po || exit 1
 export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
 export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --disable-shared --enable-static --without-lzma --without-zstd --without-bzip2 --without-lzip  --without-libpsl --without-brotlidec --without-gpgme --without-libpcre --without-libpcre2 --with-winidn --enable-threads=windows || exit 1
+./configure --build=x86_64-pc-linux-gnu --host=$PREFIX - --disable-shared --enable-static --without-lzma --without-zstd --without-bzip2 --without-lzip  --without-libpsl --without-brotlidec --without-gpgme --without-libpcre --without-libpcre2 --with-winidn --enable-threads=windows || exit 1
 make -j$(nproc) || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
