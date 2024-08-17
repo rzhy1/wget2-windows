@@ -159,11 +159,8 @@ make install || exit 1
 cd .. && rm -rf libtasn1-*
 
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnutls⭐⭐⭐⭐⭐⭐" 
-#wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.7.tar.xz | tar x --xz || exit 1
-#cd gnutls-* || exit 1
-git clone https://github.com/gnutls/gnutls.git || exit 1
-cd gnutls || exit 1
-./bootstrap || exit 1
+wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.7.1.tar.xz | tar x --xz || exit 1
+cd gnutls-* || exit 1
 GMP_LIBS="-L$INSTALLDIR/lib -lgmp" \
 NETTLE_LIBS="-L$INSTALLDIR/lib -lnettle -lgmp" \
 HOGWEED_LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp" \
