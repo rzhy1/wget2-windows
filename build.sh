@@ -171,9 +171,9 @@ LIBTASN1_CFLAGS=$CFLAGS \
 NETTLE_CFLAGS=$CFLAGS \
 HOGWEED_CFLAGS=$CFLAGS \
 LIBIDN2_CFLAGS=$CFLAGS \
-./configure CFLAGS="-O3" --host=$PREFIX --prefix=$INSTALLDIR --with-included-unistring --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+./configure CFLAGS="-O3" --host=$PREFIX --prefix=$INSTALLDIR --with-included-unistring --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
 # --build=x86_64-pc-linux-gnu --with-nettle-mini --with-included-libtasn1 
-make -j$(nproc) || exit 1
+make -j8 || exit 1
 make install || exit 1
 cd .. && rm -rf gnutls-* 
 
