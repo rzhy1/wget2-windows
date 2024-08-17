@@ -119,7 +119,7 @@ cd .. && rm -rf libiconv-*
 echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
 wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz || exit 1
 cd libunistring-* || exit 1
-./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
+./configure CFLAGS="-O2" --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
 make -j$(nproc)  || exit 1
 make install || exit 1
 cd .. && rm -rf libunistring-*
@@ -171,7 +171,7 @@ LIBTASN1_CFLAGS=$CFLAGS \
 NETTLE_CFLAGS=$CFLAGS \
 HOGWEED_CFLAGS=$CFLAGS \
 LIBIDN2_CFLAGS=$CFLAGS \
-./configure  --host=$PREFIX --prefix=$INSTALLDIR --with-included-unistring --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+./configure CFLAGS="-O2" --host=$PREFIX --prefix=$INSTALLDIR --with-included-unistring --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
 # --build=x86_64-pc-linux-gnu --with-nettle-mini --with-included-libtasn1 
 make -j$(nproc) || exit 1
 make install || exit 1
