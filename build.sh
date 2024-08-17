@@ -20,7 +20,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐�
 wget -O- https://github.com/tukaani-project/xz/releases/download/v5.6.2/xz-5.6.2.tar.gz | tar xz || exit 1
 cd xz-* || exit 1
 ./configure --host=$PREFIX --prefix=$INSTALLDIR --enable-silent-rules --enable-static --disable-shared || exit 1
-make -j$(nproc)  || exit 1
+make -j4  || exit 1
 make install || exit 1
 cd .. && rm -rf xz-*
 
@@ -112,7 +112,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐�
 wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
 cd libiconv-* || exit 1
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
-make -j$(nproc) || exit 1
+make -j4 || exit 1
 make install || exit 1
 cd .. && rm -rf libiconv-*
 
@@ -120,7 +120,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring�
 wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.gz | tar xz || exit 1
 cd libunistring-* || exit 1
 ./configure CFLAGS="-O3" --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
-make -j$(nproc)  || exit 1
+make -j4  || exit 1
 make install || exit 1
 cd .. && rm -rf libunistring-*
 
@@ -128,7 +128,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libidn2⭐⭐
 wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.7.tar.gz | tar xz || exit 1
 cd libidn2-* || exit 1
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
-make -j$(nproc)  || exit 1
+make -j4  || exit 1
 make install || exit 1
 cd .. && rm -rf libidn2-*
 
@@ -137,7 +137,7 @@ git clone --recursive https://github.com/rockdaboot/libpsl.git || exit 1
 cd libpsl || exit 1
 ./autogen.sh || exit 1
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
-make -j$(nproc) || exit 1
+make -j4 || exit 1
 make install || exit 1
 cd .. && rm -rf libpsl
 
@@ -173,7 +173,7 @@ HOGWEED_CFLAGS=$CFLAGS \
 LIBIDN2_CFLAGS=$CFLAGS \
 ./configure CFLAGS="-O3" --host=$PREFIX --prefix=$INSTALLDIR --with-included-unistring --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
 # --build=x86_64-pc-linux-gnu --with-nettle-mini --with-included-libtasn1 
-make -j8 || exit 1
+make -j4 || exit 1
 make install || exit 1
 cd .. && rm -rf gnutls-* 
 
@@ -207,7 +207,7 @@ echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libmicrohttpd
 wget -O- https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
 cd libmicrohttpd-* || exit 1
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-doc --disable-examples --disable-shared --enable-static || exit 1
-make -j$(nproc)  || exit 1
+make -j4  || exit 1
 make install || exit 1
 cd .. && rm -rf libmicrohttpd-*
 
@@ -224,6 +224,6 @@ LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
 PCRE2_CFLAGS=$CFLAGS \
 PCRE2_LIBS="-L$INSTALLDI/lib -lpcre2-8"  \
 ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
-make -j$(nproc) || exit 1
+make -j4 || exit 1
 strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
 cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
