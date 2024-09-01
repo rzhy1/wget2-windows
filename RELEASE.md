@@ -10,7 +10,7 @@ Wget2 2.1.0 for Windows
 | libpsl        | Git    | [https://github.com/rockdaboot/libpsl.git](https://github.com/rockdaboot/libpsl.git)  |
 | nettle        | Git    |[https://git.lysator.liu.se/nettle/nettle.git](https://git.lysator.liu.se/nettle/nettle.git)  |
 | libtasn1      | 4.19.0 | [https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.19.0.tar.gz](https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.19.0.tar.gz) |
-| gnutls        | 3.8.7.1| [https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.7.1.tar.xz](https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.7.1.tar.xz)  |
+| gnutls        | 3.8.3| [https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz](https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz)  |
 | zlib-ng       | Git    | [https://github.com/zlib-ng/zlib-ng](https://github.com/zlib-ng/zlib-ng)  |
 | PCRE2         | Git    | [https://github.com/PCRE2Project/pcre2](https://github.com/PCRE2Project/pcre2) |
 | nghttp2       | 1.63.0 | [[https://github.com/nghttp2/nghttp2/releases/download/v1.62.1/nghttp2-1.62.1.tar.gz](https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.gz)]([https://github.com/nghttp2/nghttp2/releases/download/v1.62.1/nghttp2-1.62.1.tar.gz](https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.gz))  |
