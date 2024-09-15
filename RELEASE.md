@@ -13,6 +13,6 @@ Wget2 2.1.0 for Windows
 | gnutls        | 3.8.3| [https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz](https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.3.tar.xz)  |
 | zlib-ng       | Git    | [https://github.com/zlib-ng/zlib-ng](https://github.com/zlib-ng/zlib-ng)  |
 | PCRE2         | Git    | [https://github.com/PCRE2Project/pcre2](https://github.com/PCRE2Project/pcre2) |
-| nghttp2       | 1.63.0 | [[https://github.com/nghttp2/nghttp2/releases/download/v1.62.1/nghttp2-1.62.1.tar.gz](https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.gz)]([https://github.com/nghttp2/nghttp2/releases/download/v1.62.1/nghttp2-1.62.1.tar.gz](https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.gz))  |
+| nghttp2       | 1.63.0 | [https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.gz](https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.gz) |
 | dlfcn-win32   | Git    | [https://github.com/dlfcn-win32/dlfcn-win32.git](https://github.com/dlfcn-win32/dlfcn-win32.git)  |
 | libmicrohttpd | 1.0.1  | [https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz](https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz)  |
