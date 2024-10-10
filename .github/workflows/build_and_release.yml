@@ -16,7 +16,7 @@ on:
 
 jobs:
   build_wget2:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
