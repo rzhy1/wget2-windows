@@ -47,7 +47,7 @@ build_zstd() {
   cpu_family = 'x86_64'
   cpu = 'x86_64'
   endian = 'little'
-  EOF
+EOF
 
   # 编译 zstd
   git clone -j$(nproc) https://github.com/facebook/zstd.git || exit 1
