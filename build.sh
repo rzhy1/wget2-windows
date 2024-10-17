@@ -244,7 +244,6 @@ build_wget2() {
 }
 
 build_xz &
-build_zlib &
 build_zlib-ng &
 build_gmp &
 build_libiconv &
