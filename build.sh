@@ -130,7 +130,7 @@ build_libidn2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libidn2⭐⭐⭐⭐⭐⭐" 
   wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.7.tar.gz | tar xz || exit 1
   cd libidn2-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-doc --disable-gcc-warnings --with-included-libunistring --prefix=$INSTALLDIR || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libidn2-*
@@ -230,7 +230,7 @@ build_gnutls() {
   NETTLE_CFLAGS=$CFLAGS \
   HOGWEED_CFLAGS=$CFLAGS \
   LIBIDN2_CFLAGS=$CFLAGS \
-  ./configure CFLAGS="-O3" --host=$PREFIX --prefix=$INSTALLDIR --with-included-unistring --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+  ./configure CFLAGS="-O3" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
   # --build=x86_64-pc-linux-gnu --with-nettle-mini --with-included-libtasn1 
   make -j$(nproc) || exit 1
   make install || exit 1
@@ -262,7 +262,7 @@ build_zlib-ng &
 #build_gmp &
 #build_gnulibmirror &
 build_libiconv &
-#build_libunistring &
+build_libunistring &
 build_libidn2 &
 #build_libtasn1 &
 build_PCRE2 &
