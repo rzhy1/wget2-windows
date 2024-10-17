@@ -25,6 +25,7 @@ build_xz() {
   make -j4  || exit 1
   make install || exit 1
   cd .. && rm -rf xz-*
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_zstd() {
@@ -71,6 +72,7 @@ EOF
   meson compile -C builddir-st || exit 1
   meson install -C builddir-st || exit 1
   cd .. && rm -rf zstd
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_zlib-ng() {
@@ -81,6 +83,7 @@ build_zlib-ng() {
   make -j$(nproc)  || exit 1
   make install || exit 1
   cd .. && rm -rf zlib-ng
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_gmp() {
@@ -91,12 +94,14 @@ build_gmp() {
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf gmp-*
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gmp结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_gnulib-mirror() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
   git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
   export GNULIB_REFDIR=$INSTALLDIR/gnulib
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_libiconv() {
@@ -107,6 +112,7 @@ build_libiconv() {
   make -j4 || exit 1
   make install || exit 1
   cd .. && rm -rf libiconv-*
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_libunistring() {
@@ -117,6 +123,7 @@ build_libunistring() {
   make -j4  || exit 1
   make install || exit 1
   cd .. && rm -rf libunistring-*
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_libidn2() {
@@ -127,6 +134,7 @@ build_libidn2() {
   make -j4  || exit 1
   make install || exit 1
   cd .. && rm -rf libidn2-*
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libidn2结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_libtasn1() {
@@ -137,6 +145,7 @@ build_libtasn1() {
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libtasn1-*
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libtasn1结束⭐⭐⭐⭐⭐⭐"
 }
 
 build_PCRE2() {
@@ -148,6 +157,7 @@ build_PCRE2() {
   make -j$(nproc)  || exit 1
   make install || exit 1
   cd .. && rm -rf pcre2
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_nghttp2() {
@@ -158,6 +168,7 @@ build_nghttp2() {
   make -j$(nproc)  || exit 1
   make install || exit 1
   cd .. && rm -rf nghttp2-*
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nghttp2结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_dlfcn-win32() {
@@ -169,6 +180,7 @@ build_dlfcn-win32() {
   cp -p libdl.a $INSTALLDIR/lib/ || exit 1
   cp -p src/dlfcn.h $INSTALLDIR/include/ || exit 1
   cd .. && rm -rf dlfcn-win32
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build dlfcn-win32结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_libmicrohttpd() {
@@ -179,6 +191,7 @@ build_libmicrohttpd() {
   make -j4  || exit 1
   make install || exit 1
   cd .. && rm -rf libmicrohttpd-*
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libmicrohttpd结束⭐⭐⭐⭐⭐⭐" 
 }
 
 build_libpsl() {
