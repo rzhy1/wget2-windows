@@ -260,15 +260,20 @@ build_xz &
 build_zstd &
 build_zlib-ng &
 build_gmp &
+wait
+
 #build_gnulibmirror &
 build_libiconv &
 build_libunistring &
 build_libidn2 &
 build_libtasn1 &
+wait
+
 build_PCRE2 &
 build_nghttp2 &
 build_dlfcn-win32 &
 build_libmicrohttpd &
+
 wait
 build_libpsl
 build_nettle
