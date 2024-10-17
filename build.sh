@@ -97,7 +97,7 @@ build_gmp() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gmp结束⭐⭐⭐⭐⭐⭐" 
 }
 
-build_gnulib-mirror() {
+build_gnulibmirror() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
   git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
   export GNULIB_REFDIR=$INSTALLDIR/gnulib
@@ -260,7 +260,7 @@ build_xz &
 build_zstd &
 build_zlib-ng &
 build_gmp &
-build_gnulib—mirror &
+build_gnulibmirror &
 build_libiconv &
 build_libunistring &
 build_libidn2 &
