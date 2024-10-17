@@ -250,7 +250,7 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   PCRE2_CFLAGS=$CFLAGS \
   PCRE2_LIBS="-L$INSTALLDI/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma --with-bzip2 --with-zstd --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma  --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
@@ -259,12 +259,12 @@ build_wget2() {
 build_xz &
 build_zstd &
 build_zlib-ng &
-build_gmp &
-build_gnulibmirror &
+#build_gmp &
+#build_gnulibmirror &
 build_libiconv &
-build_libunistring &
+#build_libunistring &
 build_libidn2 &
-build_libtasn1 &
+#build_libtasn1 &
 build_PCRE2 &
 build_nghttp2 &
 build_dlfcn-win32 &
