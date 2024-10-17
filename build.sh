@@ -264,7 +264,7 @@ build_zlib-ng &
 build_libiconv &
 build_libunistring &
 build_libidn2 &
-#build_libtasn1 &
+build_libtasn1 &
 build_PCRE2 &
 build_nghttp2 &
 build_dlfcn-win32 &
