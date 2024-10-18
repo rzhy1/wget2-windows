@@ -45,7 +45,7 @@ jobs:
           #pipx install meson
           git clone --depth 1 https://github.com/mesonbuild/meson.git
           cd meson
-          sudo python3 setup.py install
+          sudo pip install . --no-deps --no-build-isolation
           #python3 -m venv myenv
           #source myenv/bin/activate
           #pip install setuptools
