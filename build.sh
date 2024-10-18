@@ -24,7 +24,7 @@ build_xz() {
   cd xz || { echo "cd xz failed"; exit 1; }
   mkdir build
   cd build
-  cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF || { echo "CMake failed"; exit 1; }
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF || { echo "CMake failed"; exit 1; }
   cmake --build . -- -j$(nproc) || { echo "Build failed"; exit 1; }
   cmake --install . || { echo "Install failed"; exit 1; }
   xz --version
