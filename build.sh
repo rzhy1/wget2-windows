@@ -84,9 +84,16 @@ build_zlib-ng() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
   git clone -j$(nproc) https://github.com/zlib-ng/zlib-ng || exit 1
   cd zlib-ng || exit 1
-  CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
-  make -j$(nproc) || exit 1
-  make install || exit 1
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DZLIB_COMPAT=ON -DCMAKE_SYSTEM_PROCESSOR=x86_64
+  cmake --build . -- -j$(nproc)
+  sudo cmake --install .
+  echo "zlib-ng的版本是："
+  zlib-ng --version
+  #CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
+  #make -j$(nproc) || exit 1
+  #make install || exit 1
   cd .. && rm -rf zlib-ng
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng结束⭐⭐⭐⭐⭐⭐" 
 }
