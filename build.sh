@@ -19,8 +19,9 @@ cd $INSTALLDIR
 
 build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
-  wget -O- https://github.com/tukaani-project/xz/releases/download/v5.6.3/xz-5.6.3.tar.gz | tar xz || exit 1
-  cd xz-* || exit 1
+  #wget -O- https://github.com/tukaani-project/xz/releases/download/v5.6.3/xz-5.6.3.tar.gz | tar xz || exit 1
+  git clone -j$(nproc) https://github.com/tukaani-project/xz.git || exit 1
+  cd xz || exit 1
   #./configure --host=$PREFIX --prefix=$INSTALLDIR --enable-silent-rules --enable-static --disable-shared || exit 1
   #make -j$(nproc) || exit 1
   #make install || exit 1
