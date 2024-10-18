@@ -21,9 +21,12 @@ build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
   wget -O- https://github.com/tukaani-project/xz/releases/download/v5.6.3/xz-5.6.3.tar.gz | tar xz || exit 1
   cd xz-* || exit 1
-  ./configure --host=$PREFIX --prefix=$INSTALLDIR --enable-silent-rules --enable-static --disable-shared || exit 1
-  make -j$(nproc) || exit 1
-  make install || exit 1
+  #./configure --host=$PREFIX --prefix=$INSTALLDIR --enable-silent-rules --enable-static --disable-shared || exit 1
+  #make -j$(nproc) || exit 1
+  #make install || exit 1
+  cmake .. -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF
+  cmake --build . -- -j$(nproc)
+  sudo cmake --install .
   cd .. && rm -rf xz-*
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz结束⭐⭐⭐⭐⭐⭐" 
 }
@@ -261,7 +264,7 @@ build_wget2() {
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
 }
 
-#build_xz
+build_xz
 build_zstd
 build_zlib-ng 
 build_libpsl
