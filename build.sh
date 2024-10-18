@@ -19,15 +19,16 @@ cd $INSTALLDIR
 
 build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
-  #git clone -j$(nproc) https://github.com/tukaani-project/xz.git || { echo "Git clone failed"; exit 1; }
-  #cd xz || { echo "cd xz failed"; exit 1; }
-  #mkdir build
-  #cd build
-  #cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF || { echo "CMake failed"; exit 1; }
-  #cmake --build . -- -j$(nproc) || { echo "Build failed"; exit 1; }
-  #cmake --install . || { echo "Install failed"; exit 1; }
+  sudo apt-get purge xz-utils
+  git clone -j$(nproc) https://github.com/tukaani-project/xz.git || { echo "Git clone failed"; exit 1; }
+  cd xz || { echo "cd xz failed"; exit 1; }
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF || { echo "CMake failed"; exit 1; }
+  cmake --build . -- -j$(nproc) || { echo "Build failed"; exit 1; }
+  cmake --install . || { echo "Install failed"; exit 1; }
   xz --version
-  #cd .. && rm -rf xz
+  cd .. && rm -rf xz
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz结束⭐⭐⭐⭐⭐⭐" 
 }
 
