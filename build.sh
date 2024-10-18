@@ -84,31 +84,10 @@ build_zlib-ng() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
   git clone -j$(nproc) https://github.com/zlib-ng/zlib-ng || exit 1
   cd zlib-ng || exit 1
-  mkdir build
-  cd build
-  cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DZLIB_COMPAT=ON -DARCH=x86_64 \
-       -DWITH_RUNTIME_CPU_DETECTION=OFF \
-       -DWITH_BENCHMARKS=OFF \
-       -DWITH_BENCHMARK_APPS=OFF \
-       -DZLIB_ENABLE_TESTS=OFF \
-       -DZLIBNG_ENABLE_TESTS=OFF \
-       -DWITH_FUZZERS=OFF \
-       -DWITH_GTEST=OFF \
-       -DWITH_MAINTAINER_WARNINGS=OFF \
-       -DWITH_CODE_COVERAGE=OFF \
-       -DWITH_INFLATE_STRICT=OFF \
-       -DWITH_INFLATE_ALLOW_INVALID_DIST=OFF \
-       -DWITH_PCLMULQDQ=OFF -DWITH_AVX2=OFF \
-       -DWITH_AVX512=OFF -DWITH_AVX512VNNI=OFF -DWITH_VPCLMULQDQ=OFF \
-       -DWITH_ALTIVEC=OFF -DWITH_POWER8=OFF -DWITH_POWER9=OFF -DWITH_RVV=OFF \
-       -DWITH_ACLE=OFF -DWITH_NEON=OFF -DWITH_ARMV6=OFF \
-       -DWITH_DFLTCC_DEFLATE=OFF -DWITH_DFLTCC_INFLATE=OFF -DWITH_CRC32_VX=OFF
-  cmake --build . -- -j$(nproc)
-  sudo cmake --install .
-  #CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
-  #make -j$(nproc) || exit 1
-  #make install || exit 1
-  cd ../.. && rm -rf zlib-ng
+  CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
+  make -j$(nproc) || exit 1
+  make install || exit 1
+  cd .. && rm -rf zlib-ng
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng结束⭐⭐⭐⭐⭐⭐" 
 }
 
@@ -145,11 +124,7 @@ build_libunistring() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
   wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
-  ./configure CFLAGS="-O3" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-doc \
-            --disable-examples --disable-shared --enable-static \
-            --disable-tools --disable-heavy_tests --disable-compiler-hardening \
-            --disable-linker-hardening --disable-thread-names --disable-coverage \
-            --disable-sanitizers --disable-experimental || exit 1
+  ./configure CFLAGS="-O3" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static| exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libunistring-*
@@ -182,26 +157,11 @@ build_PCRE2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
   git clone -j$(nproc) https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
-  mkdir build
-  cd build
-  cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DARCH=x86_64 -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON \
-       -DPCRE2_BUILD_PCRE2GREP=ON \
-       -DPCRE2_BUILD_TESTS=OFF \
-       -DPCRE2_SUPPORT_JIT=OFF \
-       -DPCRE2_SUPPORT_JIT_SEALLOC=OFF \
-       -DPCRE2_SUPPORT_VALGRIND=OFF \
-       -DPCRE2_SUPPORT_LIBBZ2=OFF \
-       -DPCRE2_SUPPORT_LIBZ=OFF \
-       -DPCRE2_SUPPORT_LIBEDIT=OFF \
-       -DPCRE2_SUPPORT_LIBREADLINE=OFF \
-       -DPCRE2_SHOW_REPORT=OFF
-  cmake --build . -- -j$(nproc)
-  sudo cmake --install .
-  #./autogen.sh || exit 1
-  #./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
-  #make -j$(nproc) || exit 1
-  #make install || exit 1
-  cd ../.. && rm -rf pcre2
+  ./autogen.sh || exit 1
+  ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
+  make -j$(nproc) || exit 1
+  make install || exit 1
+  cd .. && rm -rf pcre2
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2结束⭐⭐⭐⭐⭐⭐" 
 }
 
@@ -232,11 +192,8 @@ build_libmicrohttpd() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libmicrohttpd⭐⭐⭐⭐⭐⭐" 
   wget -O- https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
   cd libmicrohttpd-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-doc \
-            --disable-examples --disable-shared --enable-static \
-            --disable-tools --disable-heavy_tests --disable-compiler-hardening \
-            --disable-linker-hardening --disable-thread-names --disable-coverage \
-            --disable-sanitizers --disable-experimental || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
+            --disable-examples --disable-doc --disable-tools || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libmicrohttpd-*
@@ -306,18 +263,18 @@ build_wget2() {
 }
 
 #build_xz
-build_zstd
-build_zlib-ng 
-build_gmp
-#build_gnulibmirror
-build_libiconv
-build_libunistring
-build_libidn2
+build_zstd &
+build_zlib-ng &
+build_gmp &
+#build_gnulibmirror &
+build_libiconv &
+build_libunistring &
+build_libidn2 &
 #build_libtasn1 &
-build_PCRE2
-build_nghttp2
+build_PCRE2 &
+build_nghttp2 &
 #build_dlfcn-win32 &
-build_libmicrohttpd
+build_libmicrohttpd &
 wait
 build_libpsl
 build_nettle
