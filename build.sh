@@ -55,7 +55,7 @@ build_zstd() {
   cd zstd || exit 1
   LDFLAGS=-static \
   meson setup \
-    --cross-file=$INSTALLDIR/cross_file.txt \
+    --cross-file=${GITHUB_WORKSPACE}/cross_file.txt \
     --backend=ninja \
     --prefix=$INSTALLDIR \
     --libdir=$INSTALLDIR/lib \
