@@ -86,11 +86,9 @@ build_zlib-ng() {
   cd zlib-ng || exit 1
   mkdir build
   cd build
-  cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DZLIB_COMPAT=ON  -DZLIB_ENABLE_TESTS=OFF -DZLIBNG_ENABLE_TESTS=OFF -DWITH_BENCHMARKS=OFF -DWITH_BENCHMARK_APPS=OFF -DARCH=x86_64
+  cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DZLIB_COMPAT=ON  -DZLIB_ENABLE_TESTS=OFF -DZLIBNG_ENABLE_TESTS=OFF -DWITH_BENCHMARKS=OFF -DWITH_BENCHMARK_APPS=OFF -DARCH=x86_64
   cmake --build . -- -j$(nproc)
   sudo cmake --install .
-  echo "zlib-ng的版本是："
-  zlib-ng --version
   #CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   #make -j$(nproc) || exit 1
   #make install || exit 1
@@ -274,7 +272,7 @@ build_wget2() {
 }
 
 #build_xz
-build_zstd
+#build_zstd
 build_zlib-ng 
 build_gmp
 #build_gnulibmirror
