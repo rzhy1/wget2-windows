@@ -40,7 +40,9 @@ jobs:
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
-            retry
+            retry \
+            python3-pip
+          sudo pip3 install --upgrade meson
           #git clone https://github.com/mesonbuild/meson.git
           #cd meson
           #sudo python3 setup.py install
