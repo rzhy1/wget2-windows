@@ -202,7 +202,7 @@ build_libpsl() {
   #./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
   #make -j$(nproc) || exit 1
   #make install || exit 1
-  meson setup builddir --cross-file=../cross_file.txt --prefix=$INSTALLDIR --buildtype=release --libdir=$INSTALLDIR/lib --bindir=$INSTALLDIR/bin --pkg-config-path="$INSTALLDIR/lib/pkgconfig" || exit 1
+  meson setup builddir --cross-file=${GITHUB_WORKSPACE}/cross_file.txt --prefix=$INSTALLDIR --buildtype=release --libdir=$INSTALLDIR/lib --bindir=$INSTALLDIR/bin --pkg-config-path="$INSTALLDIR/lib/pkgconfig" || exit 1
   # 指定编译目标，例如启用静态库并禁用共享库
   meson configure -Ddefault_library=static -Dbuiltin=true -Druntime=libidn2 || exit 1
   meson compile -C builddir -j$(nproc) || exit 1
