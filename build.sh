@@ -16,7 +16,6 @@ export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/l
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
-
 build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
   sudo apt-get purge xz-utils
@@ -35,24 +34,9 @@ build_xz() {
 build_zstd() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
   # 创建 Python 虚拟环境并安装meson
-  #python3 -m venv /tmp/venv
-  #source /tmp/venv/bin/activate
-  #pip3 install meson pytest
-
-  # 创建交叉编译文件
-  #cat <<EOF > cross_file.txt
-  #[binaries]
-  #c = 'x86_64-w64-mingw32-gcc'
-  #cpp = 'x86_64-w64-mingw32-g++'
-  #ar = 'x86_64-w64-mingw32-ar'
-  #strip = 'x86_64-w64-mingw32-strip'
-  #exe_wrapper = 'wine64'
-  #[host_machine]
-  #system = 'windows'
-  #cpu_family = 'x86_64'
-  #cpu = 'x86_64'
-  #endian = 'little'
-#EOF
+  python3 -m venv /tmp/venv
+  source /tmp/venv/bin/activate
+  pip3 install meson pytest
 
   # 编译 zstd
   git clone -j$(nproc) https://github.com/facebook/zstd.git || exit 1
@@ -70,7 +54,6 @@ build_zstd() {
     -Ddefault_library=static \
     -Db_lto=true --optimization=2 \
     build/meson builddir-st || exit 1
-    #  -Dzlib=disabled -Dlzma=disabled -Dlz4=disabled \
   sudo rm -f /usr/local/bin/zstd*
   sudo rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
