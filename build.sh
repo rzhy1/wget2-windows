@@ -28,7 +28,7 @@ build_xz() {
   sudo cmake --build . -- -j$(nproc) || { echo "Build failed"; exit 1; }
   sudo cmake --install . || { echo "Install failed"; exit 1; }
   xz --version
-  cd .. && rm -rf xz
+  cd ../.. && rm -rf xz
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz结束⭐⭐⭐⭐⭐⭐" 
 }
 
@@ -109,7 +109,7 @@ build_zlib-ng() {
   #CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   #make -j$(nproc) || exit 1
   #make install || exit 1
-  cd .. && rm -rf zlib-ng
+  cd ../.. && rm -rf zlib-ng
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng结束⭐⭐⭐⭐⭐⭐" 
 }
 
