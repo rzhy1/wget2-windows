@@ -40,7 +40,8 @@ jobs:
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
-            retry 
+            retry \
+            xz
           #python3 -m venv myenv
           #source myenv/bin/activate
           #pip install setuptools
