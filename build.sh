@@ -25,7 +25,9 @@ build_xz() {
   #./configure --host=$PREFIX --prefix=$INSTALLDIR --enable-silent-rules --enable-static --disable-shared || exit 1
   #make -j$(nproc) || exit 1
   #make install || exit 1
-  cmake .. -DCMAKE_INSTALL_PREFIX=$INSTALLDIR/xz -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF
   cmake --build . -- -j$(nproc)
   cmake --install .
   cd .. && rm -rf xz-*
