@@ -36,19 +36,19 @@ build_zstd() {
   pip3 install meson pytest
 
   # 创建交叉编译文件
-  cat <<EOF > cross_file.txt
-  [binaries]
-  c = 'x86_64-w64-mingw32-gcc'
-  cpp = 'x86_64-w64-mingw32-g++'
-  ar = 'x86_64-w64-mingw32-ar'
-  strip = 'x86_64-w64-mingw32-strip'
-  exe_wrapper = 'wine64'
-  [host_machine]
-  system = 'windows'
-  cpu_family = 'x86_64'
-  cpu = 'x86_64'
-  endian = 'little'
-EOF
+  #cat <<EOF > cross_file.txt
+  #[binaries]
+  #c = 'x86_64-w64-mingw32-gcc'
+  #cpp = 'x86_64-w64-mingw32-g++'
+  #ar = 'x86_64-w64-mingw32-ar'
+  #strip = 'x86_64-w64-mingw32-strip'
+  #exe_wrapper = 'wine64'
+  #[host_machine]
+  #system = 'windows'
+  #cpu_family = 'x86_64'
+  #cpu = 'x86_64'
+  #endian = 'little'
+#EOF
 
   # 编译 zstd
   git clone -j$(nproc) https://github.com/facebook/zstd.git || exit 1
@@ -198,10 +198,15 @@ build_libpsl() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libpsl⭐⭐⭐⭐⭐⭐" 
   git clone --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
-  ./autogen.sh || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
-  make -j$(nproc) || exit 1
-  make install || exit 1
+  #./autogen.sh || exit 1
+  #./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
+  #make -j$(nproc) || exit 1
+  #make install || exit 1
+  meson setup builddir --cross-file=../cross_file.txt --prefix=$INSTALLDIR --buildtype=release --libdir=$INSTALLDIR/lib --bindir=$INSTALLDIR/bin --pkg-config-path="$INSTALLDIR/lib/pkgconfig" || exit 1
+  # 指定编译目标，例如启用静态库并禁用共享库
+  meson configure -Ddefault_library=static -Dbuiltin=true -Druntime=libidn2 || exit 1
+  meson compile -C builddir -j$(nproc) || exit 1
+  meson install -C builddir || exit 1
   cd .. && rm -rf libpsl
 }
 
@@ -256,9 +261,11 @@ build_wget2() {
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
 }
 
-build_xz &
-build_zstd &
-build_zlib-ng &
+build_xz
+build_zstd
+build_zlib-ng 
+build_libpsl
+
 build_gmp &
 #build_gnulibmirror &
 build_libiconv &
@@ -270,7 +277,7 @@ build_nghttp2 &
 #build_dlfcn-win32 &
 build_libmicrohttpd &
 wait
-build_libpsl
+#build_libpsl
 build_nettle
 build_gnutls
 build_wget2
