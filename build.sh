@@ -82,7 +82,7 @@ build_zstd() {
 
 build_zlib-ng() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
-  git clone https://github.com/zlib-ng/zlib-ng || exit 1
+  git clone -j$(nproc) https://github.com/zlib-ng/zlib-ng || exit 1
   cd zlib-ng || exit 1
   CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   make -j$(nproc) || exit 1
@@ -155,7 +155,7 @@ build_libtasn1() {
 
 build_PCRE2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
-  git clone https://github.com/PCRE2Project/pcre2 || exit 1
+  git clone -j$(nproc) https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
   ./autogen.sh || exit 1
   ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
@@ -178,7 +178,7 @@ build_nghttp2() {
 
 build_dlfcn-win32() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build dlfcn-win32⭐⭐⭐⭐⭐⭐" 
-  git clone --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
+  git clone -j$(nproc) --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
   cd dlfcn-win32 || exit 1
   ./configure --prefix=$PREFIX --cc=$PREFIX-gcc || exit 1
   make -j$(nproc) || exit 1
@@ -201,23 +201,23 @@ build_libmicrohttpd() {
 
 build_libpsl() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libpsl⭐⭐⭐⭐⭐⭐" 
-  git clone --recursive https://github.com/rockdaboot/libpsl.git || exit 1
+  git clone -j$(nproc) --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
-  #./autogen.sh || exit 1
-  #./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
-  #make -j$(nproc) || exit 1
-  #make install || exit 1
-  meson setup builddir --prefix=$INSTALLDIR --buildtype=release --libdir=$INSTALLDIR/lib --bindir=$INSTALLDIR/bin --pkg-config-path="$INSTALLDIR/lib/pkgconfig" || exit 1
+  ./autogen.sh || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
+  make -j$(nproc) || exit 1
+  make install || exit 1
+  #meson setup builddir --prefix=$INSTALLDIR --buildtype=release --libdir=$INSTALLDIR/lib --bindir=$INSTALLDIR/bin --pkg-config-path="$INSTALLDIR/lib/pkgconfig" || exit 1
   # 指定编译目标，例如启用静态库并禁用共享库--cross-file=${GITHUB_WORKSPACE}/cross_file.txt 
-  meson configure -Ddefault_library=static -Dbuiltin=true -Druntime=libidn2 || exit 1
-  meson compile -C builddir -j$(nproc) || exit 1
-  meson install -C builddir || exit 1
+  #meson configure -Ddefault_library=static -Dbuiltin=true -Druntime=libidn2 || exit 1
+  #meson compile -C builddir -j$(nproc) || exit 1
+  #meson install -C builddir || exit 1
   cd .. && rm -rf libpsl
 }
 
 build_nettle() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
-  git clone https://github.com/sailfishos-mirror/nettle.git || exit 1
+  git clone -j$(nproc) https://github.com/sailfishos-mirror/nettle.git || exit 1
   cd nettle || exit 1
   bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --enable-mini-gmp --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR || exit 1
@@ -249,7 +249,7 @@ build_gnutls() {
 
 build_wget2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
-  git clone https://github.com/rockdaboot/wget2.git || exit 1
+  git clone -j$(nproc) https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   ./bootstrap --skip-po || exit 1
   export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
@@ -269,20 +269,18 @@ build_wget2() {
 #build_xz
 build_zstd
 build_zlib-ng 
-build_libpsl
-
-build_gmp &
-#build_gnulibmirror &
-build_libiconv &
-build_libunistring &
+build_gmp
+#build_gnulibmirror
+build_libiconv
+build_libunistring
 build_libidn2
 #build_libtasn1 &
-build_PCRE2 &
-build_nghttp2 &
+build_PCRE2
+build_nghttp2
 #build_dlfcn-win32 &
-build_libmicrohttpd &
+build_libmicrohttpd
 wait
-#build_libpsl
+build_libpsl
 build_nettle
 build_gnutls
 build_wget2
