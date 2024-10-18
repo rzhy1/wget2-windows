@@ -86,7 +86,7 @@ build_zlib-ng() {
   cd zlib-ng || exit 1
   mkdir build
   cd build
-  cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DZLIB_COMPAT=ON -DCMAKE_SYSTEM_PROCESSOR=x86_64
+  cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DZLIB_COMPAT=ON  -DZLIB_ENABLE_TESTS=OFF -DZLIBNG_ENABLE_TESTS=OFF -DWITH_BENCHMARKS=OFF -DWITH_BENCHMARK_APPS=OFF -DARCH=x86_64
   cmake --build . -- -j$(nproc)
   sudo cmake --install .
   echo "zlib-ng的版本是："
