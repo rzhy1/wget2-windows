@@ -31,7 +31,7 @@ jobs:
         run: |
           sudo apt-get update
           #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
-          sudo apt-get install -y  \
+          sudo apt-get install -y --no-install-recommends  \
             autopoint \
             cmake \
             gettext \
@@ -45,7 +45,7 @@ jobs:
           #pipx install meson
           git clone --depth 1 https://github.com/mesonbuild/meson.git
           cd meson
-          sudo python3 setup.py install --no-deps
+          sudo python3 setup.py install
           #python3 -m venv myenv
           #source myenv/bin/activate
           #pip install setuptools
