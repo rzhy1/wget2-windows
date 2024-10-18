@@ -40,11 +40,10 @@ jobs:
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
-            retry
-          python3 -m venv myenv
-          source myenv/bin/activate
-          pip3 install meson pytest
-          pip install --upgrade meson
+            retry \
+            meson
+          #python3 -m venv myenv
+          #source myenv/bin/activate
           #pip install setuptools
           #pip install --upgrade setuptools
       - name: Compile
