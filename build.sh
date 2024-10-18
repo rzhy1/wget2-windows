@@ -184,7 +184,17 @@ build_PCRE2() {
   cd pcre2 || exit 1
   mkdir build
   cd build
-  cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DARCH=x86_64 -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON
+  cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DARCH=x86_64 -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON \
+       -DPCRE2_BUILD_PCRE2GREP=ON \
+       -DPCRE2_BUILD_TESTS=OFF \
+       -DPCRE2_SUPPORT_JIT=OFF \
+       -DPCRE2_SUPPORT_JIT_SEALLOC=OFF \
+       -DPCRE2_SUPPORT_VALGRIND=OFF \
+       -DPCRE2_SUPPORT_LIBBZ2=OFF \
+       -DPCRE2_SUPPORT_LIBZ=OFF \
+       -DPCRE2_SUPPORT_LIBEDIT=OFF \
+       -DPCRE2_SUPPORT_LIBREADLINE=OFF \
+       -DPCRE2_SHOW_REPORT=OFF
   cmake --build . -- -j$(nproc)
   sudo cmake --install .
   #./autogen.sh || exit 1
@@ -222,7 +232,11 @@ build_libmicrohttpd() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libmicrohttpd⭐⭐⭐⭐⭐⭐" 
   wget -O- https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
   cd libmicrohttpd-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-doc --disable-examples --disable-shared --enable-static || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-doc \
+            --disable-examples --disable-shared --enable-static \
+            --disable-tools --disable-heavy_tests --disable-compiler-hardening \
+            --disable-linker-hardening --disable-thread-names --disable-coverage \
+            --disable-sanitizers --disable-experimental || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libmicrohttpd-*
@@ -237,11 +251,6 @@ build_libpsl() {
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
-  #meson setup builddir --prefix=$INSTALLDIR --buildtype=release --libdir=$INSTALLDIR/lib --bindir=$INSTALLDIR/bin --pkg-config-path="$INSTALLDIR/lib/pkgconfig" || exit 1
-  # 指定编译目标，例如启用静态库并禁用共享库--cross-file=${GITHUB_WORKSPACE}/cross_file.txt 
-  #meson configure -Ddefault_library=static -Dbuiltin=true -Druntime=libidn2 || exit 1
-  #meson compile -C builddir -j$(nproc) || exit 1
-  #meson install -C builddir || exit 1
   cd .. && rm -rf libpsl
 }
 
