@@ -44,6 +44,7 @@ jobs:
           python3 -m venv myenv
           source myenv/bin/activate
           pip3 install meson pytest
+          pip install --upgrade meson
           #pip install setuptools
           #pip install --upgrade setuptools
       - name: Compile
