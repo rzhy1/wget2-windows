@@ -45,7 +45,6 @@ jobs:
           git clone --depth 1 https://github.com/mesonbuild/meson.git
           cd meson
           sudo pip install . --no-deps --no-build-isolation
-          DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
           #python3 -m venv myenv
           #source myenv/bin/activate
           #pip install setuptools
