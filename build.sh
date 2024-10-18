@@ -24,7 +24,7 @@ build_xz() {
   cd xz || { echo "cd xz failed"; exit 1; }
   mkdir build
   cd build
-  cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF || { echo "CMake failed"; exit 1; }
+  cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF || { echo "CMake failed"; exit 1; }
   cmake --build . -- -j$(nproc) || { echo "Build failed"; exit 1; }
   cmake --install . || { echo "Install failed"; exit 1; }
   xz --version
@@ -75,6 +75,7 @@ build_zstd() {
   sudo rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
   meson install -C builddir-st || exit 1
+  zstd --version
   cd .. && rm -rf zstd
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd结束⭐⭐⭐⭐⭐⭐" 
 }
