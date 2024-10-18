@@ -42,9 +42,9 @@ jobs:
             pkg-config-mingw-w64-x86-64 \
             retry
           #xz-utils
-          git clone --depth 1 https://github.com/mesonbuild/meson.git
-          cd meson
-          sudo pip install . --no-deps --no-build-isolation
+          #git clone --depth 1 https://github.com/mesonbuild/meson.git
+          #cd meson
+          #sudo pip install . --no-deps --no-build-isolation
           #python3 -m venv myenv
           #source myenv/bin/activate
           #pip install setuptools
