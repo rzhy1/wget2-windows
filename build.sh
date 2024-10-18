@@ -145,7 +145,11 @@ build_libunistring() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
   wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
-  ./configure CFLAGS="-O3" --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
+  ./configure CFLAGS="-O3" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-doc \
+            --disable-examples --disable-shared --enable-static \
+            --disable-tools --disable-heavy_tests --disable-compiler-hardening \
+            --disable-linker-hardening --disable-thread-names --disable-coverage \
+            --disable-sanitizers --disable-experimental || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libunistring-*
