@@ -30,10 +30,6 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt-get update
-          echo "apt-cache madison meson"
-          apt-cache madison meson
-          echo "apt show meson"
-          apt show meson
           #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
           sudo apt-get install -y  \
             autopoint \
@@ -44,10 +40,11 @@ jobs:
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
-            retry
-          git clone https://github.com/mesonbuild/meson.git
-          cd meson
-          sudo python3 setup.py install
+            retry \
+            meson
+          #git clone https://github.com/mesonbuild/meson.git
+          #cd meson
+          #sudo python3 setup.py install
           #python3 -m venv myenv
           #source myenv/bin/activate
           #pip install setuptools
