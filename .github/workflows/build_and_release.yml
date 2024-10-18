@@ -41,9 +41,9 @@ jobs:
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
             retry
-          sudo apt-add-repository ppa:mesonbuild/meson
-          sudo apt-get update
-          sudo apt-get install meson
+          git clone https://github.com/mesonbuild/meson.git
+          cd meson
+          sudo python3 setup.py install
           #python3 -m venv myenv
           #source myenv/bin/activate
           #pip install setuptools
