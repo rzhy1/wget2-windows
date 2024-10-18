@@ -261,7 +261,7 @@ build_wget2() {
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
 }
 
-#build_xz
+build_xz
 build_zstd
 build_zlib-ng 
 build_libpsl
