@@ -30,6 +30,7 @@ build_xz() {
   cmake .. -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF
   cmake --build . -- -j$(nproc)
   cmake --install .
+  echo "xz --version:" & xz --version
   cd .. && rm -rf xz-*
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz结束⭐⭐⭐⭐⭐⭐" 
 }
