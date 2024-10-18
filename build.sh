@@ -179,11 +179,27 @@ build_PCRE2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
   git clone -j$(nproc) https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
-  ./autogen.sh || exit 1
-  ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
-  make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf pcre2
+  mkdir build
+  cd build
+  cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="$INSTALLDIR" -DCMAKE_BUILD_TYPE=Release -DARCH=x86_64 \
+       -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON \ #强制静态链接
+       -DPCRE2_BUILD_PCRE2GREP=OFF \
+       -DPCRE2_BUILD_TESTS=OFF \
+       -DPCRE2_SUPPORT_JIT=OFF \
+       -DPCRE2_SUPPORT_JIT_SEALLOC=OFF \
+       -DPCRE2_SUPPORT_VALGRIND=OFF \
+       -DPCRE2_SUPPORT_LIBBZ2=OFF \
+       -DPCRE2_SUPPORT_LIBZ=OFF \
+       -DPCRE2_SUPPORT_LIBEDIT=OFF \
+       -DPCRE2_SUPPORT_LIBREADLINE=OFF \
+       -DPCRE2_SHOW_REPORT=OFF
+  cmake --build . -- -j$(nproc)
+  sudo cmake --install .
+  #./autogen.sh || exit 1
+  #./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
+  #make -j$(nproc) || exit 1
+  #make install || exit 1
+  cd ../.. && rm -rf pcre2
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2结束⭐⭐⭐⭐⭐⭐" 
 }
 
