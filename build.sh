@@ -55,7 +55,7 @@ build_zstd() {
   cd zstd || exit 1
   LDFLAGS=-static \
   meson setup \
-    --cross-file=../cross_file.txt \
+    --cross-file=$INSTALLDIR/cross_file.txt \
     --backend=ninja \
     --prefix=$INSTALLDIR \
     --libdir=$INSTALLDIR/lib \
@@ -261,7 +261,7 @@ build_wget2() {
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
 }
 
-build_xz
+#build_xz
 build_zstd
 build_zlib-ng 
 build_libpsl
