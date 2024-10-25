@@ -29,9 +29,9 @@ jobs:
             build-cache-x86_64-w64-mingw32-
       - name: Install prerequisites
         run: |
-          apt-get update
-          #DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-          apt-get install -y --no-install-recommends  \
+          sudo apt-get update
+          #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
+          sudo apt-get install -y --no-install-recommends  \
             autopoint \
             cmake \
             gettext \
@@ -40,7 +40,6 @@ jobs:
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
-            wget \
             retry
       - name: Compile
         env:
