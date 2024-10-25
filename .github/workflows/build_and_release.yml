@@ -17,6 +17,8 @@ on:
 jobs:
   build_wget2:
     runs-on: ubuntu-24.04
+    container:
+      image: ubuntu:24.10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,7 +33,7 @@ jobs:
         run: |
           sudo apt-get update
           #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
-          sudo apt-get install -y --no-install-recommends  \
+          apt-get install -y --no-install-recommends  \
             autopoint \
             cmake \
             gettext \
@@ -40,15 +42,8 @@ jobs:
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
+            wget \
             retry
-          #xz-utils
-          #git clone --depth 1 https://github.com/mesonbuild/meson.git
-          #cd meson
-          #sudo pip install . --no-deps --no-build-isolation
-          #python3 -m venv myenv
-          #source myenv/bin/activate
-          #pip install setuptools
-          #pip install --upgrade setuptools
       - name: Compile
         env:
           CROSS_HOST: "x86_64-w64-mingw32"
