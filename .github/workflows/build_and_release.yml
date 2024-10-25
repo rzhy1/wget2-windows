@@ -31,8 +31,8 @@ jobs:
             build-cache-x86_64-w64-mingw32-
       - name: Install prerequisites
         run: |
-          sudo apt-get update
-          #DEBIAN_FRONTEND=noninteractive sudo apt-get upgrade -y
+          apt-get update
+          #DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
           apt-get install -y --no-install-recommends  \
             autopoint \
             cmake \
