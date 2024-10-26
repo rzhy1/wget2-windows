@@ -1,3 +1,4 @@
+#!/bin/bash
 # wget2 build script for Windows environment
 # Author: rzhy1
 # 2024/6/30
