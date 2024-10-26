@@ -39,6 +39,7 @@ jobs:
             lzip \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
+            git \
             retry
       - name: Compile
         env:
