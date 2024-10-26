@@ -42,7 +42,7 @@ jobs:
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
-            git wget \
+            git curl ca-certificates gnupg wget build-essential \
             retry
       - name: Compile
         env:
