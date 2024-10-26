@@ -17,7 +17,8 @@ on:
 jobs:
   build_wget2:
     runs-on: ubuntu-24.04
-    container: "rzhy/ubuntu:x86_64-w64-mingw32"
+    container:
+      image: ubuntu:rolling
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,13 +34,15 @@ jobs:
           apt-get update
           #DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
           apt-get install -y --no-install-recommends  \
+            autopoint \
             cmake \
             gettext \
             gperf \
             lzip \
+            mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
-            git \
+            git curl ca-certificates gnupg wget build-essential autoconf automake libtool python3 \
             retry
       - name: Compile
         env:
