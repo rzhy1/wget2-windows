@@ -32,7 +32,7 @@ jobs:
       - name: Install prerequisites
         run: |
           apt-get update
-          #DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+          DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
           apt-get install -y --no-install-recommends  \
             autopoint \
             cmake \
