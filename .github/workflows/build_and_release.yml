@@ -18,7 +18,7 @@ jobs:
   build_wget2:
     runs-on: ubuntu-24.04
     container:
-      image: ubuntu:24.10
+      image: ubuntu:rolling
     steps:
       - name: Checkout
         uses: actions/checkout@v4
