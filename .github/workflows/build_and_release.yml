@@ -67,11 +67,11 @@ jobs:
           artifacts: "wget2.exe"
           bodyFile: "RELEASE.md"
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: update README.md
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          cp RELEASE.md README.md
-          git add README.md -f
-          git commit -m "更新 README 文件" || exit 1
-          git push origin HEAD:main || exit 1
+      #- name: update README.md
+      #  run: |
+      #    git config --global user.email "actions@github.com"
+      #    git config --global user.name "GitHub Actions"
+      #    cp RELEASE.md README.md
+      #    git add README.md -f
+      #    git commit -m "更新 README 文件" || exit 1
+      #    git push origin HEAD:main || exit 1
