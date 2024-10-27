@@ -42,7 +42,7 @@ jobs:
             mingw-w64 \
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
-            git ca-certificates wget autoconf python3 meson python3-pip flex texinfo jq \
+            git curl ca-certificates gnupg wget build-essential autoconf automake libtool python3 meson python3-pip flex texinfo jq \
             retry
       - name: Compile
         env:
