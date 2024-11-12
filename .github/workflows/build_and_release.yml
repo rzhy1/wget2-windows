@@ -22,7 +22,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: 缓存依赖项
+      - name: mkdir downloads 
+        run: mkdir -p ${{ github.workspace }}/downloads  
+      - name: Cache dependencies
         uses: actions/cache@v4
         id: cache-deps
         with:
@@ -31,14 +33,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-wget2-deps-
 
-      - name: 缓存构建产物
-        uses: actions/cache@v4
-        id: cache-build
-        with:
-          path: ${{ github.workspace }}/usr/local/
-          key: ${{ runner.os }}-wget2-build-${{ hashFiles('**/Makefile', '**/*.c', '**/*.cpp', '**/*.h', '**/*.sh', '**/meson.build') }}
-          restore-keys: |
-            ${{ runner.os }}-wget2-build-
       #- name: Install prerequisites
       #  run: |
       #    apt-get update
