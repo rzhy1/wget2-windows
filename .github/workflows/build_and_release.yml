@@ -29,7 +29,7 @@ jobs:
         id: cache-deps
         with:
           path: ${{ github.workspace }}/downloads/
-          key: ${{ runner.os }}-wget2-deps-${{ hashFiles('**/Makefile', '**/*.c', '**/*.cpp', '**/*.h', '**/*.sh', '**/meson.build') }}
+          key: ${{ runner.os }}-wget2-deps-${{ hashFiles('**/Makefile', '**/*.c', '**/*.cpp', '**/*.h', '**/*.sh', '**/meson.build') }}-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-wget2-deps-
 
