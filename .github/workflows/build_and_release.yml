@@ -22,25 +22,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: mkdir downloads 
-        run: |
-          mkdir -p ${{ github.workspace }}/downloads && \
-          echo "downloads directory created" && \
-          echo "caching dependencies..." && \
-          # 此处可以添加检查downloads目录是否存在的命令
-          ls -ld ${{ github.workspace }}/downloads && \
-          # 这里可以使用一个占位符文件，以便缓存机制能找到一个文件进行缓存
-          touch ${{ github.workspace }}/downloads/.cache_placeholder
-          # ... 使用 actions/cache@v4 缓存 ...
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        id: cache-deps
-        with:
-          path: ${{ github.workspace }}/downloads/
-          key: ${{ runner.os }}-wget2-deps-${{ hashFiles('**/Makefile', '**/*.c', '**/*.cpp', '**/*.h', '**/*.sh', '**/meson.build') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-wget2-deps-
-
       #- name: Install prerequisites
       #  run: |
       #    apt-get update
@@ -56,10 +37,6 @@ jobs:
       #      pkg-config-mingw-w64-x86-64 \
       #      git curl ca-certificates gnupg wget build-essential autoconf automake libtool python3 meson python3-pip flex texinfo jq \
       #      retry
-      - name: Get version number
-        run: |
-          VERSION=$(wget -qO- https://raw.githubusercontent.com/rockdaboot/wget2/master/NEWS | grep -oP '\bRelease v\K[\d.]+' | head -n 1)
-          echo "wget2_VERSION=${VERSION}"
       - name: Compile
         env:
           CROSS_HOST: "x86_64-w64-mingw32"
@@ -73,7 +50,7 @@ jobs:
           path: "wget2.exe"
       - name: Get version number
         run: |
-          VERSION=$(wget -qO- https://raw.githubusercontent.com/rockdaboot/wget2/master/NEWS | grep -oP '^Release v\K[\d.]+(?=$)' | head -n 1)
+          VERSION=$(wget -qO- https://raw.githubusercontent.com/rockdaboot/wget2/master/NEWS | grep -oP '\bRelease v\K[\d.]+' | head -n 1)
           echo "wget2_VERSION=${VERSION}" >> $GITHUB_ENV
       - name: Create Release
         uses: ncipollo/release-action@v1
