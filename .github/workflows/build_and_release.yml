@@ -58,7 +58,7 @@ jobs:
       #      retry
       - name: Get version number
         run: |
-          VERSION=$(wget -qO- https://raw.githubusercontent.com/rockdaboot/wget2/master/NEWS | grep -oP '^Release v\K[\d.]+(?=$)' | head -n 1)
+          VERSION=$(wget -qO- https://raw.githubusercontent.com/rockdaboot/wget2/master/NEWS | grep -oP '\bRelease v\K[\d.]+' | head -n 1)
           echo "wget2_VERSION=${VERSION}"
       - name: Compile
         env:
