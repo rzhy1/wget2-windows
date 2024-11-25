@@ -69,7 +69,7 @@ jobs:
           path: "wget2.exe"
       - name: Get version number
         run: |
-          VERSION=$(wget -qO- https://raw.githubusercontent.com/rockdaboot/wget2/refs/heads/master/NEWS | grep -oP '^Release v\K[\d.]+(?=$)' wget2 | head -n 1)
+          VERSION=$(wget -qO- https://raw.githubusercontent.com/rockdaboot/wget2/master/NEWS | grep -oP '^Release v\K[\d.]+(?=$)' | head -n 1)
           echo "wget2_VERSION=${VERSION}" >> $GITHUB_ENV
       - name: Create Release
         uses: ncipollo/release-action@v1
