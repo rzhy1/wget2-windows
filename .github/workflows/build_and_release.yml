@@ -56,6 +56,10 @@ jobs:
       #      pkg-config-mingw-w64-x86-64 \
       #      git curl ca-certificates gnupg wget build-essential autoconf automake libtool python3 meson python3-pip flex texinfo jq \
       #      retry
+      - name: Get version number
+        run: |
+          VERSION=$(wget -qO- https://raw.githubusercontent.com/rockdaboot/wget2/master/NEWS | grep -oP '^Release v\K[\d.]+(?=$)' | head -n 1)
+          echo "wget2_VERSION=${VERSION}"
       - name: Compile
         env:
           CROSS_HOST: "x86_64-w64-mingw32"
