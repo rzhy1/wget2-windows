@@ -55,7 +55,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: wget2-${{ env.wget2_VERSION }}
+          tag: wget2 v${{ env.wget2_VERSION }}
           allowUpdates: true
           artifacts: "wget2.exe"
           bodyFile: "README.md"
