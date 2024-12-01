@@ -1,4 +1,4 @@
-Wget2 2.1.0 for Windows
+Wget2 v2.2.0 for Windows
 
 | library       | Version  | Source              |
 |---------------| ---------------------|-----------------------|
