@@ -31,7 +31,8 @@ build_xz() {
   xz --version
   cd ../.. && rm -rf xz
   end_time=$(date +%s.%N)
-  duration1=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   echo "$duration" > "xz_duration.txt"
 }
 
 build_zstd() {
@@ -65,7 +66,8 @@ build_zstd() {
   zstd --version
   cd .. && rm -rf zstd
   end_time=$(date +%s.%N)
-  duration2=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   echo "$duration" > "zstd_duration.txt"
 }
 
 build_zlib-ng() {
@@ -78,7 +80,8 @@ build_zlib-ng() {
   make install || exit 1
   cd .. && rm -rf zlib-ng
   end_time=$(date +%s.%N)
-  duration3=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   echo "$duration" > "zlib-ng_duration.txt"
 }
 
 build_gmp() {
@@ -91,42 +94,46 @@ build_gmp() {
   make install || exit 1
   cd .. && rm -rf gmp-*
   end_time=$(date +%s.%N)
-  duration4=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+    echo "$duration" > "gmp_duration.txt"
 }
 
 build_gnulibmirror() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
-  start_time=$(date +%s.%N)
+   start_time=$(date +%s.%N)
   git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
   export GNULIB_REFDIR=$INSTALLDIR/gnulib
-  end_time=$(date +%s.%N)
-  duration5=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   end_time=$(date +%s.%N)
+    duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   echo "$duration" > "gnulibmirror_duration.txt"
 }
 
 build_libiconv() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
-  start_time=$(date +%s.%N)
+   start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.17.tar.gz | tar xz || exit 1
   cd libiconv-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libiconv-*
-  end_time=$(date +%s.%N)
-  duration6=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+    end_time=$(date +%s.%N)
+   duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   echo "$duration" > "libiconv_duration.txt"
 }
 
 build_libunistring() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
-  start_time=$(date +%s.%N)
+   start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
   ./configure CFLAGS="-O3" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libunistring-*
-  end_time=$(date +%s.%N)
-  duration7=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   end_time=$(date +%s.%N)
+   duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   echo "$duration" > "libunistring_duration.txt"
 }
 
 build_libidn2() {
@@ -138,8 +145,9 @@ build_libidn2() {
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libidn2-*
-  end_time=$(date +%s.%N)
-  duration8=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   end_time=$(date +%s.%N)
+    duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   echo "$duration" > "libidn2_duration.txt"
 }
 
 build_libtasn1() {
@@ -152,12 +160,13 @@ build_libtasn1() {
   make install || exit 1
   cd .. && rm -rf libtasn1-*
   end_time=$(date +%s.%N)
-  duration9=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "libtasn1_duration.txt"
 }
 
 build_PCRE2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
-  start_time=$(date +%s.%N)
+   start_time=$(date +%s.%N)
   git clone -j$(nproc) https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
   ./autogen.sh || exit 1
@@ -165,35 +174,38 @@ build_PCRE2() {
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf pcre2
-  end_time=$(date +%s.%N)
-  duration10=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   end_time=$(date +%s.%N)
+    duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "pcre2_duration.txt"
 }
 
 build_nghttp2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nghttp2⭐⭐⭐⭐⭐⭐" 
-  start_time=$(date +%s.%N)
+   start_time=$(date +%s.%N)
   wget -O- https://github.com/nghttp2/nghttp2/releases/download/v1.64.0/nghttp2-1.64.0.tar.gz | tar xz || exit 1
   cd nghttp2-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-python-bindings --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf nghttp2-*
-  end_time=$(date +%s.%N)
-  duration11=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   end_time=$(date +%s.%N)
+  duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "nghttp2_duration.txt"
 }
 
 build_dlfcn-win32() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build dlfcn-win32⭐⭐⭐⭐⭐⭐" 
   start_time=$(date +%s.%N)
-  git clone -j$(nproc) --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
+  git clone -j$(nproc) https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
   cd dlfcn-win32 || exit 1
   ./configure --prefix=$PREFIX --cc=$PREFIX-gcc || exit 1
   make -j$(nproc) || exit 1
   cp -p libdl.a $INSTALLDIR/lib/ || exit 1
   cp -p src/dlfcn.h $INSTALLDIR/include/ || exit 1
   cd .. && rm -rf dlfcn-win32
-  end_time=$(date +%s.%N)
-  duration12=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   end_time=$(date +%s.%N)
+    duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   echo "$duration" > "dlfcn-win32_duration.txt"
 }
 
 build_libmicrohttpd() {
@@ -206,13 +218,14 @@ build_libmicrohttpd() {
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libmicrohttpd-*
-  end_time=$(date +%s.%N)
-  duration13=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+   end_time=$(date +%s.%N)
+    duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "libmicrohttpd_duration.txt"
 }
 
 build_libpsl() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libpsl⭐⭐⭐⭐⭐⭐" 
-  start_time=$(date +%s.%N)
+   start_time=$(date +%s.%N)
   git clone -j$(nproc) --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
   ./autogen.sh || exit 1
@@ -220,8 +233,9 @@ build_libpsl() {
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libpsl
-  end_time=$(date +%s.%N)
-  duration14=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+    end_time=$(date +%s.%N)
+   duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "libpsl_duration.txt"
 }
 
 build_nettle() {
@@ -235,7 +249,8 @@ build_nettle() {
   make install || exit 1
   cd .. && rm -rf nettle
   end_time=$(date +%s.%N)
-  duration15=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+ duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "nettle_duration.txt"
 }
 
 build_gnutls() {
@@ -258,7 +273,8 @@ build_gnutls() {
   make install || exit 1
   cd .. && rm -rf gnutls-* 
   end_time=$(date +%s.%N)
-  duration16=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "gnutls_duration.txt"
 }
 
 build_wget2() {
@@ -280,7 +296,8 @@ build_wget2() {
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
   end_time=$(date +%s.%N)
-  duration17=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "wget2_duration.txt"
 }
 
 #build_xz
@@ -301,6 +318,25 @@ build_libpsl
 build_nettle
 build_gnutls
 build_wget2
+
+duration1=$(cat xz_duration.txt)
+duration2=$(cat zstd_duration.txt)
+duration3=$(cat zlib-ng_duration.txt)
+duration4=$(cat gmp_duration.txt)
+duration5=$(cat gnulibmirror_duration.txt)
+duration6=$(cat libiconv_duration.txt)
+duration7=$(cat libunistring_duration.txt)
+duration8=$(cat libidn2_duration.txt)
+duration9=$(cat libtasn1_duration.txt)
+duration10=$(cat pcre2_duration.txt)
+duration11=$(cat nghttp2_duration.txt)
+duration12=$(cat dlfcn-win32_duration.txt)
+duration13=$(cat libmicrohttpd_duration.txt)
+duration14=$(cat libpsl_duration.txt)
+duration15=$(cat nettle_duration.txt)
+duration16=$(cat gnutls_duration.txt)
+duration17=$(cat wget2_duration.txt)
+
 echo "编译 xz 用时：${duration1}s"
 echo "编译 zstd 用时：${duration2}s"
 echo "编译 zlib-ng 用时：${duration3}s"
