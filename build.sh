@@ -20,7 +20,7 @@ cd $INSTALLDIR
 build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
   sudo apt-get purge xz-utils
-  git clone -j$(nproc) https://github.com/tukaani-project/xz.git || { echo "Git clone failed"; exit 1; }
+  git clone -j$(nproc) --depth=1 https://github.com/tukaani-project/xz.git || { echo "Git clone failed"; exit 1; }
   cd xz || { echo "cd xz failed"; exit 1; }
   mkdir build
   cd build
@@ -40,7 +40,7 @@ build_zstd() {
   pip3 install meson pytest
 
   # 编译 zstd
-  git clone -j$(nproc) https://github.com/facebook/zstd.git || exit 1
+  git clone -j$(nproc) --depth=1 https://github.com/facebook/zstd.git || exit 1
   cd zstd || exit 1
   LDFLAGS=-static \
   meson setup \
@@ -66,7 +66,7 @@ build_zstd() {
 
 build_zlib-ng() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
-  git clone -j$(nproc) https://github.com/zlib-ng/zlib-ng || exit 1
+  git clone -j$(nproc) --depth=1 https://github.com/zlib-ng/zlib-ng || exit 1
   cd zlib-ng || exit 1
   CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   make -j$(nproc) || exit 1
@@ -88,7 +88,7 @@ build_gmp() {
 
 build_gnulibmirror() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
-  git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
+  git clone --recursive -j$(nproc) --depth=1 https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
   export GNULIB_REFDIR=$INSTALLDIR/gnulib
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror结束⭐⭐⭐⭐⭐⭐" 
 }
@@ -139,7 +139,7 @@ build_libtasn1() {
 
 build_PCRE2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
-  git clone -j$(nproc) https://github.com/PCRE2Project/pcre2 || exit 1
+  git clone -j$(nproc) --depth=1 https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
   ./autogen.sh || exit 1
   ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
@@ -186,7 +186,7 @@ build_libmicrohttpd() {
 
 build_libpsl() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libpsl⭐⭐⭐⭐⭐⭐" 
-  git clone -j$(nproc) --recursive https://github.com/rockdaboot/libpsl.git || exit 1
+  git clone -j$(nproc) --depth=1 --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
   ./autogen.sh || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
@@ -197,7 +197,7 @@ build_libpsl() {
 
 build_nettle() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
-  git clone -j$(nproc) https://github.com/sailfishos-mirror/nettle.git || exit 1
+  git clone -j$(nproc) --depth=1 https://github.com/sailfishos-mirror/nettle.git || exit 1
   cd nettle || exit 1
   bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --enable-mini-gmp --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR || exit 1
@@ -229,7 +229,7 @@ build_gnutls() {
 
 build_wget2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
-  git clone -j$(nproc) https://github.com/rockdaboot/wget2.git || exit 1
+  git clone -j$(nproc) --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   ./bootstrap --skip-po || exit 1
   export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
