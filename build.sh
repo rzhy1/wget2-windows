@@ -17,6 +17,16 @@ export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/l
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 
+measure_time() {
+  local start_time
+  start_time=$(date +%s)
+  "$@"  # 执行传入的命令
+  local end_time
+  end_time=$(date +%s)
+  local duration=$((end_time - start_time))
+  echo "时间花费: ${duration}秒"
+}
+
 build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
   sudo apt-get purge xz-utils
@@ -246,21 +256,21 @@ build_wget2() {
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
 }
 
-#build_xz
-build_zstd &
-build_zlib-ng &
-build_gmp &
-#build_gnulibmirror &
-build_libiconv &
-build_libunistring &
-build_libidn2 &
-#build_libtasn1 &
-build_PCRE2 &
-build_nghttp2 &
-#build_dlfcn-win32
-build_libmicrohttpd &
+#measure_time build_xz
+measure_time build_zstd &
+measure_time build_zlib-ng &
+measure_time build_gmp &
+# measure_time build_gnulibmirror &  # 如果需要可以启用
+measure_time build_libiconv &
+measure_time build_libunistring &
+measure_time build_libidn2 &
+# measure_time build_libtasn1 &  # 如果需要可以启用
+measure_time build_PCRE2 &
+measure_time build_nghttp2 &
+# measure_time build_dlfcn-win32 &
+measure_time build_libmicrohttpd &
 wait
-build_libpsl
-build_nettle
-build_gnutls
-build_wget2
+measure_time build_libpsl
+measure_time build_nettle
+measure_time build_gnutls
+measure_time build_wget2
