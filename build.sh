@@ -320,18 +320,18 @@ build_nettle
 build_gnutls
 build_wget2
 
-duration1=$(cat $INSTALLDIR/xz_duration.txt)
+#duration1=$(cat $INSTALLDIR/xz_duration.txt)
 duration2=$(cat $INSTALLDIR/zstd_duration.txt)
 duration3=$(cat $INSTALLDIR/zlib-ng_duration.txt)
 duration4=$(cat $INSTALLDIR/gmp_duration.txt)
-duration5=$(cat $INSTALLDIR/gnulibmirror_duration.txt)
+#duration5=$(cat $INSTALLDIR/gnulibmirror_duration.txt)
 duration6=$(cat $INSTALLDIR/libiconv_duration.txt)
 duration7=$(cat $INSTALLDIR/libunistring_duration.txt)
 duration8=$(cat $INSTALLDIR/libidn2_duration.txt)
-duration9=$(cat $INSTALLDIR/libtasn1_duration.txt)
+#duration9=$(cat $INSTALLDIR/libtasn1_duration.txt)
 duration10=$(cat $INSTALLDIR/pcre2_duration.txt)
 duration11=$(cat $INSTALLDIR/nghttp2_duration.txt)
-duration12=$(cat $INSTALLDIR/dlfcn-win32_duration.txt)
+#duration12=$(cat $INSTALLDIR/dlfcn-win32_duration.txt)
 duration13=$(cat $INSTALLDIR/libmicrohttpd_duration.txt)
 duration14=$(cat $INSTALLDIR/libpsl_duration.txt)
 duration15=$(cat $INSTALLDIR/nettle_duration.txt)
