@@ -32,7 +32,7 @@ build_xz() {
   cd ../.. && rm -rf xz
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "xz_duration.txt"
+  echo "$duration" > "$INSTALLDIR/xz_duration.txt"
   find / -name "xz_duration.txt" 2>/dev/null
 }
 
@@ -68,7 +68,7 @@ build_zstd() {
   cd .. && rm -rf zstd
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "zstd_duration.txt"
+  echo "$duration" > "$INSTALLDIR/zstd_duration.txt"
 }
 
 build_zlib-ng() {
@@ -82,7 +82,7 @@ build_zlib-ng() {
   cd .. && rm -rf zlib-ng
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "zlib-ng_duration.txt"
+  echo "$duration" > "$INSTALLDIR/zlib-ng_duration.txt"
 }
 
 build_gmp() {
@@ -96,7 +96,7 @@ build_gmp() {
   cd .. && rm -rf gmp-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "gmp_duration.txt"
+  echo "$duration" > "$INSTALLDIR/gmp_duration.txt"
 }
 
 build_gnulibmirror() {
@@ -106,7 +106,7 @@ build_gnulibmirror() {
   export GNULIB_REFDIR=$INSTALLDIR/gnulib
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "gnulibmirror_duration.txt"
+  echo "$duration" > "$INSTALLDIR/gnulibmirror_duration.txt"
 }
 
 build_libiconv() {
@@ -120,7 +120,7 @@ build_libiconv() {
   cd .. && rm -rf libiconv-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "libiconv_duration.txt"
+  echo "$duration" > "$INSTALLDIR/libiconv_duration.txt"
 }
 
 build_libunistring() {
@@ -134,7 +134,7 @@ build_libunistring() {
   cd .. && rm -rf libunistring-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "libunistring_duration.txt"
+  echo "$duration" > "$INSTALLDIR/libunistring_duration.txt"
 }
 
 build_libidn2() {
@@ -148,7 +148,7 @@ build_libidn2() {
   cd .. && rm -rf libidn2-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "libidn2_duration.txt"
+  echo "$duration" > "$INSTALLDIR/libidn2_duration.txt"
 }
 
 build_libtasn1() {
@@ -162,7 +162,7 @@ build_libtasn1() {
   cd .. && rm -rf libtasn1-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "libtasn1_duration.txt"
+  echo "$duration" > "$INSTALLDIR/libtasn1_duration.txt"
 }
 
 build_PCRE2() {
@@ -177,7 +177,7 @@ build_PCRE2() {
   cd .. && rm -rf pcre2
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "pcre2_duration.txt"
+  echo "$duration" > "$INSTALLDIR/pcre2_duration.txt"
 }
 
 build_nghttp2() {
@@ -191,7 +191,7 @@ build_nghttp2() {
   cd .. && rm -rf nghttp2-*
   local end_time=$(date +%s.%N)
   duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "nghttp2_duration.txt"
+  echo "$duration" > "$INSTALLDIR/nghttp2_duration.txt"
 }
 
 build_dlfcn-win32() {
@@ -206,7 +206,7 @@ build_dlfcn-win32() {
   cd .. && rm -rf dlfcn-win32
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "dlfcn-win32_duration.txt"
+  echo "$duration" > "$INSTALLDIR/dlfcn-win32_duration.txt"
 }
 
 build_libmicrohttpd() {
@@ -221,7 +221,7 @@ build_libmicrohttpd() {
   cd .. && rm -rf libmicrohttpd-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "libmicrohttpd_duration.txt"
+  echo "$duration" > "$INSTALLDIR/libmicrohttpd_duration.txt"
 }
 
 build_libpsl() {
@@ -236,7 +236,7 @@ build_libpsl() {
   cd .. && rm -rf libpsl
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "libpsl_duration.txt"
+  echo "$duration" > "$INSTALLDIR/libpsl_duration.txt"
 }
 
 build_nettle() {
@@ -251,7 +251,7 @@ build_nettle() {
   cd .. && rm -rf nettle
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "nettle_duration.txt"
+  echo "$duration" > "$INSTALLDIR/nettle_duration.txt"
 }
 
 build_gnutls() {
@@ -275,7 +275,7 @@ build_gnutls() {
   cd .. && rm -rf gnutls-* 
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "gnutls_duration.txt"
+  echo "$duration" > "$INSTALLDIR/gnutls_duration.txt"
 }
 
 build_wget2() {
@@ -298,7 +298,7 @@ build_wget2() {
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
-  echo "$duration" > "wget2_duration.txt"
+  echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
 
 #build_xz
@@ -320,23 +320,23 @@ build_nettle
 build_gnutls
 build_wget2
 
-duration1=$(cat xz_duration.txt)
-duration2=$(cat zstd_duration.txt)
-duration3=$(cat zlib-ng_duration.txt)
-duration4=$(cat gmp_duration.txt)
-duration5=$(cat gnulibmirror_duration.txt)
-duration6=$(cat libiconv_duration.txt)
-duration7=$(cat libunistring_duration.txt)
-duration8=$(cat libidn2_duration.txt)
-duration9=$(cat libtasn1_duration.txt)
-duration10=$(cat pcre2_duration.txt)
-duration11=$(cat nghttp2_duration.txt)
-duration12=$(cat dlfcn-win32_duration.txt)
-duration13=$(cat libmicrohttpd_duration.txt)
-duration14=$(cat libpsl_duration.txt)
-duration15=$(cat nettle_duration.txt)
-duration16=$(cat gnutls_duration.txt)
-duration17=$(cat wget2_duration.txt)
+duration1=$(cat $INSTALLDIR/xz_duration.txt)
+duration2=$(cat $INSTALLDIR/zstd_duration.txt)
+duration3=$(cat $INSTALLDIR/zlib-ng_duration.txt)
+duration4=$(cat $INSTALLDIR/gmp_duration.txt)
+duration5=$(cat $INSTALLDIR/gnulibmirror_duration.txt)
+duration6=$(cat $INSTALLDIR/libiconv_duration.txt)
+duration7=$(cat $INSTALLDIR/libunistring_duration.txt)
+duration8=$(cat $INSTALLDIR/libidn2_duration.txt)
+duration9=$(cat $INSTALLDIR/libtasn1_duration.txt)
+duration10=$(cat $INSTALLDIR/pcre2_duration.txt)
+duration11=$(cat $INSTALLDIR/nghttp2_duration.txt)
+duration12=$(cat $INSTALLDIR/dlfcn-win32_duration.txt)
+duration13=$(cat $INSTALLDIR/libmicrohttpd_duration.txt)
+duration14=$(cat $INSTALLDIR/libpsl_duration.txt)
+duration15=$(cat $INSTALLDIR/nettle_duration.txt)
+duration16=$(cat $INSTALLDIR/gnutls_duration.txt)
+duration17=$(cat $INSTALLDIR/wget2_duration.txt)
 
 echo "编译 xz 用时：${duration1}s"
 echo "编译 zstd 用时：${duration2}s"
