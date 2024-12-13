@@ -338,18 +338,18 @@ duration15=$(cat $INSTALLDIR/nettle_duration.txt)
 duration16=$(cat $INSTALLDIR/gnutls_duration.txt)
 duration17=$(cat $INSTALLDIR/wget2_duration.txt)
 
-echo "编译 xz 用时：${duration1}s"
+#echo "编译 xz 用时：${duration1}s"
 echo "编译 zstd 用时：${duration2}s"
 echo "编译 zlib-ng 用时：${duration3}s"
 echo "编译 gmp 用时：${duration4}s"
-echo "编译 gnulibmirror 用时：${duration5}s"
+#echo "编译 gnulibmirror 用时：${duration5}s"
 echo "编译 libiconv 用时：${duration6}s"
 echo "编译 libunistring 用时：${duration7}s"
 echo "编译 libidn2 用时：${duration8}s"
-echo "编译 libtasn1 用时：${duration9}s"
+#echo "编译 libtasn1 用时：${duration9}s"
 echo "编译 PCRE2 用时：${duration10}s"
 echo "编译 nghttp2 用时：${duration11}s"
-echo "编译 dlfcn-win32 用时：${duration12}s"
+#echo "编译 dlfcn-win32 用时：${duration12}s"
 echo "编译 libmicrohttpd 用时：${duration13}s"
 echo "编译 libpsl 用时：${duration14}s"
 echo "编译 nettle 用时：${duration15}s"
