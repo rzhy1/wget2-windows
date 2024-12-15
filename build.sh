@@ -301,7 +301,6 @@ build_wget2() {
 }
 
 #build_xz
-#build_libunistring
 build_zstd &
 build_zlib-ng &
 build_gmp &
@@ -314,6 +313,7 @@ build_nghttp2 &
 #build_dlfcn-win32
 build_libmicrohttpd &
 wait
+build_libunistring
 build_libpsl
 build_nettle
 build_gnutls
@@ -343,7 +343,7 @@ echo "编译 zlib-ng 用时：${duration3}s"
 echo "编译 gmp 用时：${duration4}s"
 #echo "编译 gnulibmirror 用时：${duration5}s"
 echo "编译 libiconv 用时：${duration6}s"
-#echo "编译 libunistring 用时：${duration7}s"
+echo "编译 libunistring 用时：${duration7}s"
 echo "编译 libidn2 用时：${duration8}s"
 #echo "编译 libtasn1 用时：${duration9}s"
 echo "编译 PCRE2 用时：${duration10}s"
