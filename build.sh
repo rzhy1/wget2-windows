@@ -33,7 +33,6 @@ build_xz() {
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/xz_duration.txt"
-  find / -name "xz_duration.txt" 2>/dev/null
 }
 
 build_zstd() {
