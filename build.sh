@@ -141,7 +141,7 @@ build_libidn2() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.7.tar.gz | tar xz || exit 1
   cd libidn2-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --with-included-unistring --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libidn2-*
@@ -301,7 +301,7 @@ build_wget2() {
 }
 
 #build_xz
-build_libunistring
+#build_libunistring
 build_zstd &
 build_zlib-ng &
 build_gmp &
@@ -343,7 +343,7 @@ echo "编译 zlib-ng 用时：${duration3}s"
 echo "编译 gmp 用时：${duration4}s"
 #echo "编译 gnulibmirror 用时：${duration5}s"
 echo "编译 libiconv 用时：${duration6}s"
-echo "编译 libunistring 用时：${duration7}s"
+#echo "编译 libunistring 用时：${duration7}s"
 echo "编译 libidn2 用时：${duration8}s"
 #echo "编译 libtasn1 用时：${duration9}s"
 echo "编译 PCRE2 用时：${duration10}s"
