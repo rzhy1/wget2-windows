@@ -300,7 +300,7 @@ build_wget2() {
   echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
 
-build_zstd
+build_zstd 
 build_zlib-ng
 
 build_gmp
@@ -311,12 +311,12 @@ build_libidn2
 
 build_PCRE2 
 build_nghttp2 
-build_libmicrohttpd 
-
-build_libunistring
-build_libpsl
-build_nettle
-build_gnutls
+build_libmicrohttpd &
+build_libunistring &
+build_libpsl  &
+build_nettle  &
+build_gnutls &
+wait
 build_wget2
 
 #duration1=$(cat $INSTALLDIR/xz_duration.txt)
