@@ -305,18 +305,18 @@ build_zlib-ng
 
 build_gmp
 
-build_libiconv 
-build_libidn2 
-#build_libtasn1 
-
-build_PCRE2 
-build_nghttp2 
+build_libiconv &
+build_libidn2 &
+build_libtasn1 &
+wait
+build_PCRE2 &
+build_nghttp2 &
 build_libmicrohttpd &
 build_libunistring &
-build_libpsl  &
-build_nettle  &
-build_gnutls &
 wait
+build_libpsl
+build_nettle 
+build_gnutls 
 build_wget2
 
 #duration1=$(cat $INSTALLDIR/xz_duration.txt)
@@ -327,7 +327,7 @@ duration4=$(cat $INSTALLDIR/gmp_duration.txt)
 duration6=$(cat $INSTALLDIR/libiconv_duration.txt)
 duration7=$(cat $INSTALLDIR/libunistring_duration.txt)
 duration8=$(cat $INSTALLDIR/libidn2_duration.txt)
-#duration9=$(cat $INSTALLDIR/libtasn1_duration.txt)
+duration9=$(cat $INSTALLDIR/libtasn1_duration.txt)
 duration10=$(cat $INSTALLDIR/pcre2_duration.txt)
 duration11=$(cat $INSTALLDIR/nghttp2_duration.txt)
 #duration12=$(cat $INSTALLDIR/dlfcn-win32_duration.txt)
@@ -345,7 +345,7 @@ echo "编译 gmp 用时：${duration4}s"
 echo "编译 libiconv 用时：${duration6}s"
 echo "编译 libunistring 用时：${duration7}s"
 echo "编译 libidn2 用时：${duration8}s"
-#echo "编译 libtasn1 用时：${duration9}s"
+echo "编译 libtasn1 用时：${duration9}s"
 echo "编译 PCRE2 用时：${duration10}s"
 echo "编译 nghttp2 用时：${duration11}s"
 #echo "编译 dlfcn-win32 用时：${duration12}s"
