@@ -123,9 +123,12 @@ build_brotli() {
   pkg-config --libs libbrotlidec
   pkg-config --cflags --libs libbrotlidec
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+  echo "查询"
   pkg-config --variable pc_path pkg-config
-  ar -t $INSTALLDIR/lib/libbrotlienc.a
-  nm -D $INSTALLDIR/lib/libbrotlienc.a
+  nm /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlidec.a | grep BrotliDecoderDecompressStream
+  nm /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlidec.a | grep BrotliDecoderCreateInstance
+  nm /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlienc.a | grep BrotliEncoderCompress
+  echo "查询结束"
   find / -name "*brotli*" 2>/dev/null
 }
 
