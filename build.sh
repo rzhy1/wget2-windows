@@ -70,7 +70,7 @@ build_zstd() {
   rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
   meson install -C builddir-st || exit 1
-  zstd --version
+  $INSTALLDIR/bin/zstd --version
   cd .. && rm -rf zstd
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
