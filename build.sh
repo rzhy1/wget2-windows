@@ -10,9 +10,11 @@ export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig"
 export PKG_CONFIG_LIBDIR="$INSTALLDIR/lib/pkgconfig"
 export PKG_CONFIG="/usr/bin/${PREFIX}-pkg-config"
 export CPPFLAGS="-I$INSTALLDIR/include"
-export LDFLAGS="-L$INSTALLDIR/lib"
-export CFLAGS="-O2 -g0"
+export LDFLAGS="-L$INSTALLDIR/lib -static -s -flto=$(nproc)"
+export CFLAGS="-march=tigerlake -mtune=tigerlake -O2 -pipe -flto=$(nproc) -g0"
+export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
+
 
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
