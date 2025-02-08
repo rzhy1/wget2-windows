@@ -70,6 +70,7 @@ build_zstd() {
   rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
   meson install -C builddir-st || exit 1
+  find /f -type -f -name "zstd"
   $INSTALLDIR/bin/zstd --version
   cd .. && rm -rf zstd
   local end_time=$(date +%s.%N)
@@ -317,7 +318,7 @@ build_wget2() {
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
   BROTLIDEC_CFLAGS="-I$INSTALLDIR/include" \
   BROTLIDEC_LIBS="-L$INSTALLDIR/libb -lbrotlienc -lbrotlidec -lbrotlicommon" \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma  --with-zstd --with-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
