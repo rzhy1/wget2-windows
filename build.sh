@@ -135,6 +135,7 @@ build_brotli() {
   pkg-config --libs libbrotlidec
   pkg-config --cflags --libs libbrotlidec
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+  export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:$PKG_CONFIG_PATH"
   pkg-config --variable pc_path pkg-config
   echo "查询"
   /usr/bin/x86_64-w64-mingw32-ld --verbose | grep brotli
