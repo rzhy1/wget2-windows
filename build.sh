@@ -133,18 +133,6 @@ build_brotli() {
   pkg-config --libs libbrotlidec
   pkg-config --cflags --libs libbrotlidec
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
-  echo "查询"
-  /usr/bin/x86_64-w64-mingw32-ld --verbose | grep brotli
-  x86_64-w64-mingw32-ld -L/github/home/usr/local/x86_64-w64-mingw32/lib -lbrotlidec --verbose
-  echo "查询1"
-  file /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlidec.a
-  x86_64-w64-mingw32-ld.lld --verbose | grep brotli
-  x86_64-w64-mingw32-nm /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlidec.a | grep Brotli
-  echo "查询2"
-  ld --verbose | grep brotli
-  x86_64-w64-mingw32-pkg-config --static --libs libbrotlidec
-  echo "查询结束"
-  #find / -name "*brotli*" 2>/dev/null
 }
 
 build_libiconv() {
@@ -322,7 +310,7 @@ build_wget2() {
   git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   ./bootstrap --skip-po || exit 1
-  export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -lbrotlicommon -lbrotlidec -lbrotlienc"
+  export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
@@ -330,7 +318,7 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
