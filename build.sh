@@ -310,9 +310,11 @@ build_wget2() {
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
-  PCRE2_CFLAGS=$CFLAGS \
-  PCRE2_LIBS="-L$INSTALLDI/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma  --with-zstd --with-brotlidec  --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
+  LIBPCRE2_CFLAGS=$CFLAGS \
+  LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
+  BROTLIDEC_CFLAGS="-I$INSTALLDIR/include" \
+  BROTLIDEC_LIBS="-L$INSTALLDIR/libb -lbrotlienc -lbrotlidec -lbrotlicommon" \
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma  --with-zstd --with-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
