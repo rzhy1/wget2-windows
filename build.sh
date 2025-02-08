@@ -110,6 +110,22 @@ build_gnulibmirror() {
   echo "$duration" > "$INSTALLDIR/gnulibmirror_duration.txt"
 }
 
+build_brotli() {
+  git clone --depth 1 https://github.com/google/brotli.git || exit 1
+  cd brotli || exit 1
+  CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
+  make install || exit 1
+  cd .. && rm -rf brotli
+  dpkg -l | grep libbrotlidec
+  pkg-config --libs libbrotlidec
+  pkg-config --cflags --libs libbrotlidec
+  pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+  pkg-config --variable pc_path pkg-config
+  ar -t $INSTALLDIR/lib/libbrotlienc.a
+  nm -D $INSTALLDIR/lib/libbrotlienc.a
+  find / -name "*brotli*" 2>/dev/null
+}
+
 build_libiconv() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
@@ -293,7 +309,7 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   PCRE2_CFLAGS=$CFLAGS \
   PCRE2_LIBS="-L$INSTALLDI/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma  --with-zstd --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --with-lzma  --with-zstd --with-brotlidec  --without-bzip2 --without-lzip --without-brotlidec --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
@@ -306,6 +322,7 @@ build_zstd
 build_zlib-ng
 
 build_gmp
+build_brotli() 
 
 build_libiconv &
 build_libidn2 &
