@@ -36,7 +36,7 @@ jobs:
             ninja-build \
             pkg-config-mingw-w64-x86-64 \
             git curl ca-certificates gnupg wget build-essential autoconf automake libtool python3 meson python3-pip flex texinfo jq \
-            retry bc
+            retry bc lld
       - name: Compile
         env:
           CROSS_HOST: "x86_64-w64-mingw32"
