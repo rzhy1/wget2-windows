@@ -264,7 +264,7 @@ build_libpsl() {
 build_nettle() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone ---depth=1 https://github.com/sailfishos-mirror/nettle.git || exit 1
+  git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
   cd nettle || exit 1
   bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --enable-mini-gmp --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR || exit 1
