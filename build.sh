@@ -128,7 +128,8 @@ build_brotli() {
   pkg-config --cflags --libs libbrotlidec
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
   echo "查询"
-  pkg-config --variable pc_path pkg-config
+  ls $INSTALLDIR/include | grep brotli
+  ls $INSTALLDIR/lib | grep brotli
   echo "查询结束"
   #find / -name "*brotli*" 2>/dev/null
 }
