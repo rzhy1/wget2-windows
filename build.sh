@@ -14,7 +14,6 @@ export LDFLAGS="-L$INSTALLDIR/lib -static -s -flto=$(nproc)"
 export CFLAGS="-march=tigerlake -mtune=tigerlake -O2 -pipe -flto=$(nproc) -g0"
 export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
-echo ""path路径是：$PATH
 export LD=x86_64-w64-mingw32-ld.lld
 ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 # 当前路径是：/__w/wget2-windows/wget2-windows
@@ -219,7 +218,7 @@ build_nghttp2() {
   local start_time=$(date +%s.%N)
   wget -O- https://github.com/nghttp2/nghttp2/releases/download/v1.64.0/nghttp2-1.64.0.tar.gz | tar xz || exit 1
   cd nghttp2-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-python-bindings --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools --with-libbrotlienc --with-libbrotlidec || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf nghttp2-*
