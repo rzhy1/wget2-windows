@@ -63,7 +63,7 @@ build_zstd() {
     -Dbin_programs=false \
     -Dstatic_runtime=true \
     -Ddefault_library=static \
-    -Db_lto=true -optimization=2 \
+    -Db_lto=true --optimization=2 \
     build/meson builddir-st || exit 1
   rm -f /usr/local/bin/zstd*
   rm -f /usr/local/bin/*zstd
