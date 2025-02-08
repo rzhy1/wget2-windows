@@ -11,7 +11,7 @@ export PKG_CONFIG_LIBDIR="$INSTALLDIR/lib/pkgconfig"
 export PKG_CONFIG="/usr/bin/${PREFIX}-pkg-config"
 export CPPFLAGS="-I$INSTALLDIR/include"
 export LDFLAGS="-L$INSTALLDIR/lib"
-export CFLAGS="-O2 -g"
+export CFLAGS="-O2 -g0"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 
 mkdir -p $INSTALLDIR
@@ -283,8 +283,8 @@ build_wget2() {
   git clone -j$(nproc) https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   ./bootstrap --skip-po || exit 1
-  export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
-  export CFLAGS="-O2 -DNGHTTP2_STATICLIB"
+  export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -flto=$(nproc)"
+  export CFLAGS="-O2 -DNGHTTP2_STATICLIB -O2 -pipe -march=tigerlake -mtune=tigerlake -flto=$(nproc)"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
