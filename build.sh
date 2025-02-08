@@ -14,11 +14,11 @@ export LDFLAGS="-L$INSTALLDIR/lib -static -s -flto=$(nproc)"
 export CFLAGS="-march=tigerlake -mtune=tigerlake -O2 -pipe -flto=$(nproc) -g0"
 export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
+export PATH="$INSTALLDIR/bin:$INSTALLDIR/lib:/usr/$PREFIX/bin:/usr/$PREFIX/lib:$PATH"
 export LD=x86_64-w64-mingw32-ld.lld
 ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
-echo "显示各种目录"
-pwd
-echo $INSTALLDIR
+# 当前路径是：/__w/wget2-windows/wget2-windows
+# INSTALLDIR是：/github/home/usr/local/x86_64-w64-mingw32
 
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
@@ -70,7 +70,6 @@ build_zstd() {
   rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
   meson install -C builddir-st || exit 1
-  find / -type f -name "*zstd*" 2>/dev/null
   zstd --version
   cd .. && rm -rf zstd
   local end_time=$(date +%s.%N)
@@ -129,11 +128,8 @@ build_brotli() {
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
   echo "查询"
   pkg-config --variable pc_path pkg-config
-  nm /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlidec.a | grep BrotliDecoderDecompressStream
-  nm /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlidec.a | grep BrotliDecoderCreateInstance
-  nm /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlienc.a | grep BrotliEncoderCompress
   echo "查询结束"
-  find / -name "*brotli*" 2>/dev/null
+  #find / -name "*brotli*" 2>/dev/null
 }
 
 build_libiconv() {
