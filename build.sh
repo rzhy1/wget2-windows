@@ -45,9 +45,10 @@ build_zstd() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zstd⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
   # 创建 Python 虚拟环境并安装meson
+  rm -rf /tmp/venv
   python3 -m venv /tmp/venv
   source /tmp/venv/bin/activate
-  pip3 install meson pytest
+  pip3 install --no-cache-dir meson pytest
 
   # 编译 zstd
   git clone -j$(nproc) https://github.com/facebook/zstd.git || exit 1
