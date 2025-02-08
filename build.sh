@@ -136,8 +136,9 @@ build_brotli() {
   pkg-config --cflags --libs libbrotlidec
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
   echo "查询"
-  ls $INSTALLDIR/include | grep brotli
-  ls $INSTALLDIR/lib | grep brotli
+  /usr/bin/x86_64-w64-mingw32-ld --verbose | grep brotli
+  echo "查询1"
+  x86_64-w64-mingw32-ld.lld --verbose | grep brotli
   echo "查询结束"
   #find / -name "*brotli*" 2>/dev/null
 }
