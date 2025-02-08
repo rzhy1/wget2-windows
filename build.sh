@@ -340,15 +340,15 @@ build_zlib-ng
 build_gmp
 build_brotli
 
-build_libiconv &
-build_libidn2 &
-build_libtasn1 &
+build_libiconv
+build_libidn2
+build_libtasn1
 wait
-build_PCRE2 &
-build_nghttp2 &
-build_libmicrohttpd &
-build_libunistring &
-wait
+build_PCRE2
+build_nghttp2
+build_libmicrohttpd
+build_libunistring
+#wait
 build_libpsl
 build_nettle 
 build_gnutls 
