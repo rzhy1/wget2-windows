@@ -278,7 +278,7 @@ build_nettle() {
   git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
   cd nettle || exit 1
   bash .bootstrap || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --enable-mini-gmp --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf nettle
