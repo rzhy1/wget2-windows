@@ -139,6 +139,8 @@ build_brotli() {
   /usr/bin/x86_64-w64-mingw32-ld --verbose | grep brotli
   echo "查询1"
   x86_64-w64-mingw32-ld.lld --verbose | grep brotli
+  echo "查询2"
+  ld --verbose | grep brotli
   echo "查询结束"
   #find / -name "*brotli*" 2>/dev/null
 }
