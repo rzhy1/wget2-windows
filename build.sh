@@ -133,17 +133,16 @@ build_brotli() {
   pkg-config --libs libbrotlidec
   pkg-config --cflags --libs libbrotlidec
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
-  echo "手打范德萨范德萨"
-  PKG_CONFIG_DEBUG_SPEW=1 x86_64-w64-mingw32-pkg-config --cflags --libs libbrotlidec
-  ls /github/home/usr/local/x86_64-w64-mingw32/lib/pkgconfig | grep brotli
-  cat /github/home/usr/local/x86_64-w64-mingw32/lib/pkgconfig/libbrotlidec.pc
-  ls /github/home/usr/local/x86_64-w64-mingw32/lib | grep brotli
   echo "查询"
   /usr/bin/x86_64-w64-mingw32-ld --verbose | grep brotli
+  x86_64-w64-mingw32-ld -L/github/home/usr/local/x86_64-w64-mingw32/lib -lbrotlidec --verbose
   echo "查询1"
+  file /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlidec.a
   x86_64-w64-mingw32-ld.lld --verbose | grep brotli
+  x86_64-w64-mingw32-nm /github/home/usr/local/x86_64-w64-mingw32/lib/libbrotlidec.a | grep Brotli
   echo "查询2"
   ld --verbose | grep brotli
+  x86_64-w64-mingw32-pkg-config --static --libs libbrotlidec
   echo "查询结束"
   #find / -name "*brotli*" 2>/dev/null
 }
