@@ -117,8 +117,20 @@ build_brotli() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
   git clone --depth 1 https://github.com/google/brotli.git || exit 1
   cd brotli || exit 1
-  CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
-  make install || exit 1
+  cmake -S . -B build \
+    -DCMAKE_SYSTEM_NAME=Windows \
+    -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc \
+    -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ \
+    -DCMAKE_RC_COMPILER=x86_64-w64-mingw32-windres \
+    -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBROTLI_BUNDLED_MODE=OFF
+  make -j$(nproc) -C build || exit 1
+  echo "测试"
+  ctest -V
+  echo "测试结束"
+  make install -C build || exit 1
   cd .. && rm -rf brotli
   dpkg -l | grep libbrotlidec
   pkg-config --libs libbrotlidec
@@ -327,7 +339,7 @@ build_zstd
 build_zlib-ng
 
 build_gmp
-#build_brotli
+build_brotli
 
 build_libiconv &
 build_libidn2 &
