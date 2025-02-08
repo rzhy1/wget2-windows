@@ -131,14 +131,19 @@ build_brotli() {
   echo "测试"
   ctest -V
   echo "测试结束"
+  echo "显示3PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   make install -C build || exit 1
+  echo "显示4PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   cd .. && rm -rf brotli
   dpkg -l | grep libbrotlidec
   pkg-config --libs libbrotlidec
   pkg-config --cflags --libs libbrotlidec
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+  echo "显示5PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:$PKG_CONFIG_PATH"
+  echo "显示6PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   pkg-config --variable pc_path pkg-config
+  echo "显示7PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   echo "查询"
   /usr/bin/x86_64-w64-mingw32-ld --verbose | grep brotli
   echo "查询1"
