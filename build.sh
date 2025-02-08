@@ -51,9 +51,8 @@ build_zstd() {
   pip3 install --no-cache-dir meson pytest
 
   # 编译 zstd
-  git clone -j$(nproc) https://github.com/facebook/zstd.git || exit 1
+  git clone --depth=1 https://github.com/facebook/zstd.git || exit 1
   cd zstd || exit 1
-  LDFLAGS=-static \
   meson setup \
     --cross-file=${GITHUB_WORKSPACE}/cross_file.txt \
     --backend=ninja \
@@ -61,10 +60,10 @@ build_zstd() {
     --libdir=$INSTALLDIR/lib \
     --bindir=$INSTALLDIR/bin \
     --pkg-config-path="$INSTALLDIR/lib/pkgconfig" \
-    -Dbin_programs=true \
+    -Dbin_programs=false \
     -Dstatic_runtime=true \
     -Ddefault_library=static \
-    -Db_lto=true --optimization=2 \
+    -Db_lto=true -optimization=2 \
     build/meson builddir-st || exit 1
   rm -f /usr/local/bin/zstd*
   rm -f /usr/local/bin/*zstd
