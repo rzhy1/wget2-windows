@@ -126,7 +126,8 @@ build_brotli() {
     -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
     -DBUILD_SHARED_LIBS=OFF \
     -DCMAKE_BUILD_TYPE=Release \
-    -DBROTLI_BUNDLED_MODE=OFF
+    -DBROTLI_BUNDLED_MODE=OFF \
+    -DBUILD_TESTING=ON
   make -j$(nproc) -C build || exit 1
   echo "测试"
   ctest -V
