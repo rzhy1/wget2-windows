@@ -69,7 +69,7 @@ build_zstd() {
   rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
   meson install -C builddir-st || exit 1
-  find / -type f -name "zstd"
+  which zstd
   $INSTALLDIR/zstd/tests/cli-tests/bin/zstd --version
   cd .. && rm -rf zstd
   local end_time=$(date +%s.%N)
