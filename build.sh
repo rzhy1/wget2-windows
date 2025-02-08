@@ -7,7 +7,6 @@
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
 export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-echo "显示1PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
 export PKG_CONFIG_LIBDIR="$INSTALLDIR/lib/pkgconfig"
 export PKG_CONFIG="/usr/bin/${PREFIX}-pkg-config"
 export CPPFLAGS="-I$INSTALLDIR/include"
@@ -115,7 +114,6 @@ build_gnulibmirror() {
 
 build_brotli() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-  echo "显示2PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   git clone --depth 1 https://github.com/google/brotli.git || exit 1
   cd brotli || exit 1
   cmake -S . -B build \
@@ -129,22 +127,16 @@ build_brotli() {
     -DBROTLI_BUNDLED_MODE=OFF \
     -DBUILD_TESTING=ON
   make -j$(nproc) -C build || exit 1
-  echo "测试"
-  ctest -V
-  echo "测试结束"
-  echo "显示3PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   make install -C build || exit 1
-  echo "显示4PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   cd .. && rm -rf brotli
   dpkg -l | grep libbrotlidec
   pkg-config --libs libbrotlidec
   pkg-config --cflags --libs libbrotlidec
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
-  echo "显示5PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
-  export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:$PKG_CONFIG_PATH"
-  echo "显示6PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
-  pkg-config --variable pc_path pkg-config
-  echo "显示7PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
+  echo "手打范德萨范德萨"
+  which pkg-config
+  which x86_64-w64-mingw32-pkg-config
+  PKG_CONFIG_DEBUG_SPEW=1 pkg-config --cflags --libs libbrotlidec
   echo "查询"
   /usr/bin/x86_64-w64-mingw32-ld --verbose | grep brotli
   echo "查询1"
