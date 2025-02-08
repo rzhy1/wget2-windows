@@ -27,7 +27,7 @@ build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
   apt-get purge xz-utils
-  git clone -j$(nproc) https://github.com/tukaani-project/xz.git || { echo "Git clone failed"; exit 1; }
+  git clone --depth=1 https://github.com/tukaani-project/xz.git || { echo "Git clone failed"; exit 1; }
   cd xz || { echo "cd xz failed"; exit 1; }
   mkdir build
   cd build
@@ -78,7 +78,7 @@ build_zstd() {
 build_zlib-ng() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build zlib-ng⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone -j$(nproc) https://github.com/zlib-ng/zlib-ng || exit 1
+  git clone --depth=1 https://github.com/zlib-ng/zlib-ng || exit 1
   cd zlib-ng || exit 1
   CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   make -j$(nproc) || exit 1
@@ -106,7 +106,7 @@ build_gmp() {
 build_gnulibmirror() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gnulib-mirror⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone --recursive -j$(nproc) https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
+  git clone --recursive --depth=1 https://gitlab.com/gnuwget/gnulib-mirror.git gnulib || exit 1
   export GNULIB_REFDIR=$INSTALLDIR/gnulib
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
@@ -190,7 +190,7 @@ build_libtasn1() {
 build_PCRE2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone -j$(nproc) https://github.com/PCRE2Project/pcre2 || exit 1
+  git clone --depth=1 https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
   ./autogen.sh || exit 1
   ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
@@ -219,7 +219,7 @@ build_nghttp2() {
 build_dlfcn-win32() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build dlfcn-win32⭐⭐⭐⭐⭐⭐" 
   start_time=$(date +%s.%N)
-  git clone -j$(nproc) https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
+  git clone --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
   cd dlfcn-win32 || exit 1
   ./configure --prefix=$PREFIX --cc=$PREFIX-gcc || exit 1
   make -j$(nproc) || exit 1
@@ -249,7 +249,7 @@ build_libmicrohttpd() {
 build_libpsl() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libpsl⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone -j$(nproc) --recursive https://github.com/rockdaboot/libpsl.git || exit 1
+  git clone --depth=1 --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
   ./autogen.sh || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --with-included-unistring --prefix=$INSTALLDIR || exit 1
@@ -264,7 +264,7 @@ build_libpsl() {
 build_nettle() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone -j$(nproc) https://github.com/sailfishos-mirror/nettle.git || exit 1
+  git clone ---depth=1 https://github.com/sailfishos-mirror/nettle.git || exit 1
   cd nettle || exit 1
   bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --enable-mini-gmp --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR || exit 1
@@ -303,19 +303,19 @@ build_gnutls() {
 build_wget2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone -j$(nproc) https://github.com/rockdaboot/wget2.git || exit 1
+  git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   ./bootstrap --skip-po || exit 1
-  #export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -flto=$(nproc)"
-  #export CFLAGS="-O2 -DNGHTTP2_STATICLIB -O2 -pipe -march=tigerlake -mtune=tigerlake -flto=$(nproc)"
-  #GNUTLS_CFLAGS=$CFLAGS \
-  #GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
-  #LIBPSL_CFLAGS=$CFLAGS \
-  #LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
-  #LIBPCRE2_CFLAGS=$CFLAGS \
-  #LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  #BROTLIDEC_CFLAGS="-I$INSTALLDIR/include" \
-  #BROTLIDEC_LIBS="-L$INSTALLDIR/libb -lbrotlienc -lbrotlidec -lbrotlicommon" \
+  export LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -flto=$(nproc)"
+  export CFLAGS="-O2 -DNGHTTP2_STATICLIB -O2 -pipe -march=tigerlake -mtune=tigerlake -flto=$(nproc)"
+  GNUTLS_CFLAGS=$CFLAGS \
+  GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
+  LIBPSL_CFLAGS=$CFLAGS \
+  LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
+  LIBPCRE2_CFLAGS=$CFLAGS \
+  LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
+  BROTLIDEC_CFLAGS="-I$INSTALLDIR/include" \
+  BROTLIDEC_LIBS="-L$INSTALLDIR/libb -lbrotlienc -lbrotlidec -lbrotlicommon" \
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
@@ -329,7 +329,7 @@ build_zstd
 build_zlib-ng
 
 build_gmp
-build_brotli
+#build_brotli
 
 build_libiconv &
 build_libidn2 &
