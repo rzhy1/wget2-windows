@@ -322,7 +322,7 @@ build_zstd
 build_zlib-ng
 
 build_gmp
-build_brotli() 
+build_brotli
 
 build_libiconv &
 build_libidn2 &
