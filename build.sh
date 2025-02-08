@@ -16,7 +16,9 @@ export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 export LD=x86_64-w64-mingw32-ld.lld
 ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
-
+echo "显示各种目录"
+echo $pwd
+echo $INSTALLDIR
 
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
