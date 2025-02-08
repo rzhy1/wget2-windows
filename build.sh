@@ -7,6 +7,7 @@
 export PREFIX="x86_64-w64-mingw32"
 export INSTALLDIR="$HOME/usr/local/$PREFIX"
 export PKG_CONFIG_PATH="$INSTALLDIR/lib/pkgconfig:/usr/$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+echo "显示1PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
 export PKG_CONFIG_LIBDIR="$INSTALLDIR/lib/pkgconfig"
 export PKG_CONFIG="/usr/bin/${PREFIX}-pkg-config"
 export CPPFLAGS="-I$INSTALLDIR/include"
@@ -114,6 +115,7 @@ build_gnulibmirror() {
 
 build_brotli() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
+  echo "显示2PKG_CONFIG_PATH：" $PKG_CONFIG_PATH
   git clone --depth 1 https://github.com/google/brotli.git || exit 1
   cd brotli || exit 1
   cmake -S . -B build \
