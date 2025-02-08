@@ -175,7 +175,7 @@ build_libidn2() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.7.tar.gz | tar xz || exit 1
   cd libidn2-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --with-included-unistring --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libidn2-*
@@ -263,7 +263,7 @@ build_libpsl() {
   git clone --depth=1 --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
   ./autogen.sh || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --with-included-unistring --prefix=$INSTALLDIR || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libpsl
@@ -302,7 +302,7 @@ build_gnutls() {
   NETTLE_CFLAGS=$CFLAGS \
   HOGWEED_CFLAGS=$CFLAGS \
   LIBIDN2_CFLAGS=$CFLAGS \
-  ./configure CFLAGS="-O2" --host=$PREFIX --prefix=$INSTALLDIR --with-included-libtasn1 --with-included-unistring --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+  ./configure CFLAGS="-O2" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf gnutls-* 
@@ -340,14 +340,16 @@ build_zlib-ng
 build_gmp
 build_brotli
 
+build_libunistring
+build_libtasn1
+
 build_libiconv
 build_libidn2
-build_libtasn1
-wait
+
+#wait
 build_PCRE2
 build_nghttp2
 build_libmicrohttpd
-build_libunistring
 #wait
 build_libpsl
 build_nettle 
