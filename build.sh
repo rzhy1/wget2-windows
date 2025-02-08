@@ -14,6 +14,8 @@ export LDFLAGS="-L$INSTALLDIR/lib -static -s -flto=$(nproc)"
 export CFLAGS="-march=tigerlake -mtune=tigerlake -O2 -pipe -flto=$(nproc) -g0"
 export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
+export LD=x86_64-w64-mingw32-ld.lld
+ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 
 
 mkdir -p $INSTALLDIR
