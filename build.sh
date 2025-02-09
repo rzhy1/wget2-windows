@@ -306,20 +306,18 @@ build_wget2() {
 
 build_zstd 
 build_zlib-ng
-
 build_gmp
-
-build_libunistring
-build_libtasn1
-
-build_libiconv
-build_libidn2
-
-#wait
-build_PCRE2
-build_nghttp2
-build_libmicrohttpd
-#wait
+wait
+build_libunistring &
+build_libtasn1 &
+wait
+build_libiconv &
+build_libidn2 &
+wait
+build_PCRE2 &
+build_nghttp2 &
+build_libmicrohttpd &
+wait
 build_libpsl
 build_nettle 
 build_gnutls 
