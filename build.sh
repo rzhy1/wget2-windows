@@ -112,29 +112,6 @@ build_gnulibmirror() {
   echo "$duration" > "$INSTALLDIR/gnulibmirror_duration.txt"
 }
 
-build_brotli() {
-  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-  git clone --depth 1 https://github.com/google/brotli.git || exit 1
-  cd brotli || exit 1
-  cmake -S . -B build \
-    -DCMAKE_SYSTEM_NAME=Windows \
-    -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc \
-    -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ \
-    -DCMAKE_RC_COMPILER=x86_64-w64-mingw32-windres \
-    -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
-    -DBUILD_SHARED_LIBS=OFF \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBROTLI_BUNDLED_MODE=OFF \
-    -DBUILD_TESTING=ON
-  make -j$(nproc) -C build || exit 1
-  make install -C build || exit 1
-  cd .. && rm -rf brotli
-  dpkg -l | grep libbrotlidec
-  pkg-config --libs libbrotlidec
-  pkg-config --cflags --libs libbrotlidec
-  pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
-}
-
 build_libiconv() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
@@ -211,7 +188,7 @@ build_nghttp2() {
   local start_time=$(date +%s.%N)
   wget -O- https://github.com/nghttp2/nghttp2/releases/download/v1.64.0/nghttp2-1.64.0.tar.gz | tar xz || exit 1
   cd nghttp2-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools --with-libbrotlienc --with-libbrotlidec || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf nghttp2-*
@@ -310,7 +287,7 @@ build_wget2() {
   git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   ./bootstrap --skip-po || exit 1
-  #export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+  export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
@@ -318,8 +295,7 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  LDFLAGS="-L$INSTALLDIR//lib -lbrotlidec -lbrotlienc -lbrotlicommon"
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
@@ -332,7 +308,6 @@ build_zstd
 build_zlib-ng
 
 build_gmp
-build_brotli
 
 build_libunistring
 build_libtasn1
