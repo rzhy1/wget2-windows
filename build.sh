@@ -310,7 +310,7 @@ build_wget2() {
   git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   ./bootstrap --skip-po || exit 1
-  export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+  #export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
@@ -318,7 +318,8 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  LDFLAGS="-L$INSTALLDIR//lib -lbrotlidec -lbrotlienc -lbrotlicommon"
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
