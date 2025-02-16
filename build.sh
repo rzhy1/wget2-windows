@@ -11,7 +11,7 @@ export PKG_CONFIG_LIBDIR="$INSTALLDIR/lib/pkgconfig"
 export PKG_CONFIG="/usr/bin/${PREFIX}-pkg-config"
 export CPPFLAGS="-I$INSTALLDIR/include"
 export LDFLAGS="-L$INSTALLDIR/lib -static -s -flto=$(nproc)"
-export CFLAGS="-march=tigerlake -mtune=tigerlake -O2 -pipe -flto=$(nproc) -g0"
+export CFLAGS="-march=tigerlake -mtune=tigerlake -Os -pipe -flto=$(nproc) -g0"
 export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 export LD=x86_64-w64-mingw32-ld.lld
@@ -79,7 +79,7 @@ build_zlib-ng() {
   local start_time=$(date +%s.%N)
   git clone --depth=1 https://github.com/zlib-ng/zlib-ng || exit 1
   cd zlib-ng || exit 1
-  CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-O2" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
+  CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-Os" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf zlib-ng
@@ -131,7 +131,7 @@ build_libunistring() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
-  ./configure CFLAGS="-O2" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
+  ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libunistring-*
