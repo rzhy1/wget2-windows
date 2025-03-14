@@ -5,7 +5,7 @@ Wget2 v2.2.0 for Windows
 | gnulib-mirror | Git    | [https://git.savannah.gnu.org/git/gnulib.git](https://git.savannah.gnu.org/git/gnulib.git)  |
 | libiconv      | 1.18   | [https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz](https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz)  |
 | libunistring  | 1.3    | [https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz](https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz) |
-| libidn2       | 2.3.7  | [https://mirrors.ustc.edu.cn/gnu/libidn/libidn2-2.3.7.tar.gz](https://mirrors.ustc.edu.cn/gnu/libidn/libidn2-2.3.7.tar.gz) |
+| libidn2       | 2.3.8  | [https://mirrors.ustc.edu.cn/gnu/libidn/libidn2-2.3.8.tar.gz](https://mirrors.ustc.edu.cn/gnu/libidn/libidn2-2.3.8.tar.gz) |
 | libpsl        | Git    | [https://github.com/rockdaboot/libpsl.git](https://github.com/rockdaboot/libpsl.git)  |
 | nettle        | Git    |[https://git.lysator.liu.se/nettle/nettle.git](https://git.lysator.liu.se/nettle/nettle.git)  |
 | libtasn1      | 4.20.0 | [https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz](https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz) |
