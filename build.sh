@@ -109,6 +109,7 @@ build_git_project() {
     local start_time=$(date +%s.%N)
 
     echo "🚀 开始构建 $name (Git版本)..."
+    mkdir "$TEMP_DIR/$name" || return 1
     git clone --depth=1 "$repo" "$TEMP_DIR/$name" || return 1
     cd "$TEMP_DIR/$name" || return 1
 
