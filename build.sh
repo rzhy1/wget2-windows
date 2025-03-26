@@ -263,7 +263,6 @@ build_gnutls() {
   wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.9.tar.xz | tar x --xz || exit 1
   cd gnutls-* || exit 1
   GMP_LIBS="-L$INSTALLDIR/lib -lgmp" \
-  NETTLE_LIBS="-L$INSTALLDIR/lib -lnettle -lgmp" \
   HOGWEED_LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp" \
   LIBTASN1_LIBS="-L$INSTALLDIR/lib -ltasn1" \
   LIBIDN2_LIBS="-L$INSTALLDIR/lib -lidn2" \
@@ -272,7 +271,7 @@ build_gnutls() {
   NETTLE_CFLAGS=$CFLAGS \
   HOGWEED_CFLAGS=$CFLAGS \
   LIBIDN2_CFLAGS=$CFLAGS \
-  ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+  ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf gnutls-* 
