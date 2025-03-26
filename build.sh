@@ -245,7 +245,8 @@ build_libpsl() {
 build_nettle() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
+  #git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
+  wget -O- https://ftp.gnu.org/gnu/nettle/nettle-3.10.tar.gz | tar xz || exit 1
   cd nettle || exit 1
   bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
@@ -263,6 +264,7 @@ build_gnutls() {
   wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.9.tar.xz | tar x --xz || exit 1
   cd gnutls-* || exit 1
   GMP_LIBS="-L$INSTALLDIR/lib -lgmp" \
+  NETTLE_LIBS="-L$INSTALLDIR/lib -lnettle -lgmp" \
   HOGWEED_LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp" \
   LIBTASN1_LIBS="-L$INSTALLDIR/lib -ltasn1" \
   LIBIDN2_LIBS="-L$INSTALLDIR/lib -lidn2" \
@@ -271,7 +273,7 @@ build_gnutls() {
   NETTLE_CFLAGS=$CFLAGS \
   HOGWEED_CFLAGS=$CFLAGS \
   LIBIDN2_CFLAGS=$CFLAGS \
-  ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --with-nettle-mini --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+  ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf gnutls-* 
