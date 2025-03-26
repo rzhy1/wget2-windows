@@ -7,7 +7,7 @@ Wget2 v2.2.0 for Windows
 | libunistring  | 1.3    | [https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz](https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz) |
 | libidn2       | 2.3.8  | [https://mirrors.ustc.edu.cn/gnu/libidn/libidn2-2.3.8.tar.gz](https://mirrors.ustc.edu.cn/gnu/libidn/libidn2-2.3.8.tar.gz) |
 | libpsl        | Git    | [https://github.com/rockdaboot/libpsl.git](https://github.com/rockdaboot/libpsl.git)  |
-| nettle        | 3.10.1 |[https://ftp.gnu.org/gnu/nettle/nettle-3.10.1.tar.gz]([https://git.lysator.liu.se/nettle/nettle.git](https://ftp.gnu.org/gnu/nettle/nettle-3.10.1.tar.gz))  |
+| nettle        | 3.10.1 | [https://ftp.gnu.org/gnu/nettle/nettle-3.10.1.tar.gz](https://ftp.gnu.org/gnu/nettle/nettle-3.10.1.tar.gz)  |
 | libtasn1      | 4.20.0 | [https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz](https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz) |
 | gnutls        | 3.8.9| [https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.9.tar.xz](https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.9.tar.xz)  |
 | zlib-ng       | Git    | [https://github.com/zlib-ng/zlib-ng](https://github.com/zlib-ng/zlib-ng)  |
