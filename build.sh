@@ -133,7 +133,7 @@ build_libiconv() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz | tar xz || exit 1
   cd libiconv-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --prefix=$INSTALLDIR || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-nls --disable-silent-rules --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libiconv-*
@@ -147,7 +147,7 @@ build_libunistring() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
-  ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
+  ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libunistring-*
@@ -234,7 +234,7 @@ build_libmicrohttpd() {
   wget -O- https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
   cd libmicrohttpd-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
-            --disable-examples --disable-doc --disable-tools || exit 1
+            --disable-examples --disable-doc --disable-tools --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf libmicrohttpd-*
@@ -315,7 +315,9 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  LIBBROTLI_CFLAGS=$CFLAGS \
+  LIBBROTLI_LIBS="-L$INSTALLDIR/lib -lbrotlidec -lbrotlienc -lbrotlicommon" \
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotli --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
@@ -323,7 +325,7 @@ build_wget2() {
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
-build_wget2
+
 build_brotli
 build_zstd 
 build_zlib-ng
