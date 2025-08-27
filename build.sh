@@ -35,7 +35,7 @@ build_brotli() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommo结果如下⭐⭐⭐⭐⭐⭐" 
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找brotli文件结果如下⭐⭐⭐⭐⭐⭐" 
-  find / -name "*brotli*" 2>/dev/null|| exit 1
+  find / -name "*brotli*"
 }
 
 build_xz() {
@@ -321,7 +321,7 @@ build_wget2() {
   echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
 
-#build_brotli
+build_brotli
 build_zstd 
 build_zlib-ng
 build_gmp
