@@ -307,8 +307,9 @@ build_wget2() {
   git config submodule.gnulib.url https://github.com/coreutils/gnulib.git
   git submodule update --depth=1 --init gnulib
   ./bootstrap --skip-po || exit 1
-  export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+  export LDFLAGS="$LDFLAGS  -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
+  export LIBS="-lbrotlidec -lbrotlienc -lbrotlicommon"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
@@ -318,7 +319,7 @@ build_wget2() {
   LIBBROTLI_CFLAGS=$CFLAGS \
   LIBBROTLI_LIBS="-L$INSTALLDIR/lib -lbrotlidec -lbrotlienc -lbrotlicommon" \
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotli --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
-  make -j$(nproc) || exit 1
+  make -j$(nproc) LIBS="$LIBS" || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
   local end_time=$(date +%s.%N)
