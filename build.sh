@@ -303,31 +303,8 @@ build_wget2() {
   local start_time=$(date +%s.%N)
   git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
-  # 步骤 1：确认当前位置和文件
-  echo "当前目录: $(pwd)"
-  echo "文件列表:"
-  ls -la | grep bootstrap
-  
-  # 步骤 2：检查文件内容
-  echo "文件内容包含 gnulib 的部分:"
-  grep -n "gnulib" bootstrap || echo "没有找到 gnulib"
-  
-  # 步骤 3：备份文件
-  cp bootstrap bootstrap.backup
-  
-  # 步骤 4：尝试修改
-  sed -i 's|git.savannah.gnu.org|github.com/coreutils|' bootstrap
-  
-  # 步骤 5：验证修改
-  echo "修改后的内容:"
-  grep "gnulib" bootstrap
-  
-  # 步骤 6：如果失败，尝试其他方法
-  if ! grep -q "github.com/coreutils" bootstrap; then
-      echo "sed 修改失败，尝试其他方法..."
-      # 使用 perl
-      perl -pi -e 's|git.savannah.gnu.org/git/gnulib.git|github.com/coreutils/gnulib.git|' bootstrap
-  fi
+  # 精确匹配整个 URL
+  sed -i 's|https://git.savannah.gnu.org/git/gnulib.git|https://github.com/coreutils/gnulib.git|' bootstrap
   ./bootstrap --skip-po || exit 1
   export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
