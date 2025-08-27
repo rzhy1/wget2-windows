@@ -307,9 +307,9 @@ build_wget2() {
   git config submodule.gnulib.url https://github.com/coreutils/gnulib.git
   git submodule update --depth=1 --init gnulib
   ./bootstrap --skip-po || exit 1
-  export LDFLAGS="$LDFLAGS  -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+  #export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+  export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -lbrotlidec -lbrotlienc -lbrotlicommon -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
-  export LIBS="-lbrotlidec -lbrotlienc -lbrotlicommon"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
