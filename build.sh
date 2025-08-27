@@ -21,6 +21,22 @@ ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
+build_brotli() {
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
+  local start_time=$(date +%s.%N)
+  git clone https://github.com/google/brotli.git || exit 1
+  cd brotli || exit 1
+  CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
+  make install || exit 1
+  cd .. && rm -rf brotli
+  local end_time=$(date +%s.%N)
+  local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
+  echo "$duration" > "$INSTALLDIR/brotli_duration.txt"
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommo结果如下⭐⭐⭐⭐⭐⭐" 
+  pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找brotli文件结果如下⭐⭐⭐⭐⭐⭐" 
+  find / -name "*brotli*" 2>/dev/null|| exit 1
+}
 
 build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
@@ -296,7 +312,7 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-brotlidec  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
@@ -305,6 +321,7 @@ build_wget2() {
   echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
 
+build_brotli
 build_zstd 
 build_zlib-ng
 build_gmp
