@@ -303,7 +303,7 @@ build_wget2() {
   local start_time=$(date +%s.%N)
   git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
-  sed -i 's|https://git.savannah.gnu.org/git/gnulib.git|https://github.com/coreutils/gnulib.git|' bootstrap
+  sed -i 's|default_gnulib_url=https://git.savannah.gnu.org/git/gnulib.git|default_gnulib_url=https://github.com/coreutils/gnulib.git|' bootstrap
   ./bootstrap --skip-po || exit 1
   export LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
