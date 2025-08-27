@@ -321,7 +321,7 @@ build_wget2() {
   echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
 
-build_brotli
+#build_brotli
 build_zstd 
 build_zlib-ng
 build_gmp
