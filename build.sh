@@ -309,13 +309,18 @@ build_wget2() {
   cd gnulib || exit 1
   git pull origin master
   cd .. || exit 1
+  echo "gl_FUNC_ERROR" >> gnulib/modules/error
+  echo "gl_ERROR" >> gnulib/modules/error
   ./bootstrap --skip-po || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
   export LIBS="-lgnutls -lpsl -lpcre2-8 -lidn2 -lzstd -lbrotlienc -lbrotlidec -lbrotlicommon -lz -lnghttp2 -lbcrypt -lncrypt"
-  export ac_cv_func_fcntl=no
+  export ac_cv_func_error=yes
   export gl_cv_header_error_h=no
-  ac_cv_func_fcntl=no gl_cv_header_error_h=no \
+  export gl_cv_func_error=yes
+  ac_cv_func_error=yes \
+  gl_cv_func_error=yes \
+  gl_cv_header_error_h=no \
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
