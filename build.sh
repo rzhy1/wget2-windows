@@ -309,13 +309,14 @@ build_wget2() {
   ./bootstrap --skip-po || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
+  export LIBS="-lgnutls -lpsl -lpcre2-8 -lidn2 -lzstd -lbrotlienc -lbrotlidec -lbrotlicommon -lz -lnghttp2 -lbcrypt -lncrypt"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotli --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd  --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc) V=1 || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
