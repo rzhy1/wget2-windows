@@ -309,7 +309,7 @@ build_wget2() {
   ./bootstrap --skip-po || exit 1
   sed -i '1i#include "error.h"' lib/openat-die.c
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
-  export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
+  export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB -DGNULIB_NAMESPACE=wget_gnulib $CFLAGS"
   export LIBS="-lgnutls -lpsl -lpcre2-8 -lidn2 -lzstd -lbrotlienc -lbrotlidec -lbrotlicommon -lz -lnghttp2 -lbcrypt -lncrypt"
   export ac_cv_func_fcntl=no
   export gl_cv_header_error_h=no
