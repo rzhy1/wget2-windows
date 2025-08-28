@@ -307,7 +307,7 @@ build_wget2() {
   git config submodule.gnulib.url https://github.com/coreutils/gnulib.git
   git submodule update --depth=1 --init gnulib
   ./bootstrap --skip-po || exit 1
-  sed -i '1i#include "error.h"' lib/openat-die.c
+  export CPPFLAGS="-I$INSTALLDIR/include -DGNULIB_NAMESPACE=wget_gnulib"
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB -DGNULIB_NAMESPACE=wget_gnulib $CFLAGS"
   export LIBS="-lgnutls -lpsl -lpcre2-8 -lidn2 -lzstd -lbrotlienc -lbrotlidec -lbrotlicommon -lz -lnghttp2 -lbcrypt -lncrypt"
