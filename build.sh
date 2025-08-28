@@ -311,6 +311,8 @@ build_wget2() {
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
   export LIBS="-lgnutls -lpsl -lpcre2-8 -lidn2 -lzstd -lbrotlienc -lbrotlidec -lbrotlicommon -lz -lnghttp2 -lbcrypt -lncrypt"
+  export ac_cv_func_fcntl=no
+  export gl_cv_header_error_h=no
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
