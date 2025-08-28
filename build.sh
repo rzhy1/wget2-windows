@@ -305,7 +305,7 @@ build_wget2() {
   cd wget2 || exit 1
   git submodule init
   git config submodule.gnulib.url https://github.com/coreutils/gnulib.git
-  git submodule update --depth=1 --init gnulib
+  git submodule update --remote --merge
   ./bootstrap --skip-po || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
