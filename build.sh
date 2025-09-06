@@ -303,10 +303,11 @@ build_wget2() {
   local start_time=$(date +%s.%N)
   git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
-  git submodule init
-  git config submodule.gnulib.url https://github.com/coreutils/gnulib.git
-  git submodule update --init --remote --depth=1 gnulib
-  ./bootstrap --skip-po || exit 1
+  if [ -d "gnulib" ]; then
+      rm -rf gnulib
+  fi
+  git clone --depth=1 --branch=master https://git.savannah.gnu.org/git/gnulib.git
+  ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
   GNUTLS_CFLAGS=$CFLAGS \
