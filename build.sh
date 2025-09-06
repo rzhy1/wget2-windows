@@ -306,7 +306,7 @@ build_wget2() {
   if [ -d "gnulib" ]; then
       rm -rf gnulib
   fi
-  git clone --depth=1 --branch=master https://git.savannah.gnu.org/git/gnulib.git
+  git clone --depth=1 https://github.com/coreutils/gnulib.git
   ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
