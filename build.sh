@@ -37,12 +37,12 @@ build_brotli() {
   CMAKE_SYSTEM_NAME=Windows \
   CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc \
   CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ \
-  cmake .. \
+  cmake . \
     -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
-    -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=OFF \
-    -DBUILD_PKG_CONFIG=ON \  
+    -DCMAKE_BUILD_TYPE=Release \
     -DBROTLI_DISABLE_TESTS=ON \
+    -DBUILD_PKG_CONFIG=ON \
     -DCMAKE_POSITION_INDEPENDENT_CODE=ON || exit 1
     
   make -j$(nproc) || exit 1
