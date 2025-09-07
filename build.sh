@@ -68,6 +68,7 @@ build_zstd() {
   # 编译 zstd
   git clone --depth=1 https://github.com/facebook/zstd.git || exit 1
   cd zstd || exit 1
+  sudo rm -rf builddir-st
   meson setup \
     --cross-file=${GITHUB_WORKSPACE}/cross_file.txt \
     --backend=ninja \
