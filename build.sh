@@ -15,7 +15,7 @@ export CFLAGS="-march=tigerlake -mtune=tigerlake -Os -pipe -flto=$(nproc) -g0"
 export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 export LD=x86_64-w64-mingw32-ld.lld
-ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
+ln -sf $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 # 当前路径是：/__w/wget2-windows/wget2-windows
 # INSTALLDIR是：/github/home/usr/local/x86_64-w64-mingw32
 
@@ -24,18 +24,89 @@ cd $INSTALLDIR
 build_brotli() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone https://github.com/google/brotli.git || exit 1
-  cd brotli || exit 1
-  CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
+  
+  # 清理可能存在的旧版本
+  rm -rf brotli-build
+  git clone --depth=1 https://github.com/google/brotli.git brotli-build || exit 1
+  cd brotli-build || exit 1
+  
+  # 创建构建目录
+  mkdir -p build && cd build
+  
+  # 使用CMake构建
+  CMAKE_SYSTEM_NAME=Windows \
+  CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc \
+  CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ \
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DBROTLI_DISABLE_TESTS=ON \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON || exit 1
+    
+  make -j$(nproc) || exit 1
   make install || exit 1
-  cd .. && rm -rf brotli
+  
+  cd ../..
+  rm -rf brotli-build
+  
+  # 手动创建pkg-config文件如果不存在
+  if [ ! -f "$INSTALLDIR/lib/pkgconfig/libbrotlicommon.pc" ]; then
+    mkdir -p "$INSTALLDIR/lib/pkgconfig"
+    cat > "$INSTALLDIR/lib/pkgconfig/libbrotlicommon.pc" << EOF
+prefix=$INSTALLDIR
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: libbrotlicommon
+Description: Brotli common library
+Version: 1.0.9
+Libs: -L\${libdir} -lbrotlicommon
+Cflags: -I\${includedir}
+EOF
+  fi
+
+  if [ ! -f "$INSTALLDIR/lib/pkgconfig/libbrotlienc.pc" ]; then
+    cat > "$INSTALLDIR/lib/pkgconfig/libbrotlienc.pc" << EOF
+prefix=$INSTALLDIR
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: libbrotlienc
+Description: Brotli encoder library
+Version: 1.0.9
+Libs: -L\${libdir} -lbrotlienc
+Requires.private: libbrotlicommon
+Cflags: -I\${includedir}
+EOF
+  fi
+
+  if [ ! -f "$INSTALLDIR/lib/pkgconfig/libbrotlidec.pc" ]; then
+    cat > "$INSTALLDIR/lib/pkgconfig/libbrotlidec.pc" << EOF
+prefix=$INSTALLDIR
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: libbrotlidec
+Description: Brotli decoder library
+Version: 1.0.9
+Libs: -L\${libdir} -lbrotlidec
+Requires.private: libbrotlicommon
+Cflags: -I\${includedir}
+EOF
+  fi
+
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/brotli_duration.txt"
-  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommo结果如下⭐⭐⭐⭐⭐⭐" 
+  
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon结果如下⭐⭐⭐⭐⭐⭐" 
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找brotli文件结果如下⭐⭐⭐⭐⭐⭐" 
-  find / -name "*brotli*"
+  find $INSTALLDIR -name "*brotli*" 2>/dev/null
 }
 
 build_xz() {
@@ -301,31 +372,79 @@ build_gnutls() {
 build_wget2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
+  
+  # 清理可能存在的旧版本
+  rm -rf wget2
   git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
+  
   if [ -d "gnulib" ]; then
       rm -rf gnulib
   fi
   git clone --depth=1 https://github.com/coreutils/gnulib.git
+  
   ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
+  
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
-  export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
+  export CFLAGS="-I$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
+  
+  # 添加Brotli支持
+  BROTLI_CFLAGS="-I$INSTALLDIR/include" 
+  BROTLI_LIBS="-L$INSTALLDIR/lib -lbrotlienc -lbrotlidec -lbrotlicommon"
+  
+  # 配置时包含brotli
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
-  LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-brotli --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
-  make -j$(nproc)  || exit 1
-  strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
-  cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
+  LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8" \
+  BROTLI_CFLAGS="$BROTLI_CFLAGS" \
+  BROTLI_LIBS="$BROTLI_LIBS" \
+  ./configure \
+    --build=x86_64-pc-linux-gnu \
+    --host=$PREFIX \
+    --with-libiconv-prefix="$INSTALLDIR" \
+    --with-ssl=gnutls \
+    --disable-shared \
+    --enable-static \
+    --without-lzma \
+    --with-zstd \
+    --with-brotli \
+    --without-bzip2 \
+    --without-lzip \
+    --without-gpgme \
+    --enable-threads=windows || { 
+      echo "配置失败，查看config.log获取详细信息"
+      if [ -f config.log ]; then
+        tail -50 config.log
+      fi
+      exit 1
+    }
+  
+  make -j$(nproc) || { 
+    echo "编译失败"
+    exit 1
+  }
+  
+  # 检查是否生成了wget2.exe
+  if [ -f "src/wget2.exe" ]; then
+    strip src/wget2.exe || exit 1
+    cp -fv "src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
+    echo "成功构建wget2.exe"
+  else
+    echo "错误：未找到wget2.exe"
+    find . -name "*.exe" -o -name "wget2"
+    exit 1
+  fi
+  
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
 
-#build_brotli
+# 构建流程 - 包含brotli
+build_brotli
 build_zstd 
 build_zlib-ng
 build_gmp
