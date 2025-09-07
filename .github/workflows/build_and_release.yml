@@ -25,7 +25,7 @@ jobs:
       - name: Install prerequisites
         run: |
           sudo apt-get update
-          DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+          sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
           sudo apt-get install -y --no-install-recommends  \
             autopoint \
             cmake \
