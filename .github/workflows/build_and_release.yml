@@ -22,6 +22,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
+      - name: Configure APT source for Ubuntu 24.04 (Noble Numbat) # 关键的新增步骤
+        run: |
+          # 备份原有的源配置文件 (Ubuntu 24.04 使用了新的 DEB822 格式)
+          sudo cp /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.backup
+          # 使用阿里云镜像源
+          sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null << 'EOF'
+          Types: deb
+          URIs: http://mirrors.aliyun.com/ubuntu
+          Suites: noble noble-updates noble-backports noble-security
+          Components: main restricted universe multiverse
+          Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+          EOF
+          # 可选：清除旧的缓存
+          sudo apt-get clean
+          # 更新源列表
+          sudo apt-get update -o Acquire-by-hash=yes -qy
+          
       - name: Install prerequisites
         run: |
           sudo apt-get update
