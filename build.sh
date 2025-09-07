@@ -15,7 +15,7 @@ export CFLAGS="-march=tigerlake -mtune=tigerlake -Os -pipe -flto=$(nproc) -g0"
 export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 export LD=x86_64-w64-mingw32-ld.lld
-ln -sf $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
+sudo ln -sf $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 # 当前路径是：/__w/wget2-windows/wget2-windows
 # INSTALLDIR是：/github/home/usr/local/x86_64-w64-mingw32
 
@@ -41,6 +41,7 @@ build_brotli() {
     -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=OFF \
+    -DBUILD_PKG_CONFIG=ON \  
     -DBROTLI_DISABLE_TESTS=ON \
     -DCMAKE_POSITION_INDEPENDENT_CODE=ON || exit 1
     
