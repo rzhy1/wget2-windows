@@ -306,21 +306,19 @@ build_wget2() {
   if [ -d "gnulib" ]; then
       sudo rm -rf gnulib
   fi
-  export LIBS="$LIBS -L$INSTALLDIR/lib -lbrotlidec -lbrotlienc -lbrotlicommon"
+  export BROTLIDEC_CFLAGS="-I$INSTALLDIR/include"
+  export BROTLIDEC_LIBS="-L$INSTALLDIR/lib -lbrotlidec -lbrotlienc -lbrotlicommon"
   sudo git clone --depth=1 https://github.com/coreutils/gnulib.git
   sudo ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
-  echo "显示1"
-  sudo ./configure --help
-  echo "显示2"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotli --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotlidec --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc)  || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
@@ -330,7 +328,6 @@ build_wget2() {
 }
 
 build_brotli
-build_wget2
 build_zstd 
 build_zlib-ng
 build_gmp
