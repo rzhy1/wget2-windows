@@ -23,7 +23,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      
+      - name: Configure APT source for Ubuntu 24.04
+        run: |
+          # 直接配置阿里云镜像源（不备份原文件）
+          sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null << 'EOF'
+          Types: deb
+          URIs: http://mirrors.aliyun.com/ubuntu
+          Suites: noble noble-updates noble-backports noble-security
+          Components: main restricted universe multiverse
+          Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+          EOF
+        
+          # 更新软件源列表
+          sudo apt-get update -o Acquire-by-hash=yes -qy
           
       - name: Install prerequisites
         run: |
