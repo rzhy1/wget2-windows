@@ -304,13 +304,16 @@ build_wget2() {
   sudo git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   if [ -d "gnulib" ]; then
-      rm -rf gnulib
+      sudo rm -rf gnulib
   fi
   export LIBS="$LIBS -L$INSTALLDIR/lib -lbrotlidec -lbrotlienc -lbrotlicommon"
   sudo git clone --depth=1 https://github.com/coreutils/gnulib.git
   sudo ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
+  echo "显示1"
+  sudo ./configure --help
+  echo "显示2"
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
