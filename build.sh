@@ -27,8 +27,8 @@ build_brotli() {
   git clone https://github.com/google/brotli.git || exit 1
   cd brotli || exit 1
   CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
-  make install || exit 1
-  cd .. && rm -rf brotli
+  sudo make install || exit 1
+  cd .. && sudo rm -rf brotli
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/brotli_duration.txt"
@@ -50,7 +50,7 @@ build_xz() {
   cmake --build . -- -j$(nproc) || { echo "Build failed"; exit 1; }
   sudo cmake --install . || { echo "Install failed"; exit 1; }
   xz --version
-  cd ../.. && rm -rf xz
+  cd ../.. && sudo rm -rf xz
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/xz_duration.txt"
@@ -83,7 +83,7 @@ build_zstd() {
   sudo rm -f /usr/local/bin/zstd*
   sudo rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
-  meson install -C builddir-st || exit 1
+  sudo meson install -C builddir-st || exit 1
   cd .. && sudo rm -rf zstd
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
@@ -97,8 +97,8 @@ build_zlib-ng() {
   cd zlib-ng || exit 1
   CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-Os" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf zlib-ng
+  sudo make install || exit 1
+  cd .. && sudo rm -rf zlib-ng
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/zlib-ng_duration.txt"
@@ -111,8 +111,8 @@ build_gmp() {
   cd gmp-* || exit
   ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR"
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf gmp-*
+  sudo make install || exit 1
+  cd .. && sudo rm -rf gmp-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/gmp_duration.txt"
@@ -135,8 +135,8 @@ build_libiconv() {
   cd libiconv-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-nls --disable-silent-rules --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf libiconv-*
+  sudo make install || exit 1
+  cd .. && sudo rm -rf libiconv-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libiconv_duration.txt"
@@ -149,8 +149,8 @@ build_libunistring() {
   cd libunistring-* || exit 1
   ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf libunistring-*
+  sudo make install || exit 1
+  cd .. && sudo rm -rf libunistring-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libunistring_duration.txt"
@@ -163,8 +163,8 @@ build_libidn2() {
   cd libidn2-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf libidn2-*
+  sudo make install || exit 1
+  cd .. && sudo rm -rf libidn2-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libidn2_duration.txt"
@@ -177,8 +177,8 @@ build_libtasn1() {
   cd libtasn1-* || exit 1
   ./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf libtasn1-*
+ sudo  make install || exit 1
+  cd .. && sudo rm -rf libtasn1-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libtasn1_duration.txt"
@@ -187,13 +187,13 @@ build_libtasn1() {
 build_PCRE2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone --depth=1 https://github.com/PCRE2Project/pcre2 || exit 1
+  sudo git clone --depth=1 https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
-  ./autogen.sh || exit 1
-  ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
+  sudo ./autogen.sh || exit 1
+  sudo ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf pcre2
+  sudo make install || exit 1
+  cd .. && sudo rm -rf pcre2
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/pcre2_duration.txt"
@@ -206,8 +206,8 @@ build_nghttp2() {
   cd nghttp2-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf nghttp2-*
+  sudo make install || exit 1
+  cd .. && sudo rm -rf nghttp2-*
   local end_time=$(date +%s.%N)
   duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/nghttp2_duration.txt"
@@ -216,13 +216,13 @@ build_nghttp2() {
 build_dlfcn-win32() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build dlfcn-win32⭐⭐⭐⭐⭐⭐" 
   start_time=$(date +%s.%N)
-  git clone --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
+  sudo git clone --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
   cd dlfcn-win32 || exit 1
   ./configure --prefix=$PREFIX --cc=$PREFIX-gcc || exit 1
   make -j$(nproc) || exit 1
   cp -p libdl.a $INSTALLDIR/lib/ || exit 1
   cp -p src/dlfcn.h $INSTALLDIR/include/ || exit 1
-  cd .. && rm -rf dlfcn-win32
+  cd .. && sudo rm -rf dlfcn-win32
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/dlfcn-win32_duration.txt"
@@ -236,8 +236,8 @@ build_libmicrohttpd() {
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
             --disable-examples --disable-doc --disable-tools --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf libmicrohttpd-*
+  sudo make install || exit 1
+  cd .. && sudo rm -rf libmicrohttpd-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libmicrohttpd_duration.txt"
@@ -246,13 +246,13 @@ build_libmicrohttpd() {
 build_libpsl() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libpsl⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone --depth=1 --recursive https://github.com/rockdaboot/libpsl.git || exit 1
+  sudo git clone --depth=1 --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
-  ./autogen.sh || exit 1
+  sudo ./autogen.sh || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf libpsl
+  sudo make install || exit 1
+  cd .. && sudo rm -rf libpsl
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libpsl_duration.txt"
@@ -264,11 +264,11 @@ build_nettle() {
   #git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
   wget -O- https://ftp.gnu.org/gnu/nettle/nettle-3.10.2.tar.gz | tar xz || exit 1
   cd nettle-* || exit 1
-  bash .bootstrap || exit 1
+  sudo bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf nettle
+  sudo make install || exit 1
+  cd .. && sudo rm -rf nettle
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/nettle_duration.txt"
@@ -291,8 +291,8 @@ build_gnutls() {
   LIBIDN2_CFLAGS=$CFLAGS \
   ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
   make -j$(nproc) || exit 1
-  make install || exit 1
-  cd .. && rm -rf gnutls-* 
+  sudo make install || exit 1
+  cd .. && sudo rm -rf gnutls-* 
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/gnutls_duration.txt"
@@ -307,8 +307,8 @@ build_wget2() {
       rm -rf gnulib
   fi
   export LIBS="$LIBS -L$INSTALLDIR/lib -lbrotlidec -lbrotlienc -lbrotlicommon"
-  git clone --depth=1 https://github.com/coreutils/gnulib.git
-  ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
+  sudo git clone --depth=1 https://github.com/coreutils/gnulib.git
+  sudo ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
   GNUTLS_CFLAGS=$CFLAGS \
