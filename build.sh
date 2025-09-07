@@ -41,14 +41,14 @@ build_brotli() {
 build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  apt-get purge xz-utils
+  sudo apt-get purge xz-utils
   git clone --depth=1 https://github.com/tukaani-project/xz.git || { echo "Git clone failed"; exit 1; }
   cd xz || { echo "cd xz failed"; exit 1; }
   mkdir build
   cd build
   cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF || { echo "CMake failed"; exit 1; }
   cmake --build . -- -j$(nproc) || { echo "Build failed"; exit 1; }
-  cmake --install . || { echo "Install failed"; exit 1; }
+  sudo cmake --install . || { echo "Install failed"; exit 1; }
   xz --version
   cd ../.. && rm -rf xz
   local end_time=$(date +%s.%N)
@@ -80,11 +80,11 @@ build_zstd() {
     -Ddefault_library=static \
     -Db_lto=true --optimization=2 \
     build/meson builddir-st || exit 1
-  rm -f /usr/local/bin/zstd*
-  rm -f /usr/local/bin/*zstd
+  sudo rm -f /usr/local/bin/zstd*
+  sudo rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
   meson install -C builddir-st || exit 1
-  cd .. && rm -rf zstd
+  cd .. && sudo rm -rf zstd
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/zstd_duration.txt"
@@ -301,7 +301,7 @@ build_gnutls() {
 build_wget2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
+  sudo git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   if [ -d "gnulib" ]; then
       rm -rf gnulib
