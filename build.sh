@@ -65,10 +65,9 @@ build_zstd() {
   source /tmp/venv/bin/activate
   pip3 install --no-cache-dir meson pytest
 
-  # 编译 zstd
   git clone --depth=1 https://github.com/facebook/zstd.git || exit 1
   cd zstd || exit 1
-  sudo rm -rf builddir-st
+  rm -rf builddir-st
   meson setup \
     --cross-file=${GITHUB_WORKSPACE}/cross_file.txt \
     --backend=ninja \
@@ -81,11 +80,11 @@ build_zstd() {
     -Ddefault_library=static \
     -Db_lto=true --optimization=2 \
     build/meson builddir-st || exit 1
-  sudo rm -f /usr/local/bin/zstd*
-  sudo rm -f /usr/local/bin/*zstd
+  rm -f /usr/local/bin/zstd*
+  rm -f /usr/local/bin/*zstd
   meson compile -C builddir-st || exit 1
-  sudo meson install -C builddir-st || exit 1
-  cd .. && sudo rm -rf zstd
+  meson install -C builddir-st || exit 1
+  cd .. && rm -rf zstd
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/zstd_duration.txt"
