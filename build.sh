@@ -105,7 +105,7 @@ EOF
   echo "$duration" > "$INSTALLDIR/brotli_duration.txt"
   
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon结果如下⭐⭐⭐⭐⭐⭐" 
-  pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+  pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon || echo "❌ pkg-config 失败"
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找brotli文件结果如下⭐⭐⭐⭐⭐⭐" 
   find $INSTALLDIR -name "*brotli*" 2>/dev/null
 }
