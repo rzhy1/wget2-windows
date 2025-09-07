@@ -35,7 +35,7 @@ build_brotli() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommo结果如下⭐⭐⭐⭐⭐⭐" 
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找brotli文件结果如下⭐⭐⭐⭐⭐⭐" 
-  find / -name "*brotli*"
+  sudo find $INSTALLDIR -name "*brotli*" 2>/dev/null
 }
 
 build_xz() {
