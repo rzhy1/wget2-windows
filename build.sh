@@ -15,7 +15,7 @@ export CFLAGS="-march=tigerlake -mtune=tigerlake -Os -pipe -flto=$(nproc) -g0"
 export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 export LD=x86_64-w64-mingw32-ld.lld
-ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
+sudo ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 # 当前路径是：/__w/wget2-windows/wget2-windows
 # INSTALLDIR是：/github/home/usr/local/x86_64-w64-mingw32
 
@@ -325,7 +325,7 @@ build_wget2() {
   echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
 
-#build_brotli
+build_brotli
 build_zstd 
 build_zlib-ng
 build_gmp
