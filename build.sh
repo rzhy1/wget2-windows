@@ -15,7 +15,7 @@ export CFLAGS="-march=tigerlake -mtune=tigerlake -Os -pipe -flto=$(nproc) -g0"
 export CXXFLAGS="$CFLAGS"
 export WINEPATH="$INSTALLDIR/bin;$INSTALLDIR/lib;/usr/$PREFIX/bin;/usr/$PREFIX/lib"
 export LD=x86_64-w64-mingw32-ld.lld
-sudo ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
+ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 # 当前路径是：/__w/wget2-windows/wget2-windows
 # INSTALLDIR是：/github/home/usr/local/x86_64-w64-mingw32
 
@@ -27,30 +27,30 @@ build_brotli() {
   git clone https://github.com/google/brotli.git || exit 1
   cd brotli || exit 1
   CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf brotli
+  make install || exit 1
+  cd .. && rm -rf brotli
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/brotli_duration.txt"
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommo结果如下⭐⭐⭐⭐⭐⭐" 
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找brotli文件结果如下⭐⭐⭐⭐⭐⭐" 
-  sudo find $INSTALLDIR -name "*brotli*" 2>/dev/null
+  find / -name "*brotli*"
 }
 
 build_xz() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build xz⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  sudo apt-get purge xz-utils
+  apt-get purge xz-utils
   git clone --depth=1 https://github.com/tukaani-project/xz.git || { echo "Git clone failed"; exit 1; }
   cd xz || { echo "cd xz failed"; exit 1; }
   mkdir build
   cd build
   cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release -DXZ_NLS=ON -DBUILD_SHARED_LIBS=OFF || { echo "CMake failed"; exit 1; }
   cmake --build . -- -j$(nproc) || { echo "Build failed"; exit 1; }
-  sudo cmake --install . || { echo "Install failed"; exit 1; }
+  cmake --install . || { echo "Install failed"; exit 1; }
   xz --version
-  cd ../.. && sudo rm -rf xz
+  cd ../.. && rm -rf xz
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/xz_duration.txt"
@@ -65,9 +65,9 @@ build_zstd() {
   source /tmp/venv/bin/activate
   pip3 install --no-cache-dir meson pytest
 
+  # 编译 zstd
   git clone --depth=1 https://github.com/facebook/zstd.git || exit 1
   cd zstd || exit 1
-  rm -rf builddir-st
   meson setup \
     --cross-file=${GITHUB_WORKSPACE}/cross_file.txt \
     --backend=ninja \
@@ -95,10 +95,10 @@ build_zlib-ng() {
   local start_time=$(date +%s.%N)
   git clone --depth=1 https://github.com/zlib-ng/zlib-ng || exit 1
   cd zlib-ng || exit 1
-  CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-Os" CC=x86_64-w64-mingw32-gcc sudo ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
+  CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-Os" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf zlib-ng
+  make install || exit 1
+  cd .. && rm -rf zlib-ng
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/zlib-ng_duration.txt"
@@ -109,10 +109,10 @@ build_gmp() {
   start_time=$(date +%s.%N)
   wget -nv -O- https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz | tar x --xz
   cd gmp-* || exit
-  sudo ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR"
+  ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR"
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf gmp-*
+  make install || exit 1
+  cd .. && rm -rf gmp-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/gmp_duration.txt"
@@ -133,10 +133,10 @@ build_libiconv() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz | tar xz || exit 1
   cd libiconv-* || exit 1
-  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-nls --disable-silent-rules --prefix=$INSTALLDIR || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-nls --disable-silent-rules --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf libiconv-*
+  make install || exit 1
+  cd .. && rm -rf libiconv-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libiconv_duration.txt"
@@ -147,10 +147,10 @@ build_libunistring() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
-  sudo ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
+  ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf libunistring-*
+  make install || exit 1
+  cd .. && rm -rf libunistring-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libunistring_duration.txt"
@@ -161,10 +161,10 @@ build_libidn2() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.8.tar.gz | tar xz || exit 1
   cd libidn2-* || exit 1
-  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf libidn2-*
+  make install || exit 1
+  cd .. && rm -rf libidn2-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libidn2_duration.txt"
@@ -175,10 +175,10 @@ build_libtasn1() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz | tar xz || exit 1
   cd libtasn1-* || exit 1
-  sudo ./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
+  ./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
   make -j$(nproc) || exit 1
- sudo  make install || exit 1
-  cd .. && sudo rm -rf libtasn1-*
+  make install || exit 1
+  cd .. && rm -rf libtasn1-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libtasn1_duration.txt"
@@ -187,13 +187,13 @@ build_libtasn1() {
 build_PCRE2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build PCRE2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  sudo git clone --depth=1 https://github.com/PCRE2Project/pcre2 || exit 1
+  git clone --depth=1 https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
-  sudo ./autogen.sh || exit 1
-  sudo sudo ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
+  ./autogen.sh || exit 1
+  ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf pcre2
+  make install || exit 1
+  cd .. && rm -rf pcre2
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/pcre2_duration.txt"
@@ -204,10 +204,10 @@ build_nghttp2() {
   local start_time=$(date +%s.%N)
   wget -O- https://github.com/nghttp2/nghttp2/releases/download/v1.67.0/nghttp2-1.67.0.tar.gz | tar xz || exit 1
   cd nghttp2-* || exit 1
-  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf nghttp2-*
+  make install || exit 1
+  cd .. && rm -rf nghttp2-*
   local end_time=$(date +%s.%N)
   duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/nghttp2_duration.txt"
@@ -216,13 +216,13 @@ build_nghttp2() {
 build_dlfcn-win32() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build dlfcn-win32⭐⭐⭐⭐⭐⭐" 
   start_time=$(date +%s.%N)
-  sudo git clone --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
+  git clone --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
   cd dlfcn-win32 || exit 1
-  sudo ./configure --prefix=$PREFIX --cc=$PREFIX-gcc || exit 1
+  ./configure --prefix=$PREFIX --cc=$PREFIX-gcc || exit 1
   make -j$(nproc) || exit 1
   cp -p libdl.a $INSTALLDIR/lib/ || exit 1
   cp -p src/dlfcn.h $INSTALLDIR/include/ || exit 1
-  cd .. && sudo rm -rf dlfcn-win32
+  cd .. && rm -rf dlfcn-win32
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/dlfcn-win32_duration.txt"
@@ -233,11 +233,11 @@ build_libmicrohttpd() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
   cd libmicrohttpd-* || exit 1
-  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
             --disable-examples --disable-doc --disable-tools --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf libmicrohttpd-*
+  make install || exit 1
+  cd .. && rm -rf libmicrohttpd-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libmicrohttpd_duration.txt"
@@ -246,13 +246,13 @@ build_libmicrohttpd() {
 build_libpsl() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libpsl⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  sudo git clone --depth=1 --recursive https://github.com/rockdaboot/libpsl.git || exit 1
+  git clone --depth=1 --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
-  sudo ./autogen.sh || exit 1
-  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
+  ./autogen.sh || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf libpsl
+  make install || exit 1
+  cd .. && rm -rf libpsl
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/libpsl_duration.txt"
@@ -264,11 +264,11 @@ build_nettle() {
   #git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
   wget -O- https://ftp.gnu.org/gnu/nettle/nettle-3.10.2.tar.gz | tar xz || exit 1
   cd nettle-* || exit 1
-  sudo bash .bootstrap || exit 1
-  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
+  bash .bootstrap || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf nettle
+  make install || exit 1
+  cd .. && rm -rf nettle
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/nettle_duration.txt"
@@ -289,10 +289,10 @@ build_gnutls() {
   NETTLE_CFLAGS=$CFLAGS \
   HOGWEED_CFLAGS=$CFLAGS \
   LIBIDN2_CFLAGS=$CFLAGS \
-  sudo ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+  ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
   make -j$(nproc) || exit 1
-  sudo make install || exit 1
-  cd .. && sudo rm -rf gnutls-* 
+  make install || exit 1
+  cd .. && rm -rf gnutls-* 
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/gnutls_duration.txt"
@@ -301,15 +301,13 @@ build_gnutls() {
 build_wget2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build wget2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  sudo git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
+  git clone --depth=1 https://github.com/rockdaboot/wget2.git || exit 1
   cd wget2 || exit 1
   if [ -d "gnulib" ]; then
-      sudo rm -rf gnulib
+      rm -rf gnulib
   fi
-  export BROTLIDEC_CFLAGS="-I$INSTALLDIR/include"
-  export BROTLIDEC_LIBS="-L$INSTALLDIR/lib -lbrotlidec -lbrotlienc -lbrotlicommon"
-  sudo git clone --depth=1 https://github.com/coreutils/gnulib.git
-  sudo ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
+  git clone --depth=1 https://github.com/coreutils/gnulib.git
+  ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
   GNUTLS_CFLAGS=$CFLAGS \
@@ -318,7 +316,7 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotlidec --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --without-brotli --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc)  || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
@@ -327,7 +325,7 @@ build_wget2() {
   echo "$duration" > "$INSTALLDIR/wget2_duration.txt"
 }
 
-build_brotli
+#build_brotli
 build_zstd 
 build_zlib-ng
 build_gmp
