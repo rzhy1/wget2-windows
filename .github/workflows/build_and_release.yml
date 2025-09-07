@@ -25,6 +25,10 @@ jobs:
 
       - name: Configure APT source for Ubuntu 24.04
         run: |
+          sudo apt install netselect -y
+          # 从 Ubuntu 官方镜像列表文件中测试最快的 20 个镜像，超时设置为 40 秒
+          sudo netselect -s 20 -t 40 $(wget -qO - mirrors.ubuntu.com/mirrors.txt)
+          echo "测试完成"
           # 直接配置阿里云镜像源（不备份原文件）
           sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null << 'EOF'
           Types: deb
