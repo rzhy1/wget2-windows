@@ -27,7 +27,7 @@ jobs:
         run: |
           sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null << 'EOF'
           Types: deb
-          URIs: http://mirrors.aliyun.com/ubuntu
+          URIs: https://ubuntu.cica.es/ubuntu/
           Suites: noble noble-updates noble-backports noble-security
           Components: main restricted universe multiverse
           Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
