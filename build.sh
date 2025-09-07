@@ -95,7 +95,7 @@ build_zlib-ng() {
   local start_time=$(date +%s.%N)
   git clone --depth=1 https://github.com/zlib-ng/zlib-ng || exit 1
   cd zlib-ng || exit 1
-  CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-Os" CC=x86_64-w64-mingw32-gcc ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
+  CROSS_PREFIX="x86_64-w64-mingw32-" ARCH="x86_64" CFLAGS="-Os" CC=x86_64-w64-mingw32-gcc sudo ./configure --prefix=$INSTALLDIR --static --64 --zlib-compat || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf zlib-ng
@@ -109,7 +109,7 @@ build_gmp() {
   start_time=$(date +%s.%N)
   wget -nv -O- https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz | tar x --xz
   cd gmp-* || exit
-  ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR"
+  sudo ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR"
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf gmp-*
@@ -133,7 +133,7 @@ build_libiconv() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz | tar xz || exit 1
   cd libiconv-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-nls --disable-silent-rules --prefix=$INSTALLDIR || exit 1
+  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-nls --disable-silent-rules --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf libiconv-*
@@ -147,7 +147,7 @@ build_libunistring() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
-  ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
+  sudo ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf libunistring-*
@@ -161,7 +161,7 @@ build_libidn2() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.8.tar.gz | tar xz || exit 1
   cd libidn2-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
+  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf libidn2-*
@@ -175,7 +175,7 @@ build_libtasn1() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz | tar xz || exit 1
   cd libtasn1-* || exit 1
-  ./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
+  sudo ./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
   make -j$(nproc) || exit 1
  sudo  make install || exit 1
   cd .. && sudo rm -rf libtasn1-*
@@ -190,7 +190,7 @@ build_PCRE2() {
   sudo git clone --depth=1 https://github.com/PCRE2Project/pcre2 || exit 1
   cd pcre2 || exit 1
   sudo ./autogen.sh || exit 1
-  sudo ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
+  sudo sudo ./configure --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf pcre2
@@ -204,7 +204,7 @@ build_nghttp2() {
   local start_time=$(date +%s.%N)
   wget -O- https://github.com/nghttp2/nghttp2/releases/download/v1.67.0/nghttp2-1.67.0.tar.gz | tar xz || exit 1
   cd nghttp2-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
+  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf nghttp2-*
@@ -218,7 +218,7 @@ build_dlfcn-win32() {
   start_time=$(date +%s.%N)
   sudo git clone --depth=1 https://github.com/dlfcn-win32/dlfcn-win32.git || exit 1
   cd dlfcn-win32 || exit 1
-  ./configure --prefix=$PREFIX --cc=$PREFIX-gcc || exit 1
+  sudo ./configure --prefix=$PREFIX --cc=$PREFIX-gcc || exit 1
   make -j$(nproc) || exit 1
   cp -p libdl.a $INSTALLDIR/lib/ || exit 1
   cp -p src/dlfcn.h $INSTALLDIR/include/ || exit 1
@@ -233,7 +233,7 @@ build_libmicrohttpd() {
   local start_time=$(date +%s.%N)
   wget -O- https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
   cd libmicrohttpd-* || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
+  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
             --disable-examples --disable-doc --disable-tools --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
@@ -249,7 +249,7 @@ build_libpsl() {
   sudo git clone --depth=1 --recursive https://github.com/rockdaboot/libpsl.git || exit 1
   cd libpsl || exit 1
   sudo ./autogen.sh || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
+  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --enable-runtime=libidn2 --enable-builtin --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf libpsl
@@ -265,7 +265,7 @@ build_nettle() {
   wget -O- https://ftp.gnu.org/gnu/nettle/nettle-3.10.2.tar.gz | tar xz || exit 1
   cd nettle-* || exit 1
   sudo bash .bootstrap || exit 1
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
+  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf nettle
@@ -289,7 +289,7 @@ build_gnutls() {
   NETTLE_CFLAGS=$CFLAGS \
   HOGWEED_CFLAGS=$CFLAGS \
   LIBIDN2_CFLAGS=$CFLAGS \
-  ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+  sudo ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
   make -j$(nproc) || exit 1
   sudo make install || exit 1
   cd .. && sudo rm -rf gnutls-* 
@@ -317,7 +317,7 @@ build_wget2() {
   LIBPSL_LIBS="-L$INSTALLDIR/lib -lpsl" \
   LIBPCRE2_CFLAGS=$CFLAGS \
   LIBPCRE2_LIBS="-L$INSTALLDIR/lib -lpcre2-8"  \
-  ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotli --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
+  sudo ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --with-libiconv-prefix="$INSTALLDIR" --with-ssl=gnutls --disable-shared --enable-static --without-lzma  --with-zstd --with-brotli --without-bzip2 --without-lzip --without-gpgme --enable-threads=windows || exit 1
   make -j$(nproc)  || exit 1
   strip $INSTALLDIR/wget2/src/wget2.exe || exit 1
   cp -fv "$INSTALLDIR/wget2/src/wget2.exe" "${GITHUB_WORKSPACE}" || exit 1
