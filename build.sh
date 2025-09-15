@@ -202,7 +202,7 @@ build_PCRE2() {
 build_nghttp2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nghttp2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://github.com/nghttp2/nghttp2/releases/download/v1.67.0/nghttp2-1.67.0.tar.gz | tar xz || exit 1
+  wget -O- https://github.com/nghttp2/nghttp2/releases/download/v1.67.1/nghttp2-1.67.1.tar.gz | tar xz || exit 1
   cd nghttp2-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-examples --disable-app --disable-failmalloc --disable-hpack-tools || exit 1
   make -j$(nproc) || exit 1
