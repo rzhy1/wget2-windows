@@ -23,6 +23,7 @@ mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 build_brotli() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐"
+  local start_time=$(date +%s.%N)
   git clone --depth=1 https://github.com/google/brotli.git || exit 1
   cd brotli || exit 1
   mkdir build && cd build
@@ -54,6 +55,8 @@ EOF
   echo "$duration" > "$INSTALLDIR/brotli_duration.txt"
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommo结果如下⭐⭐⭐⭐⭐⭐" 
   pkg-config --cflags --libs libbrotlienc libbrotlidec libbrotlicommon
+  echo "显示libbrotlidec.pc内容"
+  cat libbrotlidec.pc
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - 查找brotli文件结果如下⭐⭐⭐⭐⭐⭐" 
   find / -name "*brotli*"
 }
