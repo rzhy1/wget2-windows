@@ -22,13 +22,33 @@ ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 build_brotli() {
-  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐" 
-  local start_time=$(date +%s.%N)
-  git clone https://github.com/google/brotli.git || exit 1
+  echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build brotli⭐⭐⭐⭐⭐⭐"
+  git clone --depth=1 https://github.com/google/brotli.git || exit 1
   cd brotli || exit 1
-  CMAKE_SYSTEM_NAME=Windows CMAKE_C_COMPILER=x86_64-w64-mingw32-gcc CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ cmake . -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release || exit 1
-  make install || exit 1
-  cd .. && rm -rf brotli
+  mkdir build && cd build
+  cmake .. \
+    -DCMAKE_SYSTEM_NAME=Windows \
+    -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc \
+    -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ \
+    -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=Release || exit 1
+  make -j$(nproc) install || exit 1
+  # 自动生成 libbrotli.pc（聚合 enc/dec/common 三个库）
+  mkdir -p "$INSTALLDIR/lib/pkgconfig"
+  cat > "$INSTALLDIR/lib/pkgconfig/libbrotli.pc" <<EOF
+prefix=$INSTALLDIR
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: brotli
+Description: Brotli compression library (enc/dec/common)
+Version: 1.1.0
+Libs: -L\${libdir} -lbrotlienc -lbrotlidec -lbrotlicommon
+Cflags: -I\${includedir}
+EOF
+  cd ../.. && rm -rf brotli
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
   echo "$duration" > "$INSTALLDIR/brotli_duration.txt"
