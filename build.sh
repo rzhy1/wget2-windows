@@ -117,7 +117,7 @@ build_zlib-ng() {
 build_gmp() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gmp⭐⭐⭐⭐⭐⭐" 
   start_time=$(date +%s.%N)
-  wget -nv -O- https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz | tar x --xz
+  wget -nv -O- https://mirrors.kernel.org/gnu/gmp/gmp-6.3.0.tar.xz | tar x --xz
   cd gmp-* || exit
   ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR"
   make -j$(nproc) || exit 1
@@ -141,7 +141,7 @@ build_gnulibmirror() {
 build_libiconv() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://ftp.gnu.org/gnu/libiconv/libiconv-1.18.tar.gz | tar xz || exit 1
+  wget -O- https://mirrors.kernel.org/gnu/libiconv/libiconv-1.18.tar.gz | tar xz || exit 1
   cd libiconv-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-nls --disable-silent-rules --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
@@ -155,7 +155,7 @@ build_libiconv() {
 build_libunistring() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://ftp.gnu.org/gnu/libunistring/libunistring-1.4.tar.gz | tar xz || exit 1
+  wget -O- https://mirrors.kernel.org/gnu/libunistring/libunistring-1.4.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
   ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
   make -j$(nproc) || exit 1
@@ -169,7 +169,7 @@ build_libunistring() {
 build_libidn2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libidn2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://ftp.gnu.org/gnu/libidn/libidn2-2.3.8.tar.gz | tar xz || exit 1
+  wget -O- https://mirrors.kernel.org/gnu/libidn/libidn2-2.3.8.tar.gz | tar xz || exit 1
   cd libidn2-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
@@ -183,7 +183,7 @@ build_libidn2() {
 build_libtasn1() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libtasn1⭐⭐⭐⭐⭐⭐"
   local start_time=$(date +%s.%N)
-  wget -O- https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz | tar xz || exit 1
+  wget -O- https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.20.0.tar.gz | tar xz || exit 1
   cd libtasn1-* || exit 1
   ./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
   make -j$(nproc) || exit 1
@@ -241,7 +241,7 @@ build_dlfcn-win32() {
 build_libmicrohttpd() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libmicrohttpd⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
+  wget -O- https://mirrors.kernel.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
   cd libmicrohttpd-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
             --disable-examples --disable-doc --disable-tools --disable-silent-rules || exit 1
@@ -272,7 +272,7 @@ build_nettle() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
   #git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
-  wget -O- https://ftp.gnu.org/gnu/nettle/nettle-3.10.2.tar.gz | tar xz || exit 1
+  wget -O- https://mirrors.kernel.org/gnu/nettle/nettle-3.10.2.tar.gz | tar xz || exit 1
   cd nettle-* || exit 1
   bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
@@ -320,7 +320,6 @@ build_wget2() {
   ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CFLAGS="-L$INSTALLDIR/include -DNGHTTP2_STATICLIB $CFLAGS"
-  #LIBS="-lbrotlienc -lbrotlicommon" \
   GNUTLS_CFLAGS=$CFLAGS \
   GNUTLS_LIBS="-L$INSTALLDIR/lib -lgnutls -lbcrypt -lncrypt" \
   LIBPSL_CFLAGS=$CFLAGS \
