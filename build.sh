@@ -35,20 +35,7 @@ build_brotli() {
     -DBUILD_SHARED_LIBS=OFF \
     -DCMAKE_BUILD_TYPE=Release || exit 1
   make -j$(nproc) install || exit 1
-  # 自动生成 libbrotli.pc（聚合 enc/dec/common 三个库）
-  mkdir -p "$INSTALLDIR/lib/pkgconfig"
-  cat > "$INSTALLDIR/lib/pkgconfig/libbrotli.pc" <<EOF
-prefix=$INSTALLDIR
-exec_prefix=\${prefix}
-libdir=\${exec_prefix}/lib
-includedir=\${prefix}/include
-
-Name: brotli
-Description: Brotli compression library (enc/dec/common)
-Version: 1.1.0
-Libs: -L\${libdir} -lbrotlienc -lbrotlidec -lbrotlicommon
-Cflags: -I\${includedir}
-EOF
+  #sed -i 's/^Libs: .*/& -lbrotlicommon/' "$INSTALLDIR/lib/pkgconfig/libbrotlidec.pc"
   cd ../.. && rm -rf brotli
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
