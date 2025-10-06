@@ -78,8 +78,11 @@ build_deps() {
 
   build_zstd() {
     git clone --depth=1 https://github.com/facebook/zstd.git
-    cd zstd && make -j$(nproc) ZSTD_LEGACY_SUPPORT=0 HAVE_THREAD=0
-    make install PREFIX="$INSTALLDIR" && cd ..
+    cd zstd
+    make -j$(nproc) ZSTD_LEGACY_SUPPORT=0 HAVE_THREAD=0 \
+         BUILD_SHARED=0 BUILD_STATIC=1 lib-release
+    make install PREFIX="$INSTALLDIR"
+    cd ..
   }
 
   build_brotli() {
