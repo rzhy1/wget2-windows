@@ -44,7 +44,7 @@ jobs:
           chmod +x "${GITHUB_WORKSPACE}/build.sh"
           "${GITHUB_WORKSPACE}/build.sh"
       - name: Archive wget2.exe
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: wget2.exe
           path: "wget2.exe"
