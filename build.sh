@@ -157,9 +157,9 @@ build_libunistring() {
   local start_time=$(date +%s.%N)
   wget -O- https://mirrors.kernel.org/gnu/libunistring/libunistring-1.4.1.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
-  ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
-  make -j$(nproc) || exit 1
-  make install || exit 1
+  ac_cv_func_nanosleep=yes ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
+  make -C lib -j$(nproc) || exit 1
+  make -C lib install || exit 1
   cd .. && rm -rf libunistring-*
   local end_time=$(date +%s.%N)
   local duration=$(echo "$end_time - $start_time" | bc | xargs printf "%.1f")
