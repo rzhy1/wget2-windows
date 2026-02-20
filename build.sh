@@ -19,6 +19,84 @@ ln -s $(which lld-link) /usr/bin/x86_64-w64-mingw32-ld.lld
 # 当前路径是：/__w/wget2-windows/wget2-windows
 # INSTALLDIR是：/github/home/usr/local/x86_64-w64-mingw32
 
+# ========== 镜像测速选择函数（纯 Shell）==========
+select_fastest_gnu_mirror() {
+    # 候选镜像列表（按推荐顺序，阿里云为首要默认）
+    local candidates=(
+        "https://mirrors.aliyun.com/gnu"
+        "https://mirrors.tuna.tsinghua.edu.cn/gnu"
+        "https://mirrors.huaweicloud.com/gnu"
+        "https://mirrors.ustc.edu.cn/gnu"
+        "https://mirrors.tencent.com/gnu"
+        "https://ftp.gnu.org/gnu"
+        "https://ftp.jaist.ac.jp/pub/GNU"
+        "http://mirrors.kernel.org/gnu"
+    )
+
+    # 默认最快镜像设为阿里云（保证总有输出）
+    local fastest_url="${candidates[0]}"
+    local fastest_time=999999
+    local mirror http_code tmp_time curl_output
+
+    echo "[测速] 正在测试 GNU 镜像响应速度..." >&2
+
+    for mirror in "${candidates[@]}"; do
+        # ---------- 优先使用 curl（最准确）----------
+        if command -v curl >/dev/null 2>&1; then
+            # 获取 HTTP 状态码和总耗时（单位：秒）
+            curl_output=$(curl -o /dev/null -s -w '%{http_code} %{time_total}' \
+                --connect-timeout 3 --max-time 5 "${mirror}/" 2>/dev/null)
+            http_code=$(echo "$curl_output" | awk '{print $1}')
+            tmp_time=$(echo "$curl_output" | awk '{print $2}')
+
+            # 严格校验：状态码为 2xx/3xx，且耗时是有效正数
+            if echo "$http_code" | grep -qE '^[0-9]+$' && \
+               [ "$http_code" -ge 200 ] && [ "$http_code" -lt 400 ] && \
+               echo "$tmp_time" | grep -qE '^[0-9]+(\.[0-9]+)?$' && \
+               awk -v t="$tmp_time" 'BEGIN{exit !(t > 0)}' 2>/dev/null; then
+                
+                printf "  %-45s %.3f 秒 (HTTP %s)\n" "$mirror" "$tmp_time" "$http_code" >&2
+                
+                # 比较浮点时间（纯 awk，无 bc 依赖）
+                if awk -v t1="$tmp_time" -v t2="$fastest_time" 'BEGIN{exit !(t1 < t2)}' 2>/dev/null; then
+                    fastest_time=$tmp_time
+                    fastest_url=$mirror
+                fi
+            else
+                printf "  %-45s 失败 (HTTP %s)\n" "$mirror" "$http_code" >&2
+            fi
+
+        # ---------- 备选：wget（仅简单检测）----------
+        elif command -v wget >/dev/null 2>&1; then
+            if wget --spider --timeout=3 --tries=1 -O /dev/null "${mirror}/" 2>&1 | \
+               grep -qE "HTTP/.* 200|HTTP/.* 301"; then
+                # wget 无法精确获取耗时，统一标记为 1.0 秒（仅作连通性判断）
+                tmp_time=1.0
+                printf "  %-45s 可用 (wget)\n" "$mirror" >&2
+                # 简单比较：只要比当前最快小就选（实际是 1.0 vs 999999）
+                if awk -v t1="$tmp_time" -v t2="$fastest_time" 'BEGIN{exit !(t1 < t2)}' 2>/dev/null; then
+                    fastest_time=$tmp_time
+                    fastest_url=$mirror
+                fi
+            else
+                printf "  %-45s 失败 (wget)\n" "$mirror" >&2
+            fi
+        else
+            echo "[错误] 系统中既没有 curl 也没有 wget，无法测速！" >&2
+            break
+        fi
+    done
+
+    echo >&2
+    echo "[选择] 最快镜像: ${fastest_url} (${fastest_time}s)" >&2
+
+    # ★★★ 唯一输出到 stdout 的内容，供变量捕获 ★★★
+    echo "$fastest_url"
+}
+GNU_MIRROR=$(select_fastest_gnu_mirror)
+export GNU_MIRROR
+echo "使用镜像源: $GNU_MIRROR" >&2
+
 mkdir -p $INSTALLDIR
 cd $INSTALLDIR
 build_brotli() {
@@ -117,7 +195,7 @@ build_zlib-ng() {
 build_gmp() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build gmp⭐⭐⭐⭐⭐⭐" 
   start_time=$(date +%s.%N)
-  wget -nv -O- https://mirrors.kernel.org/gnu/gmp/gmp-6.3.0.tar.xz | tar x --xz
+  wget -nv -O- ${GNU_MIRROR}/gmp/gmp-6.3.0.tar.xz | tar x --xz
   cd gmp-* || exit
   ./configure --host=$PREFIX --disable-shared --prefix="$INSTALLDIR"
   make -j$(nproc) || exit 1
@@ -141,7 +219,7 @@ build_gnulibmirror() {
 build_libiconv() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libiconv⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://mirrors.kernel.org/gnu/libiconv/libiconv-1.18.tar.gz | tar xz || exit 1
+  wget -O- ${GNU_MIRROR}/libiconv/libiconv-1.18.tar.gz | tar xz || exit 1
   cd libiconv-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-nls --disable-silent-rules --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
@@ -155,7 +233,7 @@ build_libiconv() {
 build_libunistring() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libunistring⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://mirrors.kernel.org/gnu/libunistring/libunistring-1.4.1.tar.gz | tar xz || exit 1
+  wget -O- ${GNU_MIRROR}/libunistring/libunistring-1.4.1.tar.gz | tar xz || exit 1
   cd libunistring-* || exit 1
   ac_cv_func_nanosleep=yes ./configure CFLAGS="-Os" --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static --disable-doc --disable-silent-rules || exit 1
   make -C lib -j$(nproc) || exit 1
@@ -169,7 +247,7 @@ build_libunistring() {
 build_libidn2() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libidn2⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://mirrors.kernel.org/gnu/libidn/libidn2-2.3.8.tar.gz | tar xz || exit 1
+  wget -O- ${GNU_MIRROR}/libidn/libidn2-2.3.8.tar.gz | tar xz || exit 1
   cd libidn2-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX  --disable-shared --enable-static --disable-doc --disable-gcc-warnings --prefix=$INSTALLDIR || exit 1
   make -j$(nproc) || exit 1
@@ -183,7 +261,7 @@ build_libidn2() {
 build_libtasn1() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libtasn1⭐⭐⭐⭐⭐⭐"
   local start_time=$(date +%s.%N)
-  wget -O- https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.21.0.tar.gz | tar xz || exit 1
+  wget -O- ${GNU_MIRROR}/libtasn1/libtasn1-4.21.0.tar.gz | tar xz || exit 1
   cd libtasn1-* || exit 1
   ./configure --host=$PREFIX --disable-shared --disable-doc --prefix="$INSTALLDIR" || exit 1
   make -j$(nproc) || exit 1
@@ -241,7 +319,7 @@ build_dlfcn-win32() {
 build_libmicrohttpd() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build libmicrohttpd⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
-  wget -O- https://mirrors.kernel.org/gnu/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
+  wget -O- ${GNU_MIRROR}/libmicrohttpd/libmicrohttpd-latest.tar.gz | tar xz || exit 1
   cd libmicrohttpd-* || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --prefix=$INSTALLDIR --disable-shared --enable-static \
             --disable-examples --disable-doc --disable-tools --disable-silent-rules || exit 1
@@ -272,7 +350,7 @@ build_nettle() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
   #git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
-  wget -O- https://mirrors.kernel.org/gnu/nettle/nettle-3.10.2.tar.gz | tar xz || exit 1
+  wget -O- ${GNU_MIRROR}/nettle/nettle-3.10.2.tar.gz | tar xz || exit 1
   cd nettle-* || exit 1
   bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
