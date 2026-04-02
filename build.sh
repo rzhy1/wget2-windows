@@ -370,7 +370,7 @@ build_gnutls() {
   # 下载并应用 Nettle 4.0 兼容性补丁
   echo "Applying Nettle 4.0 compatibility patch..."
   wget -q -O- https://www.linuxfromscratch.org/patches/blfs/svn/gnutls-3.8.12-nettle4_fixes-1.patch | patch -Np1
-  if ! wget -q -O- <patch_url> | patch -Np1; then
+  if ! wget -q -O- https://www.linuxfromscratch.org/patches/blfs/svn/gnutls-3.8.12-nettle4_fixes-1.patch | patch -Np1; then
     echo "Patch failed!" >&2
     exit 1
   fi
