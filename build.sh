@@ -367,17 +367,9 @@ build_gnutls() {
   local start_time=$(date +%s.%N)
   wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.12.tar.xz | tar x --xz || exit 1
   cd gnutls-* || exit 1
-  # 替换原来的两行
-    echo "Applying Nettle 4.0 compatibility patch..."
-    if ! wget -q -O- https://www.linuxfromscratch.org/patches/blfs/svn/gnutls-3.8.12-nettle4_fixes-1.patch | patch -Np1 --forward; then
-        # 检查是否因为已经打过补丁而失败（patch 返回 1 且输出包含 "Reversed" 或 "already applied"）
-        if ! patch -p1 --dry-run < /dev/null 2>&1 | grep -q "Reversed (or previously applied) patch"; then
-            echo "Patch failed critically!" >&2
-            exit 1
-        else
-            echo "Patch already applied, continuing..."
-        fi
-    fi
+  # 下载并应用 Nettle 4.0 兼容性补丁
+  echo "Applying Nettle 4.0 compatibility patch..."
+  wget -q -O- https://www.linuxfromscratch.org/patches/blfs/svn/gnutls-3.8.12-nettle4_fixes-1.patch | patch -Np1
   GMP_LIBS="-L$INSTALLDIR/lib -lgmp" \
   NETTLE_LIBS="-L$INSTALLDIR/lib -lnettle -lgmp" \
   HOGWEED_LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp" \
@@ -391,7 +383,27 @@ build_gnutls() {
   LIBS="-lwinpthread" \
   ac_cv_func_nanosleep='yes' \
   gl_cv_func_nanosleep='yes' \
-  ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR --with-included-unistring --disable-openssl-compatibility --disable-hardware-acceleration --disable-shared --enable-static --without-p11-kit --disable-doc --disable-tests --disable-full-test-suite --disable-tools --disable-cxx --disable-maintainer-mode --disable-libdane || exit 1
+  ./configure CFLAGS="$CFLAGS" --host=$PREFIX --prefix=$INSTALLDIR \
+        --with-included-unistring \
+        --disable-nls \
+        --disable-shared \
+        --enable-static \
+        --disable-doc \
+        --disable-tools \
+        --disable-cxx \
+        --disable-tests \
+        --disable-maintainer-mode \
+        --disable-hardware-acceleration \
+        --disable-padlock \
+        --without-p11-kit \
+        --without-tpm2 \
+        --without-tpm \
+        --without-idn \
+        --without-brotli \
+        --without-zstd \
+        --disable-full-test-suite \
+        --disable-valgrind-tests \
+        --disable-seccomp-tests
   make -j$(nproc) || exit 1
   make install || exit 1
   cd .. && rm -rf gnutls-* 
