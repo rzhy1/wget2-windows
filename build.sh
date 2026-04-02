@@ -350,7 +350,7 @@ build_nettle() {
   echo "⭐⭐⭐⭐⭐⭐$(date '+%Y/%m/%d %a %H:%M:%S.%N') - build nettle⭐⭐⭐⭐⭐⭐" 
   local start_time=$(date +%s.%N)
   #git clone  https://github.com/sailfishos-mirror/nettle.git || exit 1
-  wget -O- ${GNU_MIRROR}/nettle/nettle-3.10.2.tar.gz | tar xz || exit 1
+  wget -O- ${GNU_MIRROR}/nettle/nettle-4.0.tar.gz | tar xz || exit 1
   cd nettle-* || exit 1
   bash .bootstrap || exit 1
   ./configure --build=x86_64-pc-linux-gnu --host=$PREFIX --disable-shared --enable-static --disable-documentation --prefix=$INSTALLDIR --libdir=$INSTALLDIR/lib || exit 1
@@ -367,6 +367,9 @@ build_gnutls() {
   local start_time=$(date +%s.%N)
   wget -O- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.12.tar.xz | tar x --xz || exit 1
   cd gnutls-* || exit 1
+  # 下载并应用 Nettle 4.0 兼容性补丁
+  echo "Applying Nettle 4.0 compatibility patch..."
+  wget -q -O- https://www.linuxfromscratch.org/patches/blfs/svn/gnutls-3.8.12-nettle4_fixes-1.patch | patch -Np1
   GMP_LIBS="-L$INSTALLDIR/lib -lgmp" \
   NETTLE_LIBS="-L$INSTALLDIR/lib -lnettle -lgmp" \
   HOGWEED_LIBS="-L$INSTALLDIR/lib -lhogweed -lnettle -lgmp" \
