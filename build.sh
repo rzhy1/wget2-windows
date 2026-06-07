@@ -398,6 +398,7 @@ build_wget2() {
       rm -rf gnulib
   fi
   git clone --depth=1 https://github.com/coreutils/gnulib.git
+  sed -i '1i MAINTAINERCLEANFILES =' lib/Makefile.am
   ./bootstrap --skip-po --gnulib-srcdir=gnulib || exit 1
   export LDFLAGS="$LDFLAGS -L$INSTALLDIR/lib -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
   export CPPFLAGS="-I$INSTALLDIR/include -DNGHTTP2_STATICLIB"
